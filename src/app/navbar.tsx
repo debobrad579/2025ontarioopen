@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function Navbar() {
   return (
-    <div className="flex justify-between items-center gap-4 px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw]">
+    <div className="flex justify-between items-center gap-4 px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] bg-card">
       <div className="flex gap-4">
         <Button variant="outline" asChild>
           <Link href="/">Home</Link>
@@ -13,7 +13,7 @@ export function Navbar() {
           <Link href="/standings">Standings</Link>
         </Button>
         <Button variant="outline" asChild>
-          <Link href="/live">Live Games</Link>
+          <Link href="/games">Games</Link>
         </Button>
       </div>
       <ModeToggle />
