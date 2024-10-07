@@ -170,6 +170,7 @@ const AutoplayCarousel = React.forwardRef<
     />
   )
 })
+AutoplayCarousel.displayName = "AutoplayCarousel"
 
 const CarouselContent = React.forwardRef<
   HTMLDivElement,

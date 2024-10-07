@@ -34,9 +34,9 @@ export default function Home() {
             <h2 className="font-bold text-xl">Byes:</h2>
             <p>
               Half point byes must be requested before the previous round has
-              started.
+              started
             </p>
-            <p>Maximum two half point byes in rounds 1 – 4 only.</p>
+            <p>Maximum two half point byes in rounds 1 – 4 only</p>
           </div>
           <div>
             <h2 className="font-bold text-xl">Sections:</h2>
@@ -56,9 +56,7 @@ export default function Home() {
             <p>$15,000 based on 250 paid entries</p>
             <p>$10,000 based on 200 paid entries</p>
             <p>$7,000 based on 150 paid entries</p>
-          </div>
-          <div>
-            <h2 className="font-bold text-xl">Percentage / Section:</h2>
+            <h3 className="font-bold text-lg">Percentage / Section:</h3>
             <p>2000 and Above: 40%</p>
             <p>1600 – 1999: 30%</p>
             <p>1200 – 1599: 20%</p>
