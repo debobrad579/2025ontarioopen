@@ -88,7 +88,7 @@ export default function Home() {
             <h2 className="font-bold text-xl">Hotel Room Rates:</h2>
             <p>Tentatively $139 / double room</p>
           </div>
-          <h2 className="text-center font-bold text-xl">Grandmasters</h2>
+          <h2 className="text-center font-bold text-xl">Honored Players</h2>
           <AutoplayCarousel
             className="w-full"
             opts={{ loop: true }}
@@ -97,15 +97,23 @@ export default function Home() {
             <CarouselContent>
               <CarouselItem>
                 <GrandmasterCard
+                  name="Name"
+                  title="Title"
                   image={placeholderImage}
-                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-                  temporibus qui fuga voluptates ducimus obcaecati voluptatibus nemo
-                  inventore perferendis veritatis corporis, consequuntur odio earum
-                  debitis numquam officia similique sequi quod est sit voluptatem."
+                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Adipisci nesciunt mollitia nam reiciendis beatae illo inventore quos iste obcaecati distinctio.
+                  Vitae magnam ullam eveniet voluptate culpa pariatur ratione obcaecati ducimus quam inventore unde dolore tenetur,
+                  temporibus dolorum ex dignissimos ipsa cupiditate. Aspernatur dolores eaque blanditiis at.
+                  Vel, provident perferendis illum nihil iusto quis sunt eius, quia aliquid ad illo quam labore quaerat numquam minima!
+                  Nesciunt blanditiis optio consequatur fugit repellendus! Voluptatibus eum cumque quasi consequatur saepe a illum odio perferendis adipisci pariatur,
+                  facere dolorem iusto dolore repellendus cum quidem laboriosam, facilis quos voluptatum eligendi vitae asperiores vel doloribus commodi. Consectetur."
                 />
+                <p></p>
               </CarouselItem>
               <CarouselItem>
                 <GrandmasterCard
+                  name="Name"
+                  title="Title"
                   image={placeholderImage}
                   description="Est dolorum suscipit tempora? Quis vel eaque doloremque labore
                   itaque minima laudantium, maiores veniam animi? Deleniti, molestiae assumenda. 
@@ -115,6 +123,8 @@ export default function Home() {
               </CarouselItem>
               <CarouselItem>
                 <GrandmasterCard
+                  name="Name"
+                  title="Title"
                   image={placeholderImage}
                   description="Voluptate, ab quam nostrum corrupti vel perspiciatis placeat
                   architecto asperiores quibusdam obcaecati nobis, magnam autem porro
