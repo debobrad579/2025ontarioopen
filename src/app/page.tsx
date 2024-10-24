@@ -4,7 +4,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import { GrandmasterCard } from "@/components/page/grandmaster-card"
+import { HonoredPlayerCard } from "@/components/page/honored-player-card"
 
 export default function Home() {
   return (
@@ -96,9 +96,9 @@ export default function Home() {
           >
             <CarouselContent>
               <CarouselItem>
-                <GrandmasterCard
-                  name="Name"
-                  title="Title"
+                <HonoredPlayerCard
+                  name="Brady DeBoer"
+                  title="Grandmaster"
                   image={placeholderImage}
                   description="Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Adipisci nesciunt mollitia nam reiciendis beatae illo inventore quos iste obcaecati distinctio.
@@ -111,9 +111,9 @@ export default function Home() {
                 <p></p>
               </CarouselItem>
               <CarouselItem>
-                <GrandmasterCard
-                  name="Name"
-                  title="Title"
+                <HonoredPlayerCard
+                  name="Rob Gashgarian"
+                  title="International Master"
                   image={placeholderImage}
                   description="Est dolorum suscipit tempora? Quis vel eaque doloremque labore
                   itaque minima laudantium, maiores veniam animi? Deleniti, molestiae assumenda. 
@@ -122,9 +122,9 @@ export default function Home() {
                 />
               </CarouselItem>
               <CarouselItem>
-                <GrandmasterCard
-                  name="Name"
-                  title="Title"
+                <HonoredPlayerCard
+                  name="Lee Hendon"
+                  title="FIDE Master"
                   image={placeholderImage}
                   description="Voluptate, ab quam nostrum corrupti vel perspiciatis placeat
                   architecto asperiores quibusdam obcaecati nobis, magnam autem porro
