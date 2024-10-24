@@ -31,17 +31,6 @@ export function HonoredPlayerCard({
   image: string | StaticImport
   description: string
 }) {
-  const handleResize = () => {
-    if (divRef.current == null || paragraphRef.current == null) return
-
-    const lineHeight = parseFloat(
-      getComputedStyle(paragraphRef.current).lineHeight
-    )
-    const containerHeight = divRef.current.clientHeight
-    const lines = Math.floor(containerHeight / lineHeight)
-    paragraphRef.current.style.webkitLineClamp = lines.toString()
-  }
-
   const divRef = useRef<HTMLDivElement>(null)
   const paragraphRef = useRef<HTMLParagraphElement>(null)
 
