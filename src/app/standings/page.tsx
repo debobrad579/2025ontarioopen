@@ -1,4 +1,9 @@
 import { StandingsTable } from "@/components/page/standings-table"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Standings",
+}
 
 export default function Standings() {
   return (

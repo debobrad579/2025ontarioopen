@@ -70,7 +70,7 @@ export function HonoredPlayerCard({
           </CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-3xl rounded-lg">
+      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-3xl rounded-lg bg-card">
         <ScrollArea className="max-h-[calc(100vh-4rem)] p-8 rounded-lg">
           <DialogHeader className="pb-4">
             <DialogTitle>{name}</DialogTitle>
