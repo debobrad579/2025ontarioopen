@@ -54,7 +54,7 @@ export function HonoredPlayerCard({
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger className="focus-visible:outline-none focus-visible:border focus-visible:border-ring rounded-xl">
         <Card>
           <CardHeader className="p-4 pb-0 flex-row justify-between items-center">
             <CardTitle>{name}</CardTitle>

@@ -32,7 +32,7 @@ body {
     --destructive-foreground: 40 5% 90%;
     --border: 40 89% 56%;
     --input: 40 89% 26%;
-    --ring: 40 89% 56%;
+    --ring: 359 87% 46%;
     --radius: 0.5rem;
   }
 
@@ -55,7 +55,7 @@ body {
     --destructive-foreground: 37 5% 97%;
     --border: 37 74% 15%;
     --input: 37 30% 26%;
-    --ring: 37 74% 41%;
+    --ring: 359 87% 46%;
   }
 }
 
