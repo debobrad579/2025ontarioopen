@@ -61,7 +61,11 @@ export function HonoredPlayerCard({
             <CardDescription>{title}</CardDescription>
           </CardHeader>
           <CardContent className="flex gap-4 p-4">
-            <Image src={image} alt="placeholder" className="w-1/3 h-1/3" />
+            <Image
+              src={image}
+              alt="placeholder"
+              className="w-1/3 h-1/3 border rounded-xl"
+            />
             <div ref={divRef} className="w-2/3 aspect-[3/1] overflow-hidden">
               <p ref={paragraphRef} className="line-clamp-[unset] text-left">
                 {description}
@@ -70,14 +74,18 @@ export function HonoredPlayerCard({
           </CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-3xl rounded-lg bg-card">
-        <ScrollArea className="max-h-[calc(100vh-4rem)] p-8 rounded-lg">
+      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-3xl rounded-xl bg-card">
+        <ScrollArea className="max-h-[calc(100vh-4rem)] p-8">
           <DialogHeader className="pb-4">
             <DialogTitle>{name}</DialogTitle>
             <DialogDescription>{title}</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <Image src={image} alt="placeholder" className="w-48 h-48" />
+            <Image
+              src={image}
+              alt="placeholder"
+              className="w-48 h-48 border rounded-xl"
+            />
             <p>{description}</p>
           </div>
         </ScrollArea>

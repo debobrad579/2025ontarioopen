@@ -15,11 +15,17 @@ export function Navbar() {
           <span className="sr-only">Home</span>
         </Link>
         <Button variant="ghost" asChild>
+          <Link href="/register">Register</Link>
+        </Button>
+        <Button variant="ghost" asChild>
+          <Link href="/players">Players</Link>
+        </Button>
+        {/* <Button variant="ghost" asChild>
           <Link href="/standings">Standings</Link>
         </Button>
         <Button variant="ghost" asChild>
           <Link href="/games">Games</Link>
-        </Button>
+        </Button> */}
       </div>
       <ModeToggle />
     </div>

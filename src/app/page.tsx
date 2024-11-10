@@ -1,10 +1,10 @@
-import placeholderImage from "@/assets/img/placeholder.jpg"
 import {
   AutoplayCarousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
 import { HonoredPlayerCard } from "@/components/page/honored-player-card"
+import ivanov from "@/assets/img/ivanov.jpg"
 
 export default function Home() {
   return (
@@ -93,39 +93,18 @@ export default function Home() {
           <CarouselContent>
             <CarouselItem>
               <HonoredPlayerCard
-                name="Brady DeBoer"
-                title="Grandmaster"
-                image={placeholderImage}
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Adipisci nesciunt mollitia nam reiciendis beatae illo inventore quos iste obcaecati distinctio.
-                  Vitae magnam ullam eveniet voluptate culpa pariatur ratione obcaecati ducimus quam inventore unde dolore tenetur,
-                  temporibus dolorum ex dignissimos ipsa cupiditate. Aspernatur dolores eaque blanditiis at.
-                  Vel, provident perferendis illum nihil iusto quis sunt eius, quia aliquid ad illo quam labore quaerat numquam minima!
-                  Nesciunt blanditiis optio consequatur fugit repellendus! Voluptatibus eum cumque quasi consequatur saepe a illum odio perferendis adipisci pariatur,
-                  facere dolorem iusto dolore repellendus cum quidem laboriosam, facilis quos voluptatum eligendi vitae asperiores vel doloribus commodi. Consectetur."
+                name="Mike Ivanov"
+                title="International Master (Elect)"
+                image={ivanov}
+                description="
+                  Born in 1995 in Yekaterinburg, Russia, Ivanov began playing chess at the age of four, taught by his grandfather. 
+                  After moving to Toronto at eight, he started formal lessons and began competing in tournaments.
+                  He earned the National Master title in 2013, the FIDE Master title in 2016, and his final International Master norm in 2024.
+                  Some of his top achievements include getting first at the 2013 Ontario Chess Challenge, first U2200 at the 2015 Biel International,
+                  third at the 2021 Innsbruck International, second at the 2021 Bruges Open, first U2400 at the 2022 Foxwoods Open,
+                  second at the 2023 Ostravskiy Konik International, first at the 2024 Olomouc International, and second at the 2024 San Christobal De La Laguna Open."
               />
               <p></p>
-            </CarouselItem>
-            <CarouselItem>
-              <HonoredPlayerCard
-                name="Rob Gashgarian"
-                title="International Master"
-                image={placeholderImage}
-                description="Est dolorum suscipit tempora? Quis vel eaque doloremque labore
-                  itaque minima laudantium, maiores veniam animi? Deleniti, molestiae assumenda. 
-                  Ipsa velit quasi reiciendis exercitationem eaque, dolore perferendis dicta 
-                  eligendi quidem necessitatibus error consectetur quaerat ea totam a!"
-              />
-            </CarouselItem>
-            <CarouselItem>
-              <HonoredPlayerCard
-                name="Lee Hendon"
-                title="FIDE Master"
-                image={placeholderImage}
-                description="Voluptate, ab quam nostrum corrupti vel perspiciatis placeat
-                  architecto asperiores quibusdam obcaecati nobis, magnam autem porro
-                  ipsam ea nisi, deleniti labore voluptates sint impedit ullam!"
-              />
             </CarouselItem>
           </CarouselContent>
         </AutoplayCarousel>
