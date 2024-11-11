@@ -1,13 +1,15 @@
 CREATE TYPE RESULT AS ENUM ('WIN', 'LOSS', 'DRAW', 'NOT_PLAYED');
+CREATE TYPE AGERANGE AS ENUM ('u18', '18to64', '65up');
 
 CREATE TABLE "OntarioOpenPlayer" (
     "CFCId" INT PRIMARY KEY,
     "rating" INT NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "age" INT NOT NULL,
+    "firstName" VARCHAR(255) NOT NULL,
+    "lastName" VARCHAR(255) NOT NULL,
     "email" VARCHAR(255) UNIQUE NOT NULL,
-    "isFemale" BOOLEAN DEFAULT FALSE,
-    "isPlayingUp" BOOLEAN DEFAULT FALSE,
+    "ageRange" AGERANGE NOT NULL,
+    "isFemale" BOOLEAN NOT NULL,
+    "isPlayingUp" BOOLEAN NOT NULL,
     "hasPaid" BOOLEAN DEFAULT FALSE,
     "result1" RESULT DEFAULT 'NOT_PLAYED',
     "result2" RESULT DEFAULT 'NOT_PLAYED',

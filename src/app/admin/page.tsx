@@ -45,7 +45,9 @@ export default async function Admin() {
                     <TableCell>
                       <PaidButton player={player} />
                     </TableCell>
-                    <TableCell>{player.name}</TableCell>
+                    <TableCell>
+                      {player.lastName}, {player.firstName}
+                    </TableCell>
                     <TableCell>{player.email}</TableCell>
                     <TableCell>
                       <a
@@ -57,7 +59,7 @@ export default async function Admin() {
                       </a>
                     </TableCell>
                     <TableCell className="text-right">
-                      {player.rating}
+                      {player.rating === 0 ? "Unrated" : player.rating}
                     </TableCell>
                   </TableRow>
                 ))}

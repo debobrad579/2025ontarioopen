@@ -5,7 +5,7 @@ export async function getAllPlayers() {
   return (
     await sql<Player>`
       SELECT * FROM "OntarioOpenPlayer"
-      ORDER BY "rating" DESC, "name" DESC;
+      ORDER BY "rating" DESC, "lastName" DESC;
     `
   ).rows
 }
@@ -28,7 +28,7 @@ export async function getSectionPlayers(bottomBound: number, topBound: number) {
             AND ${bottomBound} AND "isPlayingUp" = TRUE
           )
         )
-      ORDER BY "rating" DESC, "name" DESC;
+      ORDER BY "rating" DESC, "lastName" DESC;
     `
   ).rows
 }
@@ -61,7 +61,7 @@ export async function getSectionStandings(
             AND ${bottomBound} AND "isPlayingUp" = TRUE
           )
         )
-      ORDER BY "totalScore" DESC, "rating" DESC, "name" DESC;
+      ORDER BY "totalScore" DESC, "rating" DESC, "lastName" DESC;
     `
   ).rows
 }

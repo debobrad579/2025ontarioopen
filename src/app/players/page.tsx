@@ -1,9 +1,9 @@
 import { RegisteredTable } from "@/components/page/registered-table"
 import { getSectionPlayers } from "@/db/select"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Standings",
+  title: "Players",
 }
 
 export default async function Players() {

@@ -38,7 +38,9 @@ export function RegisteredTable({
             <TableBody>
               {players.map((player) => (
                 <TableRow key={player.CFCId}>
-                  <TableCell>{player.name}</TableCell>
+                  <TableCell>
+                    {player.lastName}, {player.firstName}
+                  </TableCell>
                   <TableCell>
                     <a
                       href={`https://www.chess.ca/en/ratings/p/?id=${player.CFCId}`}
@@ -48,7 +50,9 @@ export function RegisteredTable({
                       {player.CFCId}
                     </a>
                   </TableCell>
-                  <TableCell className="text-right">{player.rating}</TableCell>
+                  <TableCell className="text-right">
+                    {player.rating === 0 ? "Unrated" : player.rating}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
