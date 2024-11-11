@@ -1,7 +1,6 @@
 "use server"
 
 import { createPlayer } from "@/db/insert"
-import { Player } from "@/db/types"
 import puppeteer from "puppeteer"
 import {
   type FormSchemaKey,

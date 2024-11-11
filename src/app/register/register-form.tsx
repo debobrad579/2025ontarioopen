@@ -93,7 +93,7 @@ export function RegisterForm() {
               </div>
               <div className="flex flex-col-reverse sm:flex-row justify-between">
                 <FormDescription>
-                  Don't know your CFC id? Check the crosstables at{" "}
+                  Don&apos;t know your CFC id? Check the crosstables at{" "}
                   <a
                     href="https://www.chess.ca/en/ratings/"
                     target="_blank"
