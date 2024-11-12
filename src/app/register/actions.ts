@@ -34,7 +34,6 @@ export async function createPlayerAction(
   let browser = null
 
   try {
-    console.log("1")
     browser = await puppeteer.launch({
       args: isLocal
         ? puppeteer.defaultArgs()
@@ -49,20 +48,14 @@ export async function createPlayerAction(
         process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
       headless: chromium.headless,
     })
-    console.log("2")
     const page = await browser.newPage()
-    console.log("3")
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
-    console.log(4)
     await page.waitForSelector("span, .table-container")
-    console.log("5")
 
     const name = await page.evaluate(
       (element) => element?.textContent,
       await page.$("tbody td")
     )
-    console.log("6")
-    console.log(name)
 
     if (name == null) {
       return {
@@ -145,8 +138,15 @@ export async function createPlayerAction(
         message: "Email has already been submitted",
       }
     }
+
+    console.log(error.stack)
+
+    return {
+      status: "Error",
+      field: "CFCId",
+      message: error.message,
+    }
   } finally {
     if (browser !== null) await browser.close()
   }
-  return { status: "Error", field: "CFCId", message: "Unknown error occurred" }
 }
