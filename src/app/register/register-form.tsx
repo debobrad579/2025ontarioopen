@@ -62,11 +62,11 @@ export function RegisterForm() {
       <form
         onSubmit={form.handleSubmit((values) => {
           startTransition(async () => {
-            // const results = await fetch("/api/scraper", {
-            //   method: "POST",
-            //   body: JSON.stringify({ CFCId: values.CFCId }),
-            // }).then((res) => res.json())
-            // console.log(results)
+            const results = await fetch("/api/scraper", {
+              method: "POST",
+              body: JSON.stringify({ CFCId: values.CFCId }),
+            }).then((res) => res.json())
+            console.log(results)
             const playerInfo = await createPlayerAction(values)
 
             if (playerInfo.status === "Error") {
