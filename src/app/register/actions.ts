@@ -1,7 +1,7 @@
 "use server"
 
 import { createPlayer } from "@/db/insert"
-import puppeteer from "puppeteer"
+import chromium from "chrome-aws-lambda"
 import {
   type FormSchemaKey,
   type FormSchemaType,
@@ -24,10 +24,15 @@ export async function createPlayerAction(
     }
   }
 
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
+  const browser = await chromium.puppeteer.launch({
+    args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: true,
+  })
 
   try {
+    const page = await browser.newPage()
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
 
