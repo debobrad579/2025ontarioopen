@@ -24,14 +24,17 @@ export async function createPlayerAction(
     }
   }
 
-  const browser = await chromium.puppeteer.launch({
-    args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: true,
-  })
+  let browser = null
 
   try {
+    browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    })
+
     const page = await browser.newPage()
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
@@ -129,6 +132,6 @@ export async function createPlayerAction(
       message: "An internal server error occured",
     }
   } finally {
-    await browser.close()
+    if (browser !== null) await browser.close()
   }
 }
