@@ -1,6 +1,6 @@
 "use server"
 
-import chromium from "@sparticuz/chromium"
+import chromium from "@sparticuz/chromium-min"
 import puppeteer from "puppeteer-core"
 import { createPlayer } from "@/db/insert"
 import {
@@ -45,7 +45,10 @@ export async function createPlayerAction(
           ],
       defaultViewport: chromium.defaultViewport,
       executablePath:
-        process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
+        process.env.CHROME_EXECUTABLE_PATH ||
+        (await chromium.executablePath(
+          "https://drive.google.com/file/d/1On7iO-1VyXaM4P9j0GHXDeAO04wDUN9e"
+        )),
       headless: chromium.headless,
     })
     const page = await browser.newPage()
@@ -144,7 +147,7 @@ export async function createPlayerAction(
     return {
       status: "Error",
       field: "CFCId",
-      message: error.message,
+      message: "Unknown error occured",
     }
   } finally {
     if (browser !== null) await browser.close()

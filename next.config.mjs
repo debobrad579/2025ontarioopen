@@ -5,9 +5,6 @@ const nextConfig = {
       test: /\.svg$/,
       use: "@svgr/webpack",
     })
-    if (!isServer) {
-      config.externals.push("@sparticuz/chromium")
-    }
     return config
   },
 }
