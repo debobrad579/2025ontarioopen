@@ -34,6 +34,7 @@ export async function createPlayerAction(
   let browser = null
 
   try {
+    console.log("1")
     browser = await puppeteer.launch({
       args: isLocal
         ? puppeteer.defaultArgs()
@@ -48,14 +49,20 @@ export async function createPlayerAction(
         process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
       headless: chromium.headless,
     })
+    console.log("2")
     const page = await browser.newPage()
+    console.log("3")
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
+    console.log(4)
     await page.waitForSelector("span, .table-container")
+    console.log("5")
 
     const name = await page.evaluate(
       (element) => element?.textContent,
       await page.$("tbody td")
     )
+    console.log("6")
+    console.log(name)
 
     if (name == null) {
       return {
@@ -119,7 +126,7 @@ export async function createPlayerAction(
       return {
         status: "Error",
         field: "CFCId",
-        message: "An internal server error occured",
+        message: "Unknown error occured",
       }
     }
 
@@ -141,6 +148,5 @@ export async function createPlayerAction(
   } finally {
     if (browser !== null) await browser.close()
   }
-
-  return { status: "Success", name: "brady DeBoer", rating: 1614 }
+  return { status: "Error", field: "CFCId", message: "Unknown error occurred" }
 }
