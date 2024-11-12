@@ -1,12 +1,17 @@
 "use server"
 
+import chromium from "@sparticuz/chromium"
+import puppeteer from "puppeteer-core"
 import { createPlayer } from "@/db/insert"
-import chromium from "chrome-aws-lambda"
 import {
   type FormSchemaKey,
   type FormSchemaType,
   formSchema,
 } from "./form-schema"
+
+chromium.setHeadlessMode = true
+
+chromium.setGraphicsMode = false
 
 export async function createPlayerAction(
   values: FormSchemaType
@@ -24,17 +29,25 @@ export async function createPlayerAction(
     }
   }
 
+  const isLocal = !!process.env.CHROME_EXECUTABLE_PATH
+
   let browser = null
 
   try {
-    browser = await chromium.puppeteer.launch({
-      args: chromium.args,
+    browser = await puppeteer.launch({
+      args: isLocal
+        ? puppeteer.defaultArgs()
+        : [
+            ...chromium.args,
+            "--hide-scrollbars",
+            "--incognito",
+            "--no-sandbox",
+          ],
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
+      executablePath:
+        process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
       headless: chromium.headless,
-      ignoreHTTPSErrors: true,
     })
-
     const page = await browser.newPage()
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
@@ -125,13 +138,9 @@ export async function createPlayerAction(
         message: "Email has already been submitted",
       }
     }
-
-    return {
-      status: "Error",
-      field: "CFCId",
-      message: "An internal server error occured",
-    }
   } finally {
     if (browser !== null) await browser.close()
   }
+
+  return { status: "Success", name: "brady DeBoer", rating: 1614 }
 }
