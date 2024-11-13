@@ -48,7 +48,7 @@ export async function createPlayerAction(
       executablePath:
         process.env.CHROME_EXECUTABLE_PATH ||
         (await chromium.executablePath(
-          "https://2025ontarioopen.s3.us-east-2.amazonaws.com/chromium-v130.0.0-pack.tar"
+          "https://2025ontarioopen.s3.us-east-2.amazonaws.com/chromium-v126.0.0-pack.tar"
         )),
       headless: chromium.headless,
     })
