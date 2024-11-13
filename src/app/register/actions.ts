@@ -34,6 +34,7 @@ export async function createPlayerAction(
   let browser = null
 
   try {
+    console.log("before")
     browser = await puppeteer.launch({
       args: isLocal
         ? puppeteer.defaultArgs()
@@ -51,6 +52,7 @@ export async function createPlayerAction(
         )),
       headless: chromium.headless,
     })
+    console.log("after")
     const page = await browser.newPage()
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
