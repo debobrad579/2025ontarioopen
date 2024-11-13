@@ -47,7 +47,7 @@ export async function createPlayerAction(
       executablePath:
         process.env.CHROME_EXECUTABLE_PATH ||
         (await chromium.executablePath(
-          "https://drive.google.com/file/d/1On7iO-1VyXaM4P9j0GHXDeAO04wDUN9e"
+          "https://2025ontarioopen.s3.us-east-2.amazonaws.com/chromium-v130.0.0-pack.tar"
         )),
       headless: chromium.headless,
     })
@@ -141,8 +141,6 @@ export async function createPlayerAction(
         message: "Email has already been submitted",
       }
     }
-
-    console.log(error.stack)
 
     return {
       status: "Error",

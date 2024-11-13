@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table"
 import { getAllPlayers } from "@/db/select"
 import { PaidButton } from "./paid-button"
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
 
 export const revalidate = 0
 
@@ -28,14 +29,16 @@ export default async function Admin() {
         </CardHeader>
         <Separator />
         <CardContent className="p-0">
-          <ScrollArea className="h-96 overflow-y-auto p-4">
+          <ScrollArea className="h-96 overflow-auto p-4">
             <Table className={geistMono.className}>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-0"></TableHead>
                   <TableHead className="w-48">Name</TableHead>
-                  <TableHead className="w-48">Email</TableHead>
                   <TableHead>CFC Id</TableHead>
+                  <TableHead className="w-48">Email</TableHead>
+                  <TableHead>Age</TableHead>
+                  <TableHead>Female</TableHead>
                   <TableHead className="text-right">Rating</TableHead>
                 </TableRow>
               </TableHeader>
@@ -48,7 +51,6 @@ export default async function Admin() {
                     <TableCell>
                       {player.lastName}, {player.firstName}
                     </TableCell>
-                    <TableCell>{player.email}</TableCell>
                     <TableCell>
                       <a
                         href={`https://www.chess.ca/en/ratings/p/?id=${player.CFCId}`}
@@ -57,6 +59,17 @@ export default async function Admin() {
                       >
                         {player.CFCId}
                       </a>
+                    </TableCell>
+                    <TableCell>{player.email}</TableCell>
+                    <TableCell>
+                      {player.ageRange == "u18"
+                        ? "Under 18"
+                        : player.ageRange == "18to64"
+                        ? "18 - 64"
+                        : "65+"}
+                    </TableCell>
+                    <TableCell>
+                      {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
                     </TableCell>
                     <TableCell className="text-right">
                       {player.rating === 0 ? "Unrated" : player.rating}
