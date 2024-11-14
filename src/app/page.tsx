@@ -80,7 +80,7 @@ export default function Home() {
           </div>
           <ul className="list-disc pl-4">
             <li>Born in 2005 or later</li>
-            <li>Born in 1960 or ealier</li>
+            <li>Born in 1960 or earlier</li>
             <li>Female</li>
             <li>FIDE Master</li>
           </ul>
