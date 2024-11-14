@@ -74,15 +74,17 @@ export default function Home() {
           </p>
           <h3 className="font-bold text-lg">Play Up Fee:</h3>
           <p>$20 (must be within 100 points of next section up)</p>
-          <h3 className="font-bold text-lg">$10 Discount For:</h3>
+          <div className="flex gap-1 items-center">
+            <h3 className="font-bold text-lg">$10 Discounts:</h3>
+            <p className="text-muted-foreground text-sm">(maximum $20)</p>
+          </div>
           <ul className="list-disc pl-4">
-            <li>Under 18 years of age</li>
-            <li>65 years and up</li>
+            <li>Born in 2005 or later</li>
+            <li>Born in 1960 or ealier</li>
             <li>Female</li>
+            <li>FIDE Master</li>
           </ul>
-        </div>
-        <div>
-          <h2 className="font-bold text-xl">Hotel Room Rates:</h2>
+          <h3 className="font-bold text-lg">Hotel Room Rates:</h3>
           <p>Tentatively $139 / double room</p>
         </div>
         <h2 className="text-center font-bold text-xl">Honored Players</h2>
