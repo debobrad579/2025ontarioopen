@@ -29,28 +29,18 @@ export async function createPlayerAction(
     }
   }
 
-  const isLocal = !!process.env.CHROME_EXECUTABLE_PATH
-
   let browser = null
 
   try {
     console.log("before")
     browser = await puppeteer.launch({
-      args: isLocal
-        ? puppeteer.defaultArgs()
-        : [
-            ...chromium.args,
-            "--hide-scrollbars",
-            "--incognito",
-            "--no-sandbox",
-          ],
+      args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath:
-        process.env.CHROME_EXECUTABLE_PATH ||
-        (await chromium.executablePath(
-          "https://2025ontarioopen.s3.us-east-2.amazonaws.com/chromium-v126.0.0-pack.tar"
-        )),
+      executablePath: await chromium.executablePath(
+        "https://github.com/Sparticuz/chromium/releases/download/v126.0.0/chromium-v126.0.0-pack.tar"
+      ),
       headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     })
     console.log("after")
     const page = await browser.newPage()
