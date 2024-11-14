@@ -39,6 +39,8 @@ export default async function Admin() {
                   <TableHead className="w-48">Email</TableHead>
                   <TableHead>Age</TableHead>
                   <TableHead>Female</TableHead>
+                  <TableHead>FM</TableHead>
+                  <TableHead>Play Up</TableHead>
                   <TableHead className="text-right">Rating</TableHead>
                 </TableRow>
               </TableHeader>
@@ -63,13 +65,19 @@ export default async function Admin() {
                     <TableCell>{player.email}</TableCell>
                     <TableCell>
                       {player.ageRange == "u18"
-                        ? "Under 18"
+                        ? "Junior"
                         : player.ageRange == "18to64"
-                        ? "18 - 64"
-                        : "65+"}
+                        ? "Adult"
+                        : "Senior"}
                     </TableCell>
                     <TableCell>
                       {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
+                    </TableCell>
+                    <TableCell>
+                      {player.isFIDEMaster ? <CheckIcon /> : <Cross2Icon />}
+                    </TableCell>
+                    <TableCell>
+                      {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
                     </TableCell>
                     <TableCell className="text-right">
                       {player.rating === 0 ? "Unrated" : player.rating}
