@@ -32,9 +32,13 @@ export async function createPlayerAction(
   let browser = null
 
   try {
-    console.log("before")
     browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [
+        ...chromium.args,
+        "--hide-scrollbars",
+        "--incognito",
+        "--no-sandbox",
+      ],
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(
         "https://github.com/Sparticuz/chromium/releases/download/v126.0.0/chromium-v126.0.0-pack.tar"
@@ -42,7 +46,6 @@ export async function createPlayerAction(
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     })
-    console.log("after")
     const page = await browser.newPage()
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
