@@ -9,6 +9,7 @@ export type Player = {
   ageRange: AgeRange
   email: string
   isFemale: boolean
+  isFIDEMaster: boolean
   isPlayingUp: boolean
   hasPaid?: boolean
   result1?: Result

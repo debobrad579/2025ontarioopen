@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/carousel"
 import { HonoredPlayerCard } from "@/components/page/honored-player-card"
 import ivanov from "@/assets/img/ivanov.jpg"
+import preotu from "@/assets/img/preotu.jpg"
 
 export default function Home() {
   return (
@@ -93,6 +94,20 @@ export default function Home() {
           <CarouselContent>
             <CarouselItem>
               <HonoredPlayerCard
+                name="Razvan Preotu"
+                title="Grandmaster"
+                image={preotu}
+                description="
+                Born in 1999 in Toronto, Canada, Preotu started playing chess young; his first organized tournament was at age seven
+                —the Grade 2 Chess'n Math Association event in Toronto. At ten, he started formal lessons and quickly progressed.
+                He earned the National Master title in 2013, became a FIDE Master later that year, and achieved the International Master title in 2014.
+                Preotu earned his Grandmaster title in 2016, becoming the second youngest Canadian-born GM. Some of his top achievements include
+                first place in the 2016 Canadian Zonal Championship, first at the 2016 World Open U2400 section, third at the 2018 US Masters Championship,
+                third at the 2019 Canadian Open, and top Canadian scorer at the 2022 Chess Olympiad."
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <HonoredPlayerCard
                 name="Mike Ivanov"
                 title="International Master (Elect)"
                 image={ivanov}
@@ -104,7 +119,6 @@ export default function Home() {
                   third at the 2021 Innsbruck International, second at the 2021 Bruges Open, first U2400 at the 2022 Foxwoods Open,
                   second at the 2023 Ostravskiy Konik International, first at the 2024 Olomouc International, and second at the 2024 San Christobal De La Laguna Open."
               />
-              <p></p>
             </CarouselItem>
           </CarouselContent>
         </AutoplayCarousel>

@@ -36,6 +36,7 @@ export function RegisterForm() {
       age: "18to64",
       isFemale: false,
       isPlayingUp: false,
+      isFIDEMaster: false,
     },
   })
   const [isPending, startTransition] = useTransition()
@@ -45,15 +46,20 @@ export function RegisterForm() {
   const [amount, setAmount] = useState(100)
 
   function calculateAmount(
+    isPlayingUp: boolean,
     age: "u18" | "18to64" | "65up",
     isFemale: boolean,
-    isPlayingUp: boolean
+    isFIDEMaster: boolean
   ) {
     setAmount(
       100 +
         Number(isPlayingUp) * 20 -
-        Number(isFemale) * 10 -
-        Number(age !== "18to64") * 10
+        Math.min(
+          Number(isFemale) * 10 +
+            Number(age !== "18to64") * 10 +
+            Number(isFIDEMaster) * 10,
+          20
+        )
     )
   }
 
@@ -62,11 +68,6 @@ export function RegisterForm() {
       <form
         onSubmit={form.handleSubmit((values) => {
           startTransition(async () => {
-            // const results = await fetch("/api/scraper", {
-            //   method: "POST",
-            //   body: JSON.stringify({ CFCId: values.CFCId }),
-            // }).then((res) => res.json())
-            // console.log(results)
             const playerInfo = await createPlayerAction(values)
 
             if (playerInfo.status === "Error") {
@@ -79,7 +80,12 @@ export function RegisterForm() {
             setIsDialogOpen(true)
             setName(playerInfo.name)
             setRating(playerInfo.rating)
-            calculateAmount(values.age, values.isFemale, values.isPlayingUp)
+            calculateAmount(
+              values.isPlayingUp,
+              values.age,
+              values.isFemale,
+              values.isFIDEMaster
+            )
           })
         })}
         className="space-y-4"
@@ -133,85 +139,6 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-0">
-          <p className="w-24 text-sm hidden md:block">Discounts:</p>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-10 md:items-center">
-            <FormField
-              control={form.control}
-              name="age"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center gap-4">
-                    <div className="flex gap-1 items-center">
-                      <FormLabel>Age</FormLabel>
-                      <FormDescription>(during tournament)</FormDescription>
-                    </div>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={(e) => {
-                          calculateAmount(
-                            e.valueOf() as "u18" | "18to64" | "65up",
-                            form.getValues().isFemale,
-                            form.getValues().isPlayingUp
-                          )
-                          field.onChange(e)
-                        }}
-                        defaultValue={field.value}
-                        className="flex flex-col min-[450px]:flex-row gap-4"
-                      >
-                        <FormItem className="flex items-center gap-2 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="u18" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Under 18
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center gap-2 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="18to64" />
-                          </FormControl>
-                          <FormLabel className="font-normal">18 – 64</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center gap-2 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="65up" />
-                          </FormControl>
-                          <FormLabel className="font-normal">65+</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isFemale"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center sm:gap-4">
-                    <FormLabel className="w-24 sm:w-auto">Female</FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={(e) => {
-                          calculateAmount(
-                            form.getValues().age,
-                            e.valueOf() as boolean,
-                            form.getValues().isPlayingUp
-                          )
-                          field.onChange(e)
-                        }}
-                      />
-                    </FormControl>
-                  </div>
-                  <FormMessage className="text-right" />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
         <FormField
           control={form.control}
           name="isPlayingUp"
@@ -224,9 +151,10 @@ export function RegisterForm() {
                     checked={field.value}
                     onCheckedChange={(e) => {
                       calculateAmount(
+                        e.valueOf() as boolean,
                         form.getValues().age,
                         form.getValues().isFemale,
-                        e.valueOf() as boolean
+                        form.getValues().isFIDEMaster
                       )
                       field.onChange(e)
                     }}
@@ -241,6 +169,117 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
+        <div className="flex gap-1 items-center justify-center">
+          <h2 className="font-bold text-xl">Discounts</h2>
+          <p className="text-muted-foreground text-sm">(maximum $20)</p>
+        </div>
+        <div className="flex space-x-10 flex-wrap justify-center">
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex gap-1 items-center">
+                    <FormLabel>Birth Year</FormLabel>
+                  </div>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={(e) => {
+                        calculateAmount(
+                          form.getValues().isPlayingUp,
+                          e.valueOf() as "u18" | "18to64" | "65up",
+                          form.getValues().isFemale,
+                          form.getValues().isFIDEMaster
+                        )
+                        field.onChange(e)
+                      }}
+                      defaultValue={field.value}
+                      className="flex flex-col min-[450px]:flex-row gap-4"
+                    >
+                      <FormItem className="flex items-center gap-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="65up" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          1960 Or Earlier
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="18to64" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          1961 – 2004
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="u18" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          2005 Or Later
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isFemale"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center sm:gap-4">
+                  <FormLabel className="w-24 sm:w-auto">Female</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(e) => {
+                        calculateAmount(
+                          form.getValues().isPlayingUp,
+                          form.getValues().age,
+                          e.valueOf() as boolean,
+                          form.getValues().isFIDEMaster
+                        )
+                        field.onChange(e)
+                      }}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage className="text-right" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isFIDEMaster"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center sm:gap-4">
+                  <FormLabel className="w-24 sm:w-auto">FIDE Master</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(e) => {
+                        calculateAmount(
+                          form.getValues().isPlayingUp,
+                          form.getValues().age,
+                          form.getValues().isFemale,
+                          e.valueOf() as boolean
+                        )
+                        field.onChange(e)
+                      }}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage className="text-right" />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button
           type="submit"
           className="w-full flex gap-2 items-center"

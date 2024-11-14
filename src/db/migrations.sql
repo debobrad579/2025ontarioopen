@@ -9,6 +9,7 @@ CREATE TABLE "OntarioOpenPlayer" (
     "email" VARCHAR(255) UNIQUE NOT NULL,
     "ageRange" AGERANGE NOT NULL,
     "isFemale" BOOLEAN NOT NULL,
+    "isFIDEMaster" BOOLEAN NOT NULL,
     "isPlayingUp" BOOLEAN NOT NULL,
     "hasPaid" BOOLEAN DEFAULT FALSE,
     "result1" RESULT DEFAULT 'NOT_PLAYED',

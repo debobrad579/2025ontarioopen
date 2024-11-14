@@ -109,6 +109,7 @@ export async function createPlayerAction(
       ageRange: values.age,
       isFemale: values.isFemale,
       isPlayingUp: values.isPlayingUp,
+      isFIDEMaster: values.isFIDEMaster,
     })
 
     return { status: "Success", name: `${firstName} ${lastName}`, rating }
