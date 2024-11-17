@@ -6,7 +6,8 @@ export async function updateHasPaid(CFCId: number, hasPaid: boolean) {
     await sql<Player>`
       UPDATE "OntarioOpenPlayer"
       SET "hasPaid" = ${hasPaid}
-      WHERE "CFCId" = ${CFCId};
+      WHERE "CFCId" = ${CFCId}
+      RETURNING *;
     `
   ).rows[0]
 }

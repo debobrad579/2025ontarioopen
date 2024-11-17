@@ -3,43 +3,70 @@
 import { Button } from "@/components/ui/button"
 import { Player } from "@/db/types"
 import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons"
-import { updateHasPaidAction } from "./actions"
-import { useState, useTransition } from "react"
+import { deleteAction, updateHasPaidAction } from "./actions"
+import { useEffect, useState, useTransition } from "react"
 import { cn } from "@/lib/utils"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 
 export function PaidButton({ player }: { player: Player }) {
-  const [isPending, startTransition] = useTransition()
   const [hasPaid, setHasPaid] = useState(player.hasPaid)
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    setHasPaid(player.hasPaid)
+  }, [player])
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      asChild
-      onClick={() => {
-        if (isPending) return
+    <ContextMenu>
+      <ContextMenuTrigger disabled={hasPaid}>
+        <Button
+          variant="ghost"
+          size="icon"
+          asChild
+          onClick={() => {
+            if (isPending) return
 
-        startTransition(async () => {
-          await updateHasPaidAction(player.CFCId, !hasPaid)
-          setHasPaid((prevHasPaid) => !prevHasPaid)
-        })
-      }}
-    >
-      {hasPaid ? (
-        <CheckCircledIcon
-          className={cn(
-            "h-[1.2rem] w-[1.2rem] text-green-500",
-            isPending && "opacity-75 hover:text-green-500"
+            startTransition(async () => {
+              const newPlayer = await updateHasPaidAction(
+                player.CFCId,
+                !hasPaid
+              )
+              setHasPaid(newPlayer.hasPaid)
+            })
+          }}
+        >
+          {hasPaid ? (
+            <CheckCircledIcon
+              className={cn(
+                "h-[1.2rem] w-[1.2rem] text-green-500",
+                isPending && "opacity-75 hover:text-green-500"
+              )}
+            />
+          ) : (
+            <CrossCircledIcon
+              className={cn(
+                "h-[1.2rem] w-[1.2rem] text-red-500",
+                isPending && "opacity-75 hover:text-red-500"
+              )}
+            />
           )}
-        />
-      ) : (
-        <CrossCircledIcon
-          className={cn(
-            "h-[1.2rem] w-[1.2rem] text-red-500",
-            isPending && "opacity-75 hover:text-red-500"
-          )}
-        />
-      )}
-    </Button>
+        </Button>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          onClick={async () => {
+            await deleteAction(player.CFCId)
+            setHasPaid(player.hasPaid)
+          }}
+        >
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }
