@@ -17,8 +17,8 @@ export default async function Players() {
       <h1 className="py-4 text-center font-bold text-4xl">Players</h1>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 grow basis-0 pb-4">
         <RegisteredTable section="2000 and Above" players={open} />
-        <RegisteredTable section="1600 – 1999" players={u2000} />
-        <RegisteredTable section="1200 – 1599" players={u1600} />
+        <RegisteredTable section="1600 &ndash; 1999" players={u2000} />
+        <RegisteredTable section="1200 &ndash; 1599" players={u1600} />
         <RegisteredTable section="U1200 and Unrated" players={u1200} />
       </div>
     </div>

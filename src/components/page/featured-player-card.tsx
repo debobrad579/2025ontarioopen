@@ -20,7 +20,7 @@ import {
 } from "../ui/dialog"
 import { ScrollArea } from "../ui/scroll-area"
 
-export function HonoredPlayerCard({
+export function FeaturedPlayerCard({
   name,
   title,
   image,

@@ -210,7 +210,7 @@ export function RegisterForm() {
                           <RadioGroupItem value="18to64" />
                         </FormControl>
                         <FormLabel className="font-normal">
-                          1961 – 2004
+                          1961 &ndash; 2004
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center gap-2 space-y-0">

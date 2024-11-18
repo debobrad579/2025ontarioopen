@@ -26,7 +26,7 @@ export default function Standings() {
           ]}
         />
         <StandingsTable
-          section="1600 – 1999"
+          section="1600 &ndash; 1999"
           players={[
             {
               name: "F. Jackson",
@@ -89,7 +89,7 @@ export default function Standings() {
           ]}
         />
         <StandingsTable
-          section="1200 – 1599"
+          section="1200 &ndash; 1599"
           players={[
             { name: "K. Walker", r1: 0, r2: 1, r3: 1, r4: 0.5, r5: 0, r6: 1 },
             {
