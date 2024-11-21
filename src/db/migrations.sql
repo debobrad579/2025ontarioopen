@@ -6,7 +6,7 @@ CREATE TABLE "OntarioOpenPlayer" (
     "rating" INT NOT NULL,
     "firstName" VARCHAR(255) NOT NULL,
     "lastName" VARCHAR(255) NOT NULL,
-    "email" VARCHAR(255) UNIQUE NOT NULL,
+    "email" VARCHAR(255) NOT NULL,
     "ageRange" AGERANGE NOT NULL,
     "isFemale" BOOLEAN NOT NULL,
     "isFIDEMaster" BOOLEAN NOT NULL,

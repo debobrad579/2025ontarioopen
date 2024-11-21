@@ -1,6 +1,15 @@
 import { sql } from "@vercel/postgres"
 import { Player } from "./types"
 
+export async function getPlayer(CFCId: number) {
+  return (
+    await sql<Player>`
+      SELECT * FROM "OntarioOpenPlayer"
+      WHERE "CFCId" = ${CFCId};
+    `
+  ).rows[0]
+}
+
 export async function getAllPlayers() {
   return (
     await sql<Player>`

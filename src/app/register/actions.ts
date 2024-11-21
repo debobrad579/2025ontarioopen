@@ -8,6 +8,7 @@ import {
   type FormSchemaType,
   formSchema,
 } from "./form-schema"
+import { getPlayer } from "@/db/select"
 
 chromium.setHeadlessMode = true
 
@@ -29,6 +30,16 @@ export async function createPlayerAction(
     }
   }
 
+  const player = await getPlayer(values.CFCId)
+
+  if (player != null) {
+    return {
+      status: "Error",
+      field: "CFCId",
+      message: "CFC id has already been submitted.",
+    }
+  }
+
   let browser = null
 
   try {
@@ -41,7 +52,7 @@ export async function createPlayerAction(
       ],
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(
-        "https://github.com/Sparticuz/chromium/releases/download/v126.0.0/chromium-v126.0.0-pack.tar"
+        process.env.S3_CHROMIUM_URL
       ),
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
@@ -113,31 +124,7 @@ export async function createPlayerAction(
     })
 
     return { status: "Success", name: `${firstName} ${lastName}`, rating }
-  } catch (error) {
-    if (!(error instanceof Error)) {
-      return {
-        status: "Error",
-        field: "CFCId",
-        message: "Unknown error occured",
-      }
-    }
-
-    if (error.message.includes("pkey")) {
-      return {
-        status: "Error",
-        field: "CFCId",
-        message: "CFC id has already been submitted",
-      }
-    }
-
-    if (error.message.includes("email_key")) {
-      return {
-        status: "Error",
-        field: "email",
-        message: "Email has already been submitted",
-      }
-    }
-
+  } catch {
     return {
       status: "Error",
       field: "CFCId",
