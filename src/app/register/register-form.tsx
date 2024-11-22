@@ -27,7 +27,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Player } from "@/db/types"
-import { formatFIDETitle } from "@/lib/formatters"
 
 export function RegisterForm() {
   const form = useForm<FormSchemaType>({
@@ -60,7 +59,6 @@ export function RegisterForm() {
             }
 
             setPlayer(playerInfo.player)
-            const amount = 100
             setAmount(
               (100 +
                 Number(playerInfo.player.isPlayingUp) * 20 -
