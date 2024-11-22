@@ -26,15 +26,19 @@ export async function getSectionPlayers(bottomBound: number, topBound: number) {
       WHERE "hasPaid" = TRUE
         AND (
           (
-            "rating" BETWEEN ${bottomBound} AND ${topBound}
+            GREATEST("rating", "FIDERating") BETWEEN ${bottomBound} AND ${topBound}
             AND NOT (
-              "rating" BETWEEN ${topBound - 99} AND ${topBound}
+              GREATEST("rating", "FIDERating") BETWEEN ${
+                topBound - 99
+              } AND ${topBound}
               AND "isPlayingUp" = TRUE
             )
           )
           OR (
-            "rating" BETWEEN ${bottomBound - 100}
-            AND ${bottomBound} AND "isPlayingUp" = TRUE
+            GREATEST("rating", "FIDERating") BETWEEN ${
+              bottomBound - 100
+            } AND ${bottomBound}
+            AND "isPlayingUp" = TRUE
           )
         )
       ORDER BY "rating" DESC, "lastName" DESC;

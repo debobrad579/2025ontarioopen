@@ -10,7 +10,6 @@ export const formSchema = z.object({
   isPlayingUp: z.boolean(),
   age: z.enum(["u18", "18to64", "65up"]),
   isFemale: z.boolean(),
-  isFIDEMaster: z.boolean(),
 })
 
 export type FormSchemaType = z.infer<typeof formSchema>

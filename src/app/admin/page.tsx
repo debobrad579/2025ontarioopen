@@ -13,6 +13,7 @@ import {
 import { getAllPlayers } from "@/db/select"
 import { PaidButton } from "./paid-button"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
+import { formatFIDETitle } from "@/lib/formatters"
 
 export const revalidate = 0
 
@@ -34,14 +35,15 @@ export default async function Admin() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-0"></TableHead>
-                  <TableHead className="w-48">Name</TableHead>
+                  <TableHead>Name</TableHead>
                   <TableHead>CFC Id</TableHead>
-                  <TableHead className="w-48">Email</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Age</TableHead>
                   <TableHead>Female</TableHead>
-                  <TableHead>FM</TableHead>
                   <TableHead>Play Up</TableHead>
-                  <TableHead className="text-right">Rating</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>FIDE</TableHead>
+                  <TableHead className="text-right">CFC</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -74,10 +76,15 @@ export default async function Admin() {
                       {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
                     </TableCell>
                     <TableCell>
-                      {player.isFIDEMaster ? <CheckIcon /> : <Cross2Icon />}
+                      {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
                     </TableCell>
                     <TableCell>
-                      {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
+                      {player.FIDETitle
+                        ? formatFIDETitle(player.FIDETitle)
+                        : "None"}
+                    </TableCell>
+                    <TableCell>
+                      {player.FIDERating ? player.FIDERating : ""}
                     </TableCell>
                     <TableCell className="text-right">
                       {player.rating === 0 ? "Unrated" : player.rating}

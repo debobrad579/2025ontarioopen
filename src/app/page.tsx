@@ -121,12 +121,12 @@ export default function Home() {
             <CarouselItem>
               <FeaturedPlayerCard
                 name="Mike Ivanov"
-                title="International Master (Elect)"
+                title="International Master"
                 image={ivanov}
                 description="
                   Born in 1995 in Yekaterinburg, Russia, Ivanov began playing chess at the age of four, taught by his grandfather. 
                   After moving to Toronto at eight, he started formal lessons and began competing in tournaments.
-                  He earned the National Master title in 2013, the FIDE Master title in 2016, and his final International Master norm in 2024.
+                  He earned the National Master title in 2013, the FIDE Master title in 2016, and the International Master title in 2024.
                   Some of his top achievements include getting first at the 2013 Ontario Chess Challenge, first U2200 at the 2015 Biel International,
                   third at the 2021 Innsbruck International, second at the 2021 Bruges Open, first U2400 at the 2022 Foxwoods Open,
                   second at the 2023 Ostravskiy Konik International, first at the 2024 Olomouc International, and second at the 2024 San Christobal De La Laguna Open."

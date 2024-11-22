@@ -11,6 +11,7 @@ import { geistMono } from "@/assets/fonts/fonts"
 import { Separator } from "../ui/separator"
 import { ScrollArea } from "../ui/scroll-area"
 import { Player } from "@/db/types"
+import { formatFIDETitle } from "@/lib/formatters"
 
 export function RegisteredTable({
   section,
@@ -30,9 +31,10 @@ export function RegisteredTable({
           <Table className={geistMono.className}>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-48">Name</TableHead>
+                <TableHead>Name</TableHead>
                 <TableHead>CFC Id</TableHead>
-                <TableHead className="text-right">Rating</TableHead>
+                <TableHead className="text-right">FIDE Rating</TableHead>
+                <TableHead className="text-right">CFC Rating</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -40,6 +42,9 @@ export function RegisteredTable({
                 <TableRow key={player.CFCId}>
                   <TableCell>
                     {player.lastName}, {player.firstName}
+                    {player.FIDETitle
+                      ? ` (${formatFIDETitle(player.FIDETitle)})`
+                      : ""}
                   </TableCell>
                   <TableCell>
                     <a
@@ -49,6 +54,9 @@ export function RegisteredTable({
                     >
                       {player.CFCId}
                     </a>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {player.FIDERating ? player.FIDERating : ""}
                   </TableCell>
                   <TableCell className="text-right">
                     {player.rating === 0 ? "Unrated" : player.rating}

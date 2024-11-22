@@ -26,6 +26,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Player } from "@/db/types"
+import { formatFIDETitle } from "@/lib/formatters"
 
 export function RegisterForm() {
   const form = useForm<FormSchemaType>({
@@ -36,32 +38,12 @@ export function RegisterForm() {
       age: "18to64",
       isFemale: false,
       isPlayingUp: false,
-      isFIDEMaster: false,
     },
   })
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [name, setName] = useState("")
-  const [rating, setRating] = useState(0)
+  const [player, setPlayer] = useState<Player | null>(null)
   const [amount, setAmount] = useState(100)
-
-  function calculateAmount(
-    isPlayingUp: boolean,
-    age: "u18" | "18to64" | "65up",
-    isFemale: boolean,
-    isFIDEMaster: boolean
-  ) {
-    setAmount(
-      100 +
-        Number(isPlayingUp) * 20 -
-        Math.min(
-          Number(isFemale) * 10 +
-            Number(age !== "18to64") * 10 +
-            Number(isFIDEMaster) * 10,
-          20
-        )
-    )
-  }
 
   return (
     <Form {...form}>
@@ -77,15 +59,28 @@ export function RegisterForm() {
               })
             }
 
-            setIsDialogOpen(true)
-            setName(playerInfo.name)
-            setRating(playerInfo.rating)
-            calculateAmount(
-              values.isPlayingUp,
-              values.age,
-              values.isFemale,
-              values.isFIDEMaster
+            setPlayer(playerInfo.player)
+            const amount = 100
+            setAmount(
+              (100 +
+                Number(playerInfo.player.isPlayingUp) * 20 -
+                Math.min(
+                  Number(playerInfo.player.isFemale) * 10 +
+                    Number(playerInfo.player.ageRange !== "18to64") * 10 +
+                    Number(
+                      playerInfo.player.FIDETitle != null &&
+                        playerInfo.player.FIDETitle.includes("FIDE Master")
+                    ) *
+                      10,
+                  20
+                )) /
+                (Number(
+                  playerInfo.player.FIDETitle != null &&
+                    playerInfo.player.FIDETitle.includes("International Master")
+                ) +
+                  1)
             )
+            setIsDialogOpen(true)
           })
         })}
         className="space-y-4"
@@ -149,15 +144,7 @@ export function RegisterForm() {
                 <FormControl>
                   <Checkbox
                     checked={field.value}
-                    onCheckedChange={(e) => {
-                      calculateAmount(
-                        e.valueOf() as boolean,
-                        form.getValues().age,
-                        form.getValues().isFemale,
-                        form.getValues().isFIDEMaster
-                      )
-                      field.onChange(e)
-                    }}
+                    onCheckedChange={field.onChange}
                   />
                 </FormControl>
               </div>
@@ -169,9 +156,11 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <div className="flex gap-1 items-center justify-center">
+        <div className="text-center">
           <h2 className="font-bold text-xl">Discounts</h2>
-          <p className="text-muted-foreground text-sm">(maximum $20)</p>
+          <p className="text-muted-foreground text-sm">
+            Have proof available for onsite verification.
+          </p>
         </div>
         <div className="flex space-x-10 flex-wrap justify-center">
           <FormField
@@ -185,15 +174,7 @@ export function RegisterForm() {
                   </div>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={(e) => {
-                        calculateAmount(
-                          form.getValues().isPlayingUp,
-                          e.valueOf() as "u18" | "18to64" | "65up",
-                          form.getValues().isFemale,
-                          form.getValues().isFIDEMaster
-                        )
-                        field.onChange(e)
-                      }}
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex flex-col min-[450px]:flex-row gap-4"
                     >
@@ -237,41 +218,7 @@ export function RegisterForm() {
                   <FormControl>
                     <Checkbox
                       checked={field.value}
-                      onCheckedChange={(e) => {
-                        calculateAmount(
-                          form.getValues().isPlayingUp,
-                          form.getValues().age,
-                          e.valueOf() as boolean,
-                          form.getValues().isFIDEMaster
-                        )
-                        field.onChange(e)
-                      }}
-                    />
-                  </FormControl>
-                </div>
-                <FormMessage className="text-right" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isFIDEMaster"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center sm:gap-4">
-                  <FormLabel className="w-24 sm:w-auto">FIDE Master</FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={(e) => {
-                        calculateAmount(
-                          form.getValues().isPlayingUp,
-                          form.getValues().age,
-                          form.getValues().isFemale,
-                          e.valueOf() as boolean
-                        )
-                        field.onChange(e)
-                      }}
+                      onCheckedChange={field.onChange}
                     />
                   </FormControl>
                 </div>
@@ -286,13 +233,15 @@ export function RegisterForm() {
           disabled={isPending}
         >
           {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-          <div>{isPending ? "Registering" : `Register ($${amount})`}</div>
+          <div>{isPending ? "Registering" : "Register"}</div>
         </Button>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="border-foreground">
             <DialogHeader>
-              <DialogTitle>{name}</DialogTitle>
-              <DialogDescription>{rating}</DialogDescription>
+              <DialogTitle>
+                {player?.firstName} {player?.lastName}
+              </DialogTitle>
+              <DialogDescription>{player?.rating}</DialogDescription>
             </DialogHeader>
             <p>
               Your registration will be confirmed upon receipt of your

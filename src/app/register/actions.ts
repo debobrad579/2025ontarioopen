@@ -9,6 +9,7 @@ import {
   formSchema,
 } from "./form-schema"
 import { getPlayer } from "@/db/select"
+import type { Player } from "@/db/types"
 
 chromium.setHeadlessMode = true
 
@@ -17,7 +18,7 @@ chromium.setGraphicsMode = false
 export async function createPlayerAction(
   values: FormSchemaType
 ): Promise<
-  | { status: "Success"; name: string; rating: number }
+  | { status: "Success"; player: Player }
   | { status: "Error"; field: FormSchemaKey; message: string }
 > {
   const validationResults = formSchema.safeParse(values)
@@ -61,10 +62,7 @@ export async function createPlayerAction(
     await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
     await page.waitForSelector("span, .table-container")
 
-    const name = await page.evaluate(
-      (element) => element?.textContent,
-      await page.$("tbody td")
-    )
+    const name = await page.$eval("tbody td", (el) => el?.textContent?.trim())
 
     if (name == null) {
       return {
@@ -74,9 +72,8 @@ export async function createPlayerAction(
       }
     }
 
-    const ratingString = await page.evaluate(
-      (element) => element?.textContent,
-      await page.$("tbody td:nth-child(5)")
+    const ratingString = await page.$eval("tbody td:nth-child(5)", (el) =>
+      el?.textContent?.trim()
     )
 
     if (ratingString == null) {
@@ -88,13 +85,63 @@ export async function createPlayerAction(
     }
 
     const [lastName, firstName] = name.split(", ")
-    const rating = parseInt(ratingString.replace("(", "").replace(")", ""))
+    const rating = parseInt(ratingString.replace(/\D/g, ""))
+
+    const FIDEId = await page.$eval("tbody td:nth-child(9)", (el) =>
+      el?.textContent?.trim()
+    )
+
+    let FIDERating = null
+    let FIDETitle = null
+
+    if (FIDEId) {
+      await page.setJavaScriptEnabled(false)
+      await page.goto(`https://ratings.fide.com/profile/${FIDEId}`, {
+        waitUntil: "load",
+      })
+
+      const FIDERatingString = await page.$eval(
+        ".profile-top-rating-data_gray",
+        (el) => el?.textContent?.replace(/\D/g, "").trim()
+      )
+
+      FIDERating =
+        FIDERatingString != null && FIDERatingString !== ""
+          ? parseInt(FIDERatingString)
+          : null
+
+      FIDETitle = await page.evaluate(() => {
+        const node = document.evaluate(
+          '//div[contains(text(), "FIDE title:")]/following-sibling::div',
+          document,
+          null,
+          XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null
+        ).singleNodeValue
+
+        if (!node) return null
+
+        return node && node.textContent?.trim() !== "None"
+          ? node.textContent?.trim()
+          : null
+      })
+    }
+
+    const maxRating = Math.max(rating, FIDERating || 0)
+
+    if (values.isPlayingUp && maxRating >= 2000) {
+      return {
+        status: "Error",
+        field: "isPlayingUp",
+        message: "You are already in the top section.",
+      }
+    }
 
     if (
       values.isPlayingUp &&
-      (rating < 1100 ||
-        (rating >= 1200 && rating < 1500) ||
-        (rating >= 1600 && rating < 1900))
+      (maxRating < 1100 ||
+        (maxRating >= 1200 && maxRating < 1500) ||
+        (maxRating >= 1600 && maxRating < 1900))
     ) {
       return {
         status: "Error",
@@ -103,32 +150,26 @@ export async function createPlayerAction(
       }
     }
 
-    if (values.isPlayingUp && rating >= 2000) {
-      return {
-        status: "Error",
-        field: "isPlayingUp",
-        message: "You are already in the top section.",
-      }
-    }
-
-    await createPlayer({
+    const player = await createPlayer({
       CFCId: values.CFCId,
-      rating: rating,
-      firstName: firstName,
-      lastName: lastName,
       email: values.email,
       ageRange: values.age,
       isFemale: values.isFemale,
       isPlayingUp: values.isPlayingUp,
-      isFIDEMaster: values.isFIDEMaster,
+      rating,
+      firstName,
+      lastName,
+      FIDERating,
+      FIDETitle,
     })
 
-    return { status: "Success", name: `${firstName} ${lastName}`, rating }
-  } catch {
+    return { status: "Success", player }
+  } catch (error) {
+    console.log(error)
     return {
       status: "Error",
       field: "CFCId",
-      message: "Unknown error occured",
+      message: "An unknown error occured.",
     }
   } finally {
     if (browser !== null) await browser.close()
