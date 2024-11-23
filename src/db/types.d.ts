@@ -10,8 +10,8 @@ export type Player = {
   email: string
   isFemale: boolean
   isPlayingUp: boolean
-  FIDERating?: number | null
-  FIDETitle?: string | null
+  FIDERating?: number
+  FIDETitle?: string
   hasPaid?: boolean
   result1?: Result
   result2?: Result

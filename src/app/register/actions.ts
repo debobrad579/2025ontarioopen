@@ -1,7 +1,5 @@
 "use server"
 
-import chromium from "@sparticuz/chromium-min"
-import puppeteer from "puppeteer-core"
 import { createPlayer } from "@/db/insert"
 import {
   type FormSchemaKey,
@@ -10,10 +8,7 @@ import {
 } from "./form-schema"
 import { getPlayer } from "@/db/select"
 import type { Player } from "@/db/types"
-
-chromium.setHeadlessMode = true
-
-chromium.setGraphicsMode = false
+import { JSDOM } from "jsdom"
 
 export async function createPlayerAction(
   values: FormSchemaType
@@ -31,9 +26,7 @@ export async function createPlayerAction(
     }
   }
 
-  const player = await getPlayer(values.CFCId)
-
-  if (player != null) {
+  if ((await getPlayer(values.CFCId)) != null) {
     return {
       status: "Error",
       field: "CFCId",
@@ -41,30 +34,24 @@ export async function createPlayerAction(
     }
   }
 
-  let browser = null
-
   try {
-    browser = await puppeteer.launch({
-      args: [
-        ...chromium.args,
-        "--hide-scrollbars",
-        "--incognito",
-        "--no-sandbox",
-      ],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(
-        process.env.S3_CHROMIUM_URL
-      ),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    })
-    const page = await browser.newPage()
-    await page.goto(`https://www.chess.ca/en/ratings/p/?id=${values.CFCId}`)
-    await page.waitForSelector("span, .table-container")
+    const res = await fetch(
+      `https://server.chess.ca/api/player/v1/${values.CFCId}`
+    )
 
-    const name = await page.$eval("tbody td", (el) => el?.textContent?.trim())
+    if (!res.ok) {
+      return {
+        status: "Error",
+        field: "CFCId",
+        message: "An unknown error occured.",
+      }
+    }
 
-    if (name == null) {
+    const data = await res.json()
+
+    const firstName: string | undefined = data.player.name_first
+
+    if (firstName == null) {
       return {
         status: "Error",
         field: "CFCId",
@@ -72,59 +59,56 @@ export async function createPlayerAction(
       }
     }
 
-    const ratingString = await page.$eval("tbody td:nth-child(5)", (el) =>
-      el?.textContent?.trim()
-    )
-
-    if (ratingString == null) {
-      return {
-        status: "Error",
-        field: "CFCId",
-        message: `CFC id "${values.CFCId}" not found.`,
-      }
-    }
-
-    const [lastName, firstName] = name.split(", ")
-    const rating = parseInt(ratingString.replace(/\D/g, ""))
-
-    const FIDEId = await page.$eval("tbody td:nth-child(9)", (el) =>
-      el?.textContent?.trim()
-    )
-
-    let FIDERating = null
-    let FIDETitle = null
+    const lastName: string = data.player.name_last
+    const rating: number = data.player.regular_rating
+    const FIDEId: number = data.player.fide_id
+    let FIDERating: number | undefined = undefined
+    let FIDETitle: string | undefined = undefined
 
     if (FIDEId) {
-      await page.setJavaScriptEnabled(false)
-      await page.goto(`https://ratings.fide.com/profile/${FIDEId}`, {
-        waitUntil: "load",
+      const res = await fetch(`https://ratings.fide.com/profile/${FIDEId}`, {
+        method: "GET",
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
       })
 
-      const FIDERatingString = await page.$eval(
-        ".profile-top-rating-data_gray",
-        (el) => el?.textContent?.replace(/\D/g, "").trim()
-      )
+      if (!res.ok) {
+        return {
+          status: "Error",
+          field: "CFCId",
+          message: "An unknown error occured.",
+        }
+      }
+
+      const html = await res.text()
+      const dom = new JSDOM(html)
+      const doc = dom.window.document
+
+      const FIDERatingString = doc
+        .querySelector(".profile-top-rating-data_gray")
+        ?.textContent?.replace(/\D/g, "")
+        .trim()
 
       FIDERating =
         FIDERatingString != null && FIDERatingString !== ""
           ? parseInt(FIDERatingString)
-          : null
+          : undefined
 
-      FIDETitle = await page.evaluate(() => {
-        const node = document.evaluate(
-          '//div[contains(text(), "FIDE title:")]/following-sibling::div',
-          document,
-          null,
-          XPathResult.FIRST_ORDERED_NODE_TYPE,
-          null
-        ).singleNodeValue
+      const node = doc.evaluate(
+        '//div[contains(text(), "FIDE title:")]/following-sibling::div',
+        doc,
+        null,
+        dom.window.XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue
 
-        if (!node) return null
-
-        return node && node.textContent?.trim() !== "None"
+      FIDETitle =
+        node && node.textContent?.trim() !== "None"
           ? node.textContent?.trim()
-          : null
-      })
+          : undefined
     }
 
     const maxRating = Math.max(rating, FIDERating || 0)
@@ -163,15 +147,15 @@ export async function createPlayerAction(
       FIDETitle,
     })
 
-    return { status: "Success", player }
-  } catch (error) {
-    console.log(error)
+    return {
+      status: "Success",
+      player,
+    }
+  } catch {
     return {
       status: "Error",
       field: "CFCId",
       message: "An unknown error occured.",
     }
-  } finally {
-    if (browser !== null) await browser.close()
   }
 }
