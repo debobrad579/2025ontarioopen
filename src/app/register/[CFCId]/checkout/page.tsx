@@ -21,7 +21,7 @@ export default async function Checkout({
   if (player.hasPaid)
     return (
       <h1 className="text-lg text-center py-4">
-        CFC id <b>"{player.CFCId}"</b> is already registered.
+        CFC id <b>&ldquo;{player.CFCId}&rdquo;</b> is already registered.
       </h1>
     )
 

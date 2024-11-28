@@ -262,9 +262,9 @@ export function RegisterForm() {
                 <>
                   {exists && (
                     <p>
-                      CFC id <b>"{player.CFCId}"</b> has already been submitted,
-                      but we have not received payment. If the above info is
-                      incorrect, please contact us at{" "}
+                      CFC id <b>&ldquo;{player.CFCId}&rdquo;</b> has already
+                      been submitted, but we have not received payment. If the
+                      above info is incorrect, please contact us at{" "}
                       <a
                         href="mailto:2025ontarioopen@gmail.com"
                         className="text-blue-500 hover:underline"
