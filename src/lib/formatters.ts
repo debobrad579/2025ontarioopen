@@ -5,3 +5,13 @@ export function formatFIDETitle(title: string) {
     .match(/[A-Z]/g)
   return matches != null ? matches.join("") : title
 }
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "CAD",
+  style: "currency",
+  minimumFractionDigits: 0,
+})
+
+export function formatCurrency(amount: number) {
+  return CURRENCY_FORMATTER.format(amount)
+}

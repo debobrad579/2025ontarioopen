@@ -13,7 +13,7 @@ import { JSDOM } from "jsdom"
 export async function createPlayerAction(
   values: FormSchemaType
 ): Promise<
-  | { status: "Success"; player: Player }
+  | { status: "Success" | "Exists"; player: Player }
   | { status: "Error"; field: FormSchemaKey; message: string }
 > {
   const validationResults = formSchema.safeParse(values)
@@ -26,12 +26,19 @@ export async function createPlayerAction(
     }
   }
 
-  if ((await getPlayer(values.CFCId)) != null) {
-    return {
-      status: "Error",
-      field: "CFCId",
-      message: "CFC id has already been submitted.",
-    }
+  const existingPlayer = await getPlayer(values.CFCId)
+
+  if (existingPlayer != null) {
+    return existingPlayer.hasPaid
+      ? {
+          status: "Error",
+          field: "CFCId",
+          message: "Player already registered.",
+        }
+      : {
+          status: "Exists",
+          player: existingPlayer,
+        }
   }
 
   try {

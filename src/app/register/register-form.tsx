@@ -27,6 +27,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Player } from "@/db/types"
+import { getAmount } from "@/lib/utils"
+import { formatFIDETitle } from "@/lib/formatters"
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
+import Link from "next/link"
 
 export function RegisterForm() {
   const form = useForm<FormSchemaType>({
@@ -42,6 +46,7 @@ export function RegisterForm() {
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [player, setPlayer] = useState<Player | null>(null)
+  const [exists, setExists] = useState(false)
   const [amount, setAmount] = useState(100)
 
   return (
@@ -58,26 +63,14 @@ export function RegisterForm() {
               })
             }
 
+            if (playerInfo.status === "Exists") {
+              setExists(true)
+            } else {
+              setExists(false)
+            }
+
             setPlayer(playerInfo.player)
-            setAmount(
-              (100 +
-                Number(playerInfo.player.isPlayingUp) * 20 -
-                Math.min(
-                  Number(playerInfo.player.isFemale) * 10 +
-                    Number(playerInfo.player.ageRange !== "18to64") * 10 +
-                    Number(
-                      playerInfo.player.FIDETitle != null &&
-                        playerInfo.player.FIDETitle.includes("FIDE Master")
-                    ) *
-                      10,
-                  20
-                )) /
-                (Number(
-                  playerInfo.player.FIDETitle != null &&
-                    playerInfo.player.FIDETitle.includes("International Master")
-                ) +
-                  1)
-            )
+            setAmount(getAmount(playerInfo.player))
             setIsDialogOpen(true)
           })
         })}
@@ -233,27 +226,73 @@ export function RegisterForm() {
           {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
           <div>{isPending ? "Registering" : "Register"}</div>
         </Button>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="border-foreground">
-            <DialogHeader>
-              <DialogTitle>
-                {player?.firstName} {player?.lastName}
-              </DialogTitle>
-              <DialogDescription>{player?.rating}</DialogDescription>
-            </DialogHeader>
-            <p>
-              Your registration will be confirmed upon receipt of your
-              e-transfer of <b>${amount}</b> to{" "}
-              <a
-                href="mailto:2025ontarioopen@gmail.com"
-                className="text-blue-500 hover:underline"
-              >
-                2025ontarioopen@gmail.com
-              </a>
-              .
-            </p>
-          </DialogContent>
-        </Dialog>
+        {player != null && (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="bg-card">
+              <DialogHeader>
+                <DialogTitle>
+                  {player.firstName} {player.lastName}
+                  {player.FIDETitle != null &&
+                    ` (${formatFIDETitle(player.FIDETitle)})`}{" "}
+                  - {player.email}
+                </DialogTitle>
+                <DialogDescription className="flex gap-3 flex-wrap">
+                  <div className="flex gap-1 items-center">
+                    <div>Playing Up:</div>
+                    {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
+                  </div>
+                  <div>
+                    Birth Year:{" "}
+                    {player.ageRange === "65up"
+                      ? "1960 Or Earlier"
+                      : player.ageRange === "u18"
+                      ? "2005 Or Later"
+                      : "1961 – 2005"}
+                  </div>
+                  <div className="flex gap-1 items-center">
+                    <div>Female:</div>
+                    {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              {player.FIDETitle != null &&
+              player.FIDETitle.includes("Grandmaster") ? (
+                <p>You will be registered once we confirm your submission.</p>
+              ) : (
+                <>
+                  {exists && (
+                    <p>
+                      CFC id <b>"{player.CFCId}"</b> has already been submitted,
+                      but we have not received payment. If the above info is
+                      incorrect, please contact us at{" "}
+                      <a
+                        href="mailto:2025ontarioopen@gmail.com"
+                        className="text-blue-500 hover:underline"
+                      >
+                        2025ontarioopen@gmail.com
+                      </a>
+                      .
+                    </p>
+                  )}
+                  <Button className="w-full" asChild>
+                    <Link href={`/register/${player.CFCId}/checkout`}>
+                      Proceed to Checkout (${amount})
+                    </Link>
+                  </Button>
+                  <p className="text-center text-sm text-muted-foreground">
+                    Or etransfer <b>${amount}</b> to{" "}
+                    <a
+                      href="mailto:2025ontarioopen@gmail.com"
+                      className="text-blue-500 hover:underline"
+                    >
+                      2025ontarioopen@gmail.com
+                    </a>
+                  </p>
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
+        )}
       </form>
     </Form>
   )
