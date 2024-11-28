@@ -45,13 +45,13 @@ export default async function StripeSuccess({
         Registration - {player.firstName} {player.lastName}
         {player.FIDETitle != null && ` (${formatFIDETitle(player.FIDETitle)})`}
       </div>
-      <div className="text-muted-foreground flex gap-3">
-        <div>Email: {player.email}</div>
-        <div className="flex gap-1 items-center">
+      <div className="text-muted-foreground flex flex-wrap gap-1">
+        <div className="pr-3">Email: {player.email}</div>
+        <div className="flex gap-1 items-center pr-3">
           <div>Playing Up:</div>
           {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
         </div>
-        <div>
+        <div className="pr-3">
           Birth Year:{" "}
           {player.ageRange === "65up"
             ? "1960 Or Earlier"
@@ -59,7 +59,7 @@ export default async function StripeSuccess({
             ? "2005 Or Later"
             : "1961 – 2005"}
         </div>
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center pr-3">
           <div>Female:</div>
           {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
         </div>

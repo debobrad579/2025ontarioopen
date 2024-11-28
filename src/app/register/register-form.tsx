@@ -236,7 +236,7 @@ export function RegisterForm() {
                     ` (${formatFIDETitle(player.FIDETitle)})`}{" "}
                   - {player.email}
                 </DialogTitle>
-                <DialogDescription className="flex gap-3 flex-wrap">
+                <DialogDescription className="flex gap-3 flex-wrap justify-center sm:justify-start">
                   <div className="flex gap-1 items-center">
                     <div>Playing Up:</div>
                     {player.isPlayingUp ? <CheckIcon /> : <Cross2Icon />}
