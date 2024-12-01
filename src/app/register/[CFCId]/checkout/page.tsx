@@ -28,6 +28,7 @@ export default async function Checkout({
   const paymentIntent = await stripe.paymentIntents.create({
     amount: getAmount(player) * 100,
     currency: "CAD",
+    receipt_email: player.email,
     metadata: { CFCId: player.CFCId },
   })
 
