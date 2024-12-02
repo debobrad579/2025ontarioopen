@@ -17,14 +17,16 @@ export function getAmount(player: Player) {
           Number(
             player.FIDETitle != null &&
               player.FIDETitle.includes("FIDE Master") &&
-              !player.FIDETitle.includes("Woman FIDE Master")
+              !player.FIDETitle.includes("Woman FIDE") &&
+              !player.FIDETitle.includes("Arena")
           ) *
             10.0,
         20.0
       )) /
     (Number(
       player.FIDETitle != null &&
-        formatFIDETitle(player.FIDETitle).includes("IM")
+        formatFIDETitle(player.FIDETitle).includes("IM") &&
+        !player.FIDETitle.includes("Arena")
     ) +
       1)
   )
