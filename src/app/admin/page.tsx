@@ -114,7 +114,7 @@ export default async function Admin() {
             <Table className={geistMono.className}>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Amount Pdai</TableHead>
+                  <TableHead>Amount Paid</TableHead>
                   <TableHead>Net Amount</TableHead>
                   <TableHead>Currency</TableHead>
                   <TableHead>Email</TableHead>
