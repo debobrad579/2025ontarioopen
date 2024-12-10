@@ -21,9 +21,10 @@ export const revalidate = 0
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export default async function Admin() {
-  const [players, charges] = await Promise.all([
+  const [players, charges, payouts] = await Promise.all([
     getAllPlayers(),
     stripe.charges.list(),
+    stripe.payouts.list(),
   ])
 
   return (
@@ -102,54 +103,88 @@ export default async function Admin() {
           </ScrollArea>
         </CardContent>
       </Card>
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="font-bold text-2xl text-center">
-            Stripe Transactions
-          </CardTitle>
-        </CardHeader>
-        <Separator />
-        <CardContent className="p-0">
-          <ScrollArea className="h-96 overflow-auto p-4">
-            <Table className={geistMono.className}>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Amount Paid</TableHead>
-                  <TableHead>Net Amount</TableHead>
-                  <TableHead>Currency</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead className="text-right">CFC Id</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {charges.data
-                  .filter((charge) => charge.paid && charge.captured)
-                  .map((charge) => (
-                    <TableRow key={charge.id}>
-                      <TableCell>${(charge.amount / 100).toFixed(2)}</TableCell>
-                      <TableCell>
-                        <NetAmount
-                          balance_transaction={charge.balance_transaction}
-                        />
-                      </TableCell>
-                      <TableCell>{charge.currency.toUpperCase()}</TableCell>
-                      <TableCell>{charge.billing_details.email}</TableCell>
-                      <TableCell className="text-right">
-                        <a
-                          href={`https://www.chess.ca/en/ratings/p/?id=${charge.metadata.CFCId}`}
-                          target="_blank"
-                          className="hover:underline text-blue-500"
-                        >
-                          {charge.metadata.CFCId}
-                        </a>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col lg:flex-row gap-4">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="font-bold text-2xl text-center">
+              Stripe Transactions
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="p-0">
+            <ScrollArea className="h-96 overflow-auto p-4">
+              <Table className={geistMono.className}>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Amount Paid</TableHead>
+                    <TableHead>Net Amount</TableHead>
+                    <TableHead>Currency</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead className="text-right">CFC Id</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {charges.data
+                    .filter((charge) => charge.paid && charge.captured)
+                    .map((charge) => (
+                      <TableRow key={charge.id}>
+                        <TableCell>
+                          ${(charge.amount / 100).toFixed(2)}
+                        </TableCell>
+                        <TableCell>
+                          <NetAmount
+                            balance_transaction={charge.balance_transaction}
+                          />
+                        </TableCell>
+                        <TableCell>{charge.currency.toUpperCase()}</TableCell>
+                        <TableCell>{charge.billing_details.email}</TableCell>
+                        <TableCell className="text-right">
+                          <a
+                            href={`https://www.chess.ca/en/ratings/p/?id=${charge.metadata.CFCId}`}
+                            target="_blank"
+                            className="hover:underline text-blue-500"
+                          >
+                            {charge.metadata.CFCId}
+                          </a>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+        <Card className="w-full lg:w-64">
+          <CardHeader>
+            <CardTitle className="font-bold text-2xl text-center">
+              Payouts
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="p-0">
+            <ScrollArea className="h-96 overflow-auto p-4">
+              <Table className={geistMono.className}>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-center">Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {payouts.data
+                    .filter((payout) => payout.status === "paid")
+                    .map((payout) => (
+                      <TableRow key={payout.id}>
+                        <TableCell className="text-center">
+                          ${(payout.amount / 100).toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
