@@ -114,8 +114,9 @@ export default async function Admin() {
             <Table className={geistMono.className}>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Amount Paid</TableHead>
+                  <TableHead>Amount Pdai</TableHead>
                   <TableHead>Net Amount</TableHead>
+                  <TableHead>Currency</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead className="text-right">CFC Id</TableHead>
                 </TableRow>
@@ -127,10 +128,11 @@ export default async function Admin() {
                     <TableRow key={charge.id}>
                       <TableCell>${(charge.amount / 100).toFixed(2)}</TableCell>
                       <TableCell>
-                        <Balance
+                        <NetAmount
                           balance_transaction={charge.balance_transaction}
                         />
                       </TableCell>
+                      <TableCell>{charge.currency.toUpperCase()}</TableCell>
                       <TableCell>{charge.billing_details.email}</TableCell>
                       <TableCell className="text-right">
                         <a
@@ -152,7 +154,7 @@ export default async function Admin() {
   )
 }
 
-async function Balance({
+async function NetAmount({
   balance_transaction,
 }: {
   balance_transaction: string | Stripe.BalanceTransaction | null
