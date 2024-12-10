@@ -150,7 +150,8 @@ export function RegisterForm() {
         <div className="text-center">
           <h2 className="font-bold text-xl">Discounts</h2>
           <p className="text-muted-foreground text-sm">
-            Have proof available for onsite verification.
+            Have proof available for onsite verification (FIDE title discounts
+            are automatically applied)
           </p>
         </div>
         <div className="flex space-x-10 flex-wrap justify-center">
