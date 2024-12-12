@@ -18,6 +18,7 @@ export default async function Checkout({
 
   const player = await getPlayer(number)
   if (!player) return notFound()
+  if (player.FIDETitle?.includes("Grandmaster")) return notFound()
   if (player.hasPaid)
     return (
       <h1 className="text-lg text-center py-4">

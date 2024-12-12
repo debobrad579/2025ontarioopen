@@ -13,7 +13,7 @@ import {
 import { getAllPlayers } from "@/db/select"
 import { PaidButton } from "./paid-button"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
-import { formatFIDETitle } from "@/lib/formatters"
+import { formatCurrency, formatFIDETitle } from "@/lib/formatters"
 import Stripe from "stripe"
 
 export const revalidate = 0
@@ -175,7 +175,7 @@ export default async function Admin() {
                     .map((payout) => (
                       <TableRow key={payout.id}>
                         <TableCell className="text-center">
-                          ${(payout.amount / 100).toFixed(2)}
+                          {formatCurrency(payout.amount / 100)}
                         </TableCell>
                       </TableRow>
                     ))}

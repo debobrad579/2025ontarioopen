@@ -31,7 +31,7 @@ export function RegisteredTable({
           <Table className={geistMono.className}>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
+                <TableHead className="w-2/4">Name</TableHead>
                 <TableHead>CFC Id</TableHead>
                 <TableHead className="text-right">FIDE Rating</TableHead>
                 <TableHead className="text-right">CFC Rating</TableHead>
