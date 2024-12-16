@@ -114,8 +114,8 @@ export default function Home() {
                 —the Grade 2 Chess'n Math Association event in Toronto. At ten, he started formal lessons and quickly progressed.
                 He earned the National Master title in 2013, became a FIDE Master later that year, and achieved the International Master title in 2014.
                 Preotu earned his Grandmaster title in 2016, becoming the second youngest Canadian-born GM. Some of his top achievements include
-                first place in the 2016 Canadian Zonal Championship, first at the 2016 World Open U2400 section, third at the 2018 US Masters Championship,
-                third at the 2019 Canadian Open, and top Canadian scorer at the 2022 Chess Olympiad."
+                getting first at the 2016 Calgary International, tying for first at the 2017 Canadian Open Master, getting first at the 2018 Quebec Open,
+                and being the top Canadian scorer at the 2022 and 2024 Chess Olympiad."
               />
             </CarouselItem>
             <CarouselItem>
