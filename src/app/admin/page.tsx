@@ -13,7 +13,12 @@ import {
 import { getAllPlayers } from "@/db/select"
 import { PaidButton } from "./paid-button"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
-import { formatCurrency, formatFIDETitle } from "@/lib/formatters"
+import {
+  formatCapitalized,
+  formatCurrency,
+  formatDate,
+  formatFIDETitle,
+} from "@/lib/formatters"
 import Stripe from "stripe"
 
 export const revalidate = 0
@@ -118,7 +123,7 @@ export default async function Admin() {
                   <TableRow>
                     <TableHead>Amount Paid</TableHead>
                     <TableHead>Net Amount</TableHead>
-                    <TableHead>Currency</TableHead>
+                    <TableHead>Payment Method</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead className="text-right">CFC Id</TableHead>
                   </TableRow>
@@ -129,14 +134,26 @@ export default async function Admin() {
                     .map((charge) => (
                       <TableRow key={charge.id}>
                         <TableCell>
-                          ${(charge.amount / 100).toFixed(2)}
+                          {formatCurrency(charge.amount / 100)}
                         </TableCell>
                         <TableCell>
                           <NetAmount
                             balance_transaction={charge.balance_transaction}
                           />
                         </TableCell>
-                        <TableCell>{charge.currency.toUpperCase()}</TableCell>
+                        <TableCell>
+                          {formatCapitalized(
+                            charge.payment_method_details?.type ?? ""
+                          )}
+                          {(charge.payment_method_details?.card?.country !=
+                            null ||
+                            charge.payment_method_details?.link?.country !=
+                              null) &&
+                            ` (${
+                              charge.payment_method_details.card?.country ??
+                              charge.payment_method_details.link?.country
+                            })`}
+                        </TableCell>
                         <TableCell>{charge.billing_details.email}</TableCell>
                         <TableCell className="text-right">
                           <a
@@ -154,7 +171,7 @@ export default async function Admin() {
             </ScrollArea>
           </CardContent>
         </Card>
-        <Card className="w-full lg:w-64">
+        <Card className="w-full lg:w-96">
           <CardHeader>
             <CardTitle className="font-bold text-2xl text-center">
               Payouts
@@ -166,6 +183,7 @@ export default async function Admin() {
               <Table className={geistMono.className}>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="text-center">Arrival Date</TableHead>
                     <TableHead className="text-center">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -174,6 +192,9 @@ export default async function Admin() {
                     .filter((payout) => payout.status === "paid")
                     .map((payout) => (
                       <TableRow key={payout.id}>
+                        <TableCell className="text-center">
+                          {formatDate(payout.arrival_date)}
+                        </TableCell>
                         <TableCell className="text-center">
                           {formatCurrency(payout.amount / 100)}
                         </TableCell>
@@ -197,12 +218,12 @@ async function NetAmount({
   if (balance_transaction == null) return
 
   if (typeof balance_transaction !== "string") {
-    return `$${(balance_transaction.net / 100).toFixed(2)}`
+    return `${formatCurrency(balance_transaction.net / 100)}`
   }
 
   const balanceTransaction = await stripe.balanceTransactions.retrieve(
     balance_transaction
   )
 
-  return `$${(balanceTransaction.net / 100).toFixed(2)}`
+  return `${formatCurrency(balanceTransaction.net / 100)}`
 }
