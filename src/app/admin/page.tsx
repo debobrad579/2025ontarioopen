@@ -1,5 +1,11 @@
 import { geistMono } from "@/assets/fonts/fonts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -20,6 +26,7 @@ import {
   formatFIDETitle,
 } from "@/lib/formatters"
 import Stripe from "stripe"
+import { UpdateRatingsButton } from "./update-ratings-button"
 
 export const revalidate = 0
 
@@ -107,6 +114,10 @@ export default async function Admin() {
             </Table>
           </ScrollArea>
         </CardContent>
+        <Separator />
+        <CardFooter className="p-4">
+          <UpdateRatingsButton />
+        </CardFooter>
       </Card>
       <div className="flex flex-col lg:flex-row gap-4">
         <Card className="w-full">

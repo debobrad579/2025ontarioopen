@@ -1,8 +1,10 @@
 "use server"
 
 import { deletePlayer } from "@/db/delete"
-import { updateHasPaid } from "@/db/update"
+import { getAllPlayers } from "@/db/select"
+import { updateCFCRating, updateFIDERating, updateHasPaid } from "@/db/update"
 import { revalidatePath } from "next/cache"
+import { JSDOM } from "jsdom"
 
 export async function updateHasPaidAction(CFCId: number, hasPaid: boolean) {
   const player = await updateHasPaid(CFCId, hasPaid)
@@ -12,5 +14,9 @@ export async function updateHasPaidAction(CFCId: number, hasPaid: boolean) {
 
 export async function deleteAction(CFCId: number) {
   await deletePlayer(CFCId)
+  revalidatePath("/admin")
+}
+
+export async function revalidateAdminAction() {
   revalidatePath("/admin")
 }

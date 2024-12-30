@@ -14,3 +14,25 @@ export async function updateHasPaid(CFCId: number, hasPaid: boolean) {
   revalidatePath("/players")
   return player
 }
+
+export async function updateCFCRating(CFCId: number, rating: number) {
+  return (
+    await sql<Player>`
+      UPDATE "OntarioOpenPlayer"
+      SET "rating" = ${rating}
+      WHERE "CFCId" = ${CFCId}
+      RETURNING *;
+    `
+  ).rows[0]
+}
+
+export async function updateFIDERating(CFCId: number, rating: number | null) {
+  return (
+    await sql<Player>`
+      UPDATE "OntarioOpenPlayer"
+      SET "FIDERating" = ${rating}
+      WHERE "CFCId" = ${CFCId}
+      RETURNING *;
+    `
+  ).rows[0]
+}
