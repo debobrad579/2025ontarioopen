@@ -35,8 +35,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 export default async function Admin() {
   const [players, charges, payouts] = await Promise.all([
     getAllPlayers(),
-    stripe.charges.list(),
-    stripe.payouts.list(),
+    fetchAllCharges(),
+    fetchAllPayouts(),
   ])
 
   return (
@@ -140,17 +140,18 @@ export default async function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {charges.data
+                  {charges
                     .filter((charge) => charge.paid && charge.captured)
-                    .map((charge) => (
+                    .map(async (charge) => (
                       <TableRow key={charge.id}>
                         <TableCell>
                           {formatCurrency(charge.amount / 100)}
                         </TableCell>
                         <TableCell>
-                          <NetAmount
-                            balance_transaction={charge.balance_transaction}
-                          />
+                          {formatCurrency(
+                            (await fetchNetAmount(charge.balance_transaction)) /
+                              100
+                          )}
                         </TableCell>
                         <TableCell>
                           {formatCapitalized(
@@ -199,7 +200,7 @@ export default async function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {payouts.data
+                  {payouts
                     .filter((payout) => payout.status === "paid")
                     .map((payout) => (
                       <TableRow key={payout.id}>
@@ -221,20 +222,56 @@ export default async function Admin() {
   )
 }
 
-async function NetAmount({
-  balance_transaction,
-}: {
+async function fetchNetAmount(
   balance_transaction: string | Stripe.BalanceTransaction | null
-}) {
-  if (balance_transaction == null) return
+) {
+  if (balance_transaction == null) return 0
 
   if (typeof balance_transaction !== "string") {
-    return `${formatCurrency(balance_transaction.net / 100)}`
+    return balance_transaction.net
   }
 
   const balanceTransaction = await stripe.balanceTransactions.retrieve(
     balance_transaction
   )
 
-  return `${formatCurrency(balanceTransaction.net / 100)}`
+  return balanceTransaction.net
+}
+
+async function fetchAllCharges() {
+  const charges = []
+  let hasMore = true
+  let startingAfter
+
+  while (hasMore) {
+    const response: Stripe.ApiList<Stripe.Charge> = await stripe.charges.list({
+      limit: 100,
+      starting_after: startingAfter,
+    })
+    charges.push(...response.data)
+    hasMore = response.has_more
+    if (hasMore) {
+      startingAfter = response.data[response.data.length - 1].id
+    }
+  }
+
+  return charges
+}
+
+async function fetchAllPayouts(): Promise<Stripe.Payout[]> {
+  const payouts: Stripe.Payout[] = []
+  let hasMore = true
+  let startingAfter: string | undefined
+
+  while (hasMore) {
+    const response: Stripe.ApiList<Stripe.Payout> = await stripe.payouts.list({
+      limit: 100,
+      starting_after: startingAfter,
+    })
+    payouts.push(...response.data)
+    hasMore = response.has_more
+    startingAfter = response.data[response.data.length - 1]?.id
+  }
+
+  return payouts
 }
