@@ -4,7 +4,6 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
-import ivanov from "@/assets/img/ivanov.jpg"
 import preotu from "@/assets/img/preotu.jpg"
 
 export default function Home() {
