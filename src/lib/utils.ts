@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getAmount(player: Player) {
   return (
-    (100 +
+    (110 +
       Number(player.isPlayingUp) * 20.0 -
       Math.min(
         Number(player.isFemale) * 10.0 +
