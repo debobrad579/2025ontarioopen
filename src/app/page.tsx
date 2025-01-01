@@ -75,7 +75,7 @@ export default function Home() {
           <h2 className="font-bold text-xl">Fees:</h2>
           <p>GM / WGM: Free Entry</p>
           <p>IM / WIM: 50% discount of relevant fee at time of entry</p>
-          <p>Early: $100 before January 1, 2025</p>
+          <p className="line-through">Early: $100 before January 1, 2025</p>
           <p>Regular: $110 January 1 &ndash; April 20, 2025</p>
           <p>Late: $120 April 21 &ndash; May 15, 2025</p>
           <p>
@@ -116,20 +116,6 @@ export default function Home() {
                 Preotu earned his Grandmaster title in 2016, becoming the second youngest Canadian-born GM. Some of his top achievements include
                 getting first at the 2016 Calgary International, tying for first at the 2017 Canadian Open Master, getting first at the 2018 Quebec Open,
                 and being the top Canadian scorer at the 2022 and 2024 Chess Olympiad."
-              />
-            </CarouselItem>
-            <CarouselItem>
-              <FeaturedPlayerCard
-                name="Mike Ivanov"
-                title="International Master"
-                image={ivanov}
-                description="
-                  Born in 1995 in Yekaterinburg, Russia, Ivanov began playing chess at the age of four, taught by his grandfather. 
-                  After moving to Toronto at eight, he started formal lessons and began competing in tournaments.
-                  He earned the National Master title in 2013, the FIDE Master title in 2016, and the International Master title in 2024.
-                  Some of his top achievements include getting first at the 2013 Ontario Chess Challenge, first U2200 at the 2015 Biel International,
-                  third at the 2021 Innsbruck International, second at the 2021 Bruges Open, first U2400 at the 2022 Foxwoods Open,
-                  second at the 2023 Ostravskiy Konik International, first at the 2024 Olomouc International, and second at the 2024 San Christobal De La Laguna Open."
               />
             </CarouselItem>
           </CarouselContent>
