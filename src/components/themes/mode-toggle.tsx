@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
@@ -9,12 +8,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,16 +26,41 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        <ThemeOptions />
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+export function ModeToggleMobile() {
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 dark:scale-0" />
+        <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] scale-0 dark:scale-100" />
+        <span className="sr-only">Toggle theme</span>
+      </DropdownMenuSubTrigger>
+      <DropdownMenuPortal>
+        <DropdownMenuSubContent>
+          <ThemeOptions />
+        </DropdownMenuSubContent>
+      </DropdownMenuPortal>
+    </DropdownMenuSub>
+  )
+}
+
+function ThemeOptions() {
+  const { setTheme } = useTheme()
+
+  return (
+    <>
+      <DropdownMenuItem onClick={() => setTheme("light")}>
+        Light
+      </DropdownMenuItem>
+      <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+      <DropdownMenuItem onClick={() => setTheme("system")}>
+        System
+      </DropdownMenuItem>
+    </>
   )
 }

@@ -183,7 +183,7 @@ export default async function Admin() {
             </ScrollArea>
           </CardContent>
         </Card>
-        <Card className="w-full lg:w-96">
+        <Card className="w-full lg:w-96 shrink-0">
           <CardHeader>
             <CardTitle className="font-bold text-2xl text-center">
               Payouts

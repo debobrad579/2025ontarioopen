@@ -64,9 +64,9 @@ export function FeaturedPlayerCard({
             <Image
               src={image}
               alt="placeholder"
-              className="w-1/3 h-1/3 border rounded-xl"
+              className="w-1/4 h-1/4 border rounded-xl"
             />
-            <div ref={divRef} className="w-2/3 aspect-[3/1] overflow-hidden">
+            <div ref={divRef} className="w-3/4 aspect-[4/1] overflow-hidden">
               <p ref={paragraphRef} className="line-clamp-[unset] text-left">
                 {description}
               </p>

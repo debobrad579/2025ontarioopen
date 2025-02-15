@@ -27,7 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Player } from "@/db/types"
-import { getAmount } from "@/lib/utils"
+import { getAmount, getsFreeEntry } from "@/lib/utils"
 import { formatFIDETitle } from "@/lib/formatters"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
 import Link from "next/link"
@@ -232,10 +232,9 @@ export function RegisterForm() {
             <DialogContent className="bg-card">
               <DialogHeader>
                 <DialogTitle>
-                  {player.firstName} {player.lastName}
                   {player.FIDETitle != null &&
-                    ` (${formatFIDETitle(player.FIDETitle)})`}{" "}
-                  - {player.email}
+                    `${formatFIDETitle(player.FIDETitle)} `}
+                  {player.firstName} {player.lastName} - {player.email}
                 </DialogTitle>
                 <DialogDescription className="flex gap-3 flex-wrap justify-center sm:justify-start">
                   <div className="flex gap-1 items-center">
@@ -256,9 +255,18 @@ export function RegisterForm() {
                   </div>
                 </DialogDescription>
               </DialogHeader>
-              {player.FIDETitle != null &&
-              player.FIDETitle.includes("Grandmaster") ? (
-                <p>You will be registered once we confirm your submission.</p>
+              {getsFreeEntry(player) ? (
+                <p>
+                  You will be registered once we verify your registration;
+                  please contact us at{" "}
+                  <a
+                    href="mailto:2025ontarioopen@gmail.com"
+                    className="text-blue-500 hover:underline"
+                  >
+                    2025ontarioopen@gmail.com
+                  </a>
+                  .
+                </p>
               ) : (
                 <>
                   {exists && (

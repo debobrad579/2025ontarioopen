@@ -2,7 +2,7 @@ import { getPlayer } from "@/db/select"
 import { notFound } from "next/navigation"
 import Stripe from "stripe"
 import { CheckoutForm } from "./checkout-form"
-import { getAmount } from "@/lib/utils"
+import { getAmount, getsFreeEntry } from "@/lib/utils"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -18,7 +18,7 @@ export default async function Checkout({
 
   const player = await getPlayer(number)
   if (!player) return notFound()
-  if (player.FIDETitle?.includes("Grandmaster")) return notFound()
+  if (getsFreeEntry(player)) return notFound()
   if (player.hasPaid)
     return (
       <h1 className="text-lg text-center py-4">
