@@ -59,7 +59,9 @@ export function RegisteredTable({
                     {player.FIDERating ? player.FIDERating : ""}
                   </TableCell>
                   <TableCell className="text-right">
-                    {player.rating === 0 ? "Unrated" : player.rating}
+                    {!player.rating && !player.FIDERating
+                      ? "Unrated"
+                      : player.rating}
                   </TableCell>
                 </TableRow>
               ))}

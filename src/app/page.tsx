@@ -113,25 +113,6 @@ export default function Home() {
       </div>
       <div className="flex gap-4 flex-col lg:flex-row">
         <div className="flex-1 space-y-4">
-          <h2 className="text-center font-bold text-xl">
-            Sponsors & Donations
-          </h2>
-          <AutoplayCarousel
-            className="w-full"
-            opts={{ loop: true }}
-            autoplaySpeed={6000}
-          >
-            <CarouselContent>
-              <CarouselItem>
-                <SponsorCard
-                  Logo={GhentLogo}
-                  description="Thank you for the $5,000 donation!"
-                />
-              </CarouselItem>
-            </CarouselContent>
-          </AutoplayCarousel>
-        </div>
-        <div className="flex-1 space-y-4">
           <h2 className="text-center font-bold text-xl">Featured Players</h2>
           <AutoplayCarousel
             className="w-full"
@@ -151,6 +132,25 @@ export default function Home() {
                 Preotu earned his Grandmaster title in 2016, becoming the second youngest Canadian-born GM. Some of his top achievements include
                 getting first at the 2016 Calgary International, tying for first at the 2017 Canadian Open Master, getting first at the 2018 Quebec Open,
                 and being the top Canadian scorer at the 2022 and 2024 Chess Olympiad."
+                />
+              </CarouselItem>
+            </CarouselContent>
+          </AutoplayCarousel>
+        </div>
+        <div className="flex-1 space-y-4">
+          <h2 className="text-center font-bold text-xl">
+            Sponsors & Donations
+          </h2>
+          <AutoplayCarousel
+            className="w-full"
+            opts={{ loop: true }}
+            autoplaySpeed={6000}
+          >
+            <CarouselContent>
+              <CarouselItem>
+                <SponsorCard
+                  Logo={GhentLogo}
+                  description="Thank you for the $5,000 donation!"
                 />
               </CarouselItem>
             </CarouselContent>
