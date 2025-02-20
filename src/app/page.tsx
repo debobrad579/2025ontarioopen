@@ -63,10 +63,10 @@ export default function Home() {
               <li>1200 &ndash; 1599 (CFC rated only)</li>
               <li>U1200 and Unrated (CFC rated only)</li>
             </ul>
-            <p>
+            <b>
               Sections are based on the most current rating before the
               tournament (Higher of FIDE, CFC / USCF)
-            </p>
+            </b>
           </div>
           <div>
             <h2 className="font-bold text-xl">Projected Prize Fund:</h2>
@@ -78,17 +78,24 @@ export default function Home() {
             <p>1600 &ndash; 1999: 30%</p>
             <p>1200 &ndash; 1599: 20%</p>
             <p>U1200 and Unrated: 10%</p>
+            <h3 className="font-bold text-lg">
+              $1,500 Guaranteed First Place Prize
+            </h3>
           </div>
         </div>
         <div className="flex-1 space-y-4">
           <div>
             <h2 className="font-bold text-xl">Fees:</h2>
-            <p>GM / WGM / IM / WIM: Free Entry</p>
+            <p>GM / WGM: Free entry</p>
+            <p>
+              IM / WIM / FIDE 2400+: Free entry before April 21, 2025; $60 after
+              (no additional discounts)
+            </p>
             <p className="line-through">Early: $100 before January 1, 2025</p>
             <p>Regular: $110 January 1 &ndash; April 20, 2025</p>
             <p>Late: $120 April 21 &ndash; May 15, 2025</p>
             <p>
-              Onsite: $130 After May 15, 2025; Cash Only (may receive a round
+              Onsite: $130 After May 15, 2025; cash only (may receive a round
               one bye)
             </p>
             <h3 className="font-bold text-lg">Play Up Fee:</h3>
@@ -150,7 +157,8 @@ export default function Home() {
               <CarouselItem>
                 <SponsorCard
                   Logo={GhentLogo}
-                  description="Thank you for the $5,000 donation!"
+                  description="Thank you for donating $5,000!"
+                  href="https://ghentautomation.com/"
                 />
               </CarouselItem>
             </CarouselContent>

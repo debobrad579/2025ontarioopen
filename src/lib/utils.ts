@@ -28,9 +28,10 @@ export function getAmount(player: Player) {
 
 export function getsFreeEntry(player: Player) {
   return (
-    player.FIDETitle != null &&
-    (player.FIDETitle.includes("Grandmaster") ||
-      formatFIDETitle(player.FIDETitle).includes("IM")) &&
-    !player.FIDETitle.includes("Arena")
+    (player.FIDETitle != null &&
+      (player.FIDETitle.includes("Grandmaster") ||
+        formatFIDETitle(player.FIDETitle).includes("IM")) &&
+      !player.FIDETitle.includes("Arena")) ||
+    (player.FIDERating != null && player.FIDERating >= 2400)
   )
 }

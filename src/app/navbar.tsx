@@ -17,7 +17,7 @@ export function Navbar() {
   const isDesktop = useMediaQuery("(min-width: 500px)")
 
   return (
-    <div className="flex justify-between items-center gap-4 px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] bg-card">
+    <div className="flex justify-between items-center gap-4 px-5 py-3 sm:px-10 md:px-20 lg:px-[10vw] bg-card">
       <div className="flex gap-4 items-center">
         <Link
           href="/"
