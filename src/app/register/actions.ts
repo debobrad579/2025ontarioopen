@@ -95,7 +95,7 @@ export async function createPlayerAction(
       const doc = dom.window.document
 
       const FIDERatingString = doc
-        .querySelector(".profile-top-rating-data_gray")
+        .querySelector(".profile-standart > p")
         ?.textContent?.replace(/\D/g, "")
         .trim()
 
@@ -104,18 +104,13 @@ export async function createPlayerAction(
           ? parseInt(FIDERatingString)
           : undefined
 
-      const node = doc.evaluate(
-        '//div[contains(text(), "FIDE title:")]/following-sibling::div',
-        doc,
-        null,
-        dom.window.XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      ).singleNodeValue
+      FIDETitle = doc
+        .querySelector(".profile-info-title > p")
+        ?.textContent?.trim()
 
-      FIDETitle =
-        node && node.textContent?.trim() !== "None"
-          ? node.textContent?.trim()
-          : undefined
+      if (FIDETitle === "None") {
+        FIDETitle = undefined
+      }
     }
 
     const maxRating = Math.max(rating, FIDERating || 0)

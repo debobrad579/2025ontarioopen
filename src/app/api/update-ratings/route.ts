@@ -51,7 +51,7 @@ export async function GET() {
           const doc = dom.window.document
 
           const FIDERatingString = doc
-            .querySelector(".profile-top-rating-data_gray")
+            .querySelector(".profile-standart > p")
             ?.textContent?.replace(/\D/g, "")
             .trim()
 
