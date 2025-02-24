@@ -64,6 +64,7 @@ export function FeaturedPlayerCard({
             <Image
               src={image}
               alt="placeholder"
+              sizes="(min-width: 1024px) 12.5vw, 25vw"
               className="w-1/4 h-1/4 border rounded-xl"
             />
             <div ref={divRef} className="w-3/4 aspect-[4/1] overflow-hidden">
@@ -74,17 +75,19 @@ export function FeaturedPlayerCard({
           </CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-3xl rounded-xl bg-card">
+      <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-4xl rounded-xl bg-card">
         <ScrollArea className="max-h-[calc(100vh-4rem)] p-8">
           <DialogHeader className="pb-4">
             <DialogTitle>{name}</DialogTitle>
             <DialogDescription>{title}</DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="flex flex-col md:flex-row gap-4 items-center">
             <Image
               src={image}
               alt="placeholder"
-              className="w-48 h-48 border rounded-xl"
+              width={256}
+              height={256}
+              className="border rounded-xl"
             />
             <p>{description}</p>
           </div>

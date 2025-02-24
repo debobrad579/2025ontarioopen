@@ -6,6 +6,7 @@ import {
 import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
 import { SponsorCard } from "@/components/page/sponsor-card"
 import preotu from "@/assets/img/preotu.jpg"
+import poltkin from "@/assets/img/plotkin.jpg"
 import { GhentLogo } from "./ghent-logo"
 
 export default function Home() {
@@ -133,12 +134,26 @@ export default function Home() {
                   title="Grandmaster"
                   image={preotu}
                   description="
-                Born in 1999 in Toronto, Canada, Preotu started playing chess young; his first organized tournament was at age seven
+                Born in 1999 in Toronto, Canada, Razvan Preotu started playing chess young; his first organized tournament was at age seven
                 —the Grade 2 Chess'n Math Association event in Toronto. At ten, he started formal lessons and quickly progressed.
                 He earned the National Master title in 2013, became a FIDE Master later that year, and achieved the International Master title in 2014.
                 Preotu earned his Grandmaster title in 2016, becoming the second youngest Canadian-born GM. Some of his top achievements include
                 getting first at the 2016 Calgary International, tying for first at the 2017 Canadian Open Master, getting first at the 2018 Quebec Open,
                 and being the top Canadian scorer at the 2022 and 2024 Chess Olympiad."
+                />
+              </CarouselItem>
+              <CarouselItem>
+                <FeaturedPlayerCard
+                  name="Mark Plotkin"
+                  title="International Master"
+                  image={poltkin}
+                  description="
+                Mark Plotkin is a distinguished Canadian chess player and coach, holding the FIDE title of International Master and ranking 27th among active
+                players in the country. His chess journey began with his father, Victor Plotkin, a strong FIDE Master and captain of several Canadian Olympiad teams.
+                Mark studied Political Science and Journalism at the University of Toronto, where he joined the Hart House Chess Club and helped the team
+                win the Canadian University Chess Championship. He won the Canadian Banff Chess Tournament during the pandemic and finished fifth in the
+                Titled Tuesday Tournament against 340 titled players, beating several top grandmasters. Embracing a full-time role as a chess teacher,
+                Mark has produced several Canadian Champions and FIDE titleholders."
                 />
               </CarouselItem>
             </CarouselContent>
