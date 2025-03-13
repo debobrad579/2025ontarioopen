@@ -33,10 +33,11 @@ export const revalidate = 0
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export default async function Admin() {
-  const [players, charges, payouts] = await Promise.all([
+  const [players, charges, payouts, availableFunds] = await Promise.all([
     getAllPlayers(),
     fetchAllCharges(),
     fetchAllPayouts(),
+    fetchAvailableFunds(),
   ])
 
   return (
@@ -200,6 +201,10 @@ export default async function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
+                  <TableRow>
+                    <TableCell className="text-center">Est. Future</TableCell>
+                    <TableCell className="text-center">{formatCurrency(availableFunds / 100)}</TableCell>
+                  </TableRow>
                   {payouts
                     .filter((payout) => payout.status === "paid")
                     .map((payout) => (
@@ -216,6 +221,7 @@ export default async function Admin() {
               </Table>
             </ScrollArea>
           </CardContent>
+          <Separator />
         </Card>
       </div>
     </div>
@@ -239,12 +245,12 @@ async function fetchNetAmount(
 }
 
 async function fetchAllCharges() {
-  const charges = []
+  const charges: Stripe.Charge[] = []
   let hasMore = true
-  let startingAfter
+  let startingAfter: string | undefined
 
   while (hasMore) {
-    const response: Stripe.ApiList<Stripe.Charge> = await stripe.charges.list({
+    const response = await stripe.charges.list({
       limit: 100,
       starting_after: startingAfter,
     })
@@ -258,13 +264,13 @@ async function fetchAllCharges() {
   return charges
 }
 
-async function fetchAllPayouts(): Promise<Stripe.Payout[]> {
+async function fetchAllPayouts() {
   const payouts: Stripe.Payout[] = []
   let hasMore = true
   let startingAfter: string | undefined
 
   while (hasMore) {
-    const response: Stripe.ApiList<Stripe.Payout> = await stripe.payouts.list({
+    const response = await stripe.payouts.list({
       limit: 100,
       starting_after: startingAfter,
     })
@@ -274,4 +280,9 @@ async function fetchAllPayouts(): Promise<Stripe.Payout[]> {
   }
 
   return payouts
+}
+
+async function fetchAvailableFunds() {
+  const balance = await stripe.balance.retrieve()
+  return balance.pending.map(i => i.amount).reduce((a, b) => a + b) + balance.available.map(i => i.amount).reduce((a, b) => a + b)
 }
