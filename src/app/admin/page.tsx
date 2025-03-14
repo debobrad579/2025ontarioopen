@@ -206,7 +206,7 @@ export default async function Admin() {
                     <TableCell className="text-center">{formatCurrency(availableFunds / 100)}</TableCell>
                   </TableRow>
                   {payouts
-                    .filter((payout) => payout.status === "paid")
+                    .filter((payout) => payout.status === "paid" || payout.status === "in_transit")
                     .map((payout) => (
                       <TableRow key={payout.id}>
                         <TableCell className="text-center">
