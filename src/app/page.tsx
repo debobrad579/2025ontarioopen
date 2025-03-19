@@ -2,12 +2,15 @@ import {
   AutoplayCarousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel"
-import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
-import { SponsorCard } from "@/components/page/sponsor-card"
-import preotu from "@/assets/img/preotu.jpg"
-import poltkin from "@/assets/img/plotkin.jpg"
-import { GhentLogo } from "./ghent-logo"
+} from "@/components/ui/carousel";
+import { FeaturedPlayerCard } from "@/components/page/featured-player-card";
+import { SponsorCard } from "@/components/page/sponsor-card";
+import preotu from "@/assets/img/preotu.jpg";
+import poltkin from "@/assets/img/plotkin.jpg";
+import { GhentLogo } from "./ghent-logo";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
   return (
@@ -54,6 +57,70 @@ export default function Home() {
             <h2 className="font-bold text-xl">Tournament Directors:</h2>
             <p>Anabelle Kovatcheva and Lee Hendon</p>
           </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary" className="w-full">
+                View Tournament Accommodations
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-4xl rounded-xl bg-card">
+              <ScrollArea className="max-h-[calc(100vh-4rem)] p-8">
+                <div>
+                  <h2 className="font-bold text-xl">Best Western:</h2>
+                  <p>
+                    The rate is $139 + tax per night + HST. You must book by phone (
+                    <a
+                      href="tel:+15197538651"
+                      className="text-blue-500 hover:underline"
+                    >
+                      519-753-8651
+                    </a>
+                    ) as the rooms are blocked off and online will show no
+                    availability. Be sure to mention the blocked off rooms for
+                    the Brantford Chess Club tournament starting May 17th.
+                  </p>
+                </div>
+                <div>
+                  <h2 className="font-bold text-xl">
+                    Laurier University Apartments (Grand River Hall):
+                  </h2>
+                  <p>
+                    We have a block of 3-bedroom apartments at Laurier
+                    University's Grand River Hall (
+                    <a
+                      href="https://www.google.com/maps/place/171+Colborne+St,+Brantford,+ON+N3T+6C9/@43.1382359,-80.2664068,17z/data=!3m1!4b1!4m6!3m5!1s0x882c660fa407b2a5:0x7afeaf605e7b66dc!8m2!3d43.138232!4d-80.2638319!16s%2Fg%2F11rg67sv9p?entry=ttu&g_ep=EgoyMDI1MDMxNi4wIKXMDSoJLDEwMjExNDU1SAFQAw%3D%3D"
+                      target="_blank"
+                      className="text-blue-500 hover:underline"
+                    >
+                      171 Colborne Street
+                    </a>
+                    ) available during the duration of the tournament for $180
+                    per apartment per night (or $60 per bedroom) + HST. Each
+                    apartment has 3 single bedrooms, 2 washrooms, a kitchen
+                    (fridge and stove only), and a living room. Parking is
+                    available at the{" "}
+                    <a
+                      href="https://www.brantford.ca/en/transportation/downtown-municipal-parking-lots.aspx"
+                      target="_blank"
+                      className="text-blue-500 hover:underline"
+                    >
+                      Market Centre Parkade
+                    </a>
+                    . To book, email{" "}
+                    <a
+                      href="mailto:conferences@wlu.ca"
+                      className="text-blue-500 hover:underline"
+                    >
+                      conferences@wlu.ca
+                    </a>{" "}
+                    with your name, address, phone number, email,
+                    arrival/departure dates, and names of anyone you wish to
+                    share the apartment with. Payment is not required until May.
+                  </p>
+                </div>
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="flex-1 space-y-4">
           <div>
@@ -181,5 +248,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
