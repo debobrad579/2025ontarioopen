@@ -86,7 +86,7 @@ export default function Home() {
                   </h2>
                   <p>
                     We have a block of 3-bedroom apartments at Laurier
-                    University's Grand River Hall (
+                    University&apos;s Grand River Hall (
                     <a
                       href="https://www.google.com/maps/place/171+Colborne+St,+Brantford,+ON+N3T+6C9/@43.1382359,-80.2664068,17z/data=!3m1!4b1!4m6!3m5!1s0x882c660fa407b2a5:0x7afeaf605e7b66dc!8m2!3d43.138232!4d-80.2638319!16s%2Fg%2F11rg67sv9p?entry=ttu&g_ep=EgoyMDI1MDMxNi4wIKXMDSoJLDEwMjExNDU1SAFQAw%3D%3D"
                       target="_blank"
