@@ -60,7 +60,7 @@ export default function Home() {
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="secondary" className="w-full">
-                View Tournament Accommodations
+                Accommodation Information
               </Button>
             </DialogTrigger>
             <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-4xl rounded-xl bg-card">
@@ -68,7 +68,8 @@ export default function Home() {
                 <div>
                   <h2 className="font-bold text-xl">Best Western:</h2>
                   <p>
-                    The rate is $139 + tax per night + HST. You must book by phone (
+                    The rate is $139 + tax per night + HST. You must book by
+                    phone (
                     <a
                       href="tel:+15197538651"
                       className="text-blue-500 hover:underline"
