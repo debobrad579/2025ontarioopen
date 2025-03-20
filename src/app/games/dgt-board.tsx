@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 export function convertMovesToPgn(moves: string[]): string {
   let pgn = ""
   for (let i = 0; i < moves.length; i++) {
-    const move = moves[i].split(" ")[0]
+    const move = moves[i]
     if (i % 2 === 0) {
       pgn += `${Math.floor(i / 2) + 1}. ${move} `
     } else {
@@ -39,10 +39,11 @@ export function DGTBoard({
   }>({})
 
   useEffect(() => {
-    for (let i = 0; i < moves.length; i++) {
-      makeAMove(moves[i])
-    }
-  }, [])
+    const gameCopy = { ...game }
+    gameCopy.load_pgn(convertMovesToPgn(moves))
+    setGame(gameCopy)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moves])
 
   const currentWTimestamp = wTimestamps.at(
     -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
@@ -51,11 +52,11 @@ export function DGTBoard({
     -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
   )
 
-  function makeAMove(move: string) {
-    const gameCopy = { ...game }
-    gameCopy.move(move)
-    setGame(gameCopy)
-  }
+  // function makeAMove(move: string) {
+  //   const gameCopy = { ...game }
+  //   gameCopy.move(move)
+  //   setGame(gameCopy)
+  // }
 
   function undoMove() {
     const gameCopy = { ...game }

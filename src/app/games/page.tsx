@@ -9,9 +9,6 @@ export default async function Games() {
   const game1Data = await fetch(
     "https://1.pool.livechesscloud.com/get/eb1275c0-8a83-4980-925f-3a1286a286a0/round-1/game-1.json"
   ).then((res) => res.json())
-  const game2Data = await fetch(
-    "https://1.pool.livechesscloud.com/get/eb1275c0-8a83-4980-925f-3a1286a286a0/round-2/game-1.json"
-  ).then((res) => res.json())
 
   const moves = game1Data.moves.map((move: string) => move.split(" ")[0])
   const wTimestamps = game1Data.moves
