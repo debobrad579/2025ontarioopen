@@ -2,19 +2,19 @@ import {
   AutoplayCarousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-import { FeaturedPlayerCard } from "@/components/page/featured-player-card";
-import { SponsorCard } from "@/components/page/sponsor-card";
-import preotu from "@/assets/img/preotu.jpg";
-import poltkin from "@/assets/img/plotkin.jpg";
-import { GhentLogo } from "./ghent-logo";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from "@/components/ui/carousel"
+import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
+import { SponsorCard } from "@/components/page/sponsor-card"
+import preotu from "@/assets/img/preotu.jpg"
+import poltkin from "@/assets/img/plotkin.jpg"
+import { GhentLogo } from "./ghent-logo"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function Home() {
   return (
-    <div className="px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] space-y-4">
+    <>
       <div className="flex gap-4 flex-col lg:flex-row">
         <div className="flex-1 space-y-4">
           <div className="flex flex-wrap gap-1 items-end">
@@ -248,6 +248,6 @@ export default function Home() {
           </AutoplayCarousel>
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }

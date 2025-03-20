@@ -41,7 +41,7 @@ export default async function Admin() {
   ])
 
   return (
-    <div className="px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] space-y-4">
+    <>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="font-bold text-2xl text-center">
@@ -224,7 +224,7 @@ export default async function Admin() {
           <Separator />
         </Card>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -36,7 +36,7 @@ export default function RootLayout({
               <Navbar />
               <Separator />
             </div>
-            <main className="h-full">{children}</main>
+            <main className="h-full px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] space-y-4">{children}</main>
           </div>
         </ThemeProvider>
         <Analytics />
