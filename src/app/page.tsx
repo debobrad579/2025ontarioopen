@@ -187,7 +187,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex gap-4 flex-col lg:flex-row">
+      <div className="flex gap-4 flex-col lg:flex-row py-4">
         <div className="flex-1 space-y-4">
           <h2 className="text-center font-bold text-xl">Featured Players</h2>
           <AutoplayCarousel
