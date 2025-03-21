@@ -14,7 +14,7 @@ export default async function Players() {
 
   return (
     <div className="h-full flex flex-col">
-      <h1 className="py-4 text-center font-bold text-4xl">Players</h1>
+      <h1 className="pb-4 text-center font-bold text-4xl">Players</h1>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 grow basis-0 pb-4">
         <RegisteredTable section="2000 and Above" players={open} />
         <RegisteredTable section="1600 &ndash; 1999" players={u2000} />

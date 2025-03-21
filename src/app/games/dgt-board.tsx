@@ -5,8 +5,14 @@ import { Chessboard } from "react-chessboard"
 import { Chess } from "chess.js"
 import { formatSeconds } from "@/lib/formatters"
 import { Button } from "@/components/ui/button"
-import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons"
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
+import { useEventListener } from "@/hooks/useEventListener"
 
 export function convertMovesToPgn(moves: string[]): string {
   let pgn = ""
@@ -37,13 +43,20 @@ export function DGTBoard({
   const [rightClickedSquares, setRightClickedSquares] = useState<{
     [squareId: string]: { backgroundColor: string } | undefined
   }>({})
+  const [mouseOverBoard, setMouseOverBoard] = useState(false)
+
+  useEventListener("keydown", (e: KeyboardEvent) => {
+    if (!mouseOverBoard) return
+    if (e.key === "ArrowLeft") undoMove()
+    if (e.key === "ArrowRight") redoMove()
+    if (e.key === "ArrowUp") reset()
+    if (e.key === "ArrowDown") loadPgn()
+  })
 
   useEffect(() => {
-    const gameCopy = { ...game }
-    gameCopy.load_pgn(convertMovesToPgn(moves))
-    setGame(gameCopy)
+    loadPgn()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moves])
+  }, [])
 
   const currentWTimestamp = wTimestamps.at(
     -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
@@ -52,13 +65,22 @@ export function DGTBoard({
     -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
   )
 
-  // function makeAMove(move: string) {
-  //   const gameCopy = { ...game }
-  //   gameCopy.move(move)
-  //   setGame(gameCopy)
-  // }
+  function reset() {
+    const gameCopy = { ...game }
+    gameCopy.reset()
+    setGame(gameCopy)
+    setUndoCount(moves.length)
+  }
+
+  function loadPgn() {
+    const gameCopy = { ...game }
+    gameCopy.load_pgn(convertMovesToPgn(moves))
+    setGame(gameCopy)
+    setUndoCount(0)
+  }
 
   function undoMove() {
+    if (undoCount === moves.length) return
     const gameCopy = { ...game }
     gameCopy.undo()
     setGame(gameCopy)
@@ -66,6 +88,7 @@ export function DGTBoard({
   }
 
   function redoMove() {
+    if (undoCount === 0) return
     const move = moves.at(-undoCount)
     if (!move) return
     const gameCopy = { ...game }
@@ -75,7 +98,11 @@ export function DGTBoard({
   }
 
   return (
-    <div className="w-full flex gap-2 relative">
+    <div
+      className="flex-1 basis-0 flex relative"
+      onMouseEnter={() => setMouseOverBoard(true)}
+      onMouseLeave={() => setMouseOverBoard(false)}
+    >
       <div
         className={cn(
           "flex flex-col justify-around font-bold text-xl pb-10 absolute z-10 h-full",
@@ -88,6 +115,7 @@ export function DGTBoard({
       <div className="w-full space-y-2">
         <Chessboard
           position={game.fen()}
+          animationDuration={0}
           arePiecesDraggable={false}
           onSquareRightClick={(square) => {
             setRightClickedSquares({
@@ -108,17 +136,31 @@ export function DGTBoard({
         <div className="flex gap-2">
           <Button
             className="w-full"
+            onClick={reset}
+            disabled={undoCount === moves.length}
+          >
+            <DoubleArrowLeftIcon />
+          </Button>
+          <Button
+            className="w-full"
             onClick={undoMove}
             disabled={undoCount === moves.length}
           >
-            <TriangleLeftIcon />
+            <ChevronLeftIcon />
           </Button>
           <Button
             className="w-full"
             onClick={redoMove}
             disabled={undoCount === 0}
           >
-            <TriangleRightIcon />
+            <ChevronRightIcon />
+          </Button>
+          <Button
+            className="w-full"
+            onClick={loadPgn}
+            disabled={undoCount === 0}
+          >
+            <DoubleArrowRightIcon />
           </Button>
         </div>
       </div>

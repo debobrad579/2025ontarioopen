@@ -14,8 +14,10 @@ export function useEventListener<T extends Event>(
   useEffect(() => {
     const handler = (e: Event) => callbackRef.current(e as T)
     if (element != null) element.addEventListener(eventType, handler)
+    else window.addEventListener(eventType, handler)
     return () => {
       if (element != null) element.removeEventListener(eventType, handler)
+      else window.removeEventListener(eventType, handler)
     }
   }, [eventType, element])
 }

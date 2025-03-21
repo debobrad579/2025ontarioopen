@@ -19,18 +19,21 @@ export default async function Games() {
     .map((move: string) => Number(move.split(" ")[1].split("+")[0]))
 
   return (
-    <div className="flex gap-4">
-      <DGTBoard
-        moves={moves}
-        wTimestamps={wTimestamps}
-        bTimestamps={bTimestamps}
-      />
-      <DGTBoard
-        moves={moves}
-        wTimestamps={wTimestamps}
-        bTimestamps={bTimestamps}
-        end
-      />
-    </div>
+    <>
+      <h1 className="text-center font-bold text-4xl">Games</h1>
+      <div className="flex gap-4">
+        <DGTBoard
+          moves={moves}
+          wTimestamps={wTimestamps}
+          bTimestamps={bTimestamps}
+        />
+        <DGTBoard
+          moves={moves}
+          wTimestamps={wTimestamps}
+          bTimestamps={bTimestamps}
+          end
+        />
+      </div>
+    </>
   )
 }
