@@ -153,7 +153,7 @@ export function DGTBoard({
             <div>{bName}</div>
             <div>{formatSeconds(currentBTimestamp)}</div>
           </div>
-          <div className="flex @lg:flex-col justify-between w-full p-2 bg-white text-black border-2 border-black">
+          <div className="flex @lg:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
             <div>{wName}</div>
             <div>{formatSeconds(currentWTimestamp)}</div>
           </div>
@@ -240,7 +240,10 @@ export function DGTBoard({
                       "cursor-pointer",
                       undoCount === moves.length - index * 2 - 1 && "font-bold"
                     )}
-                    scrollPredicate={undoCount === moves.length - index * 2 - 1}
+                    scrollPredicate={
+                      undoCount === moves.length - index * 2 - 1 ||
+                      (undoCount === moves.length && index === 0)
+                    }
                     undoCount={undoCount}
                     scrollAreaRef={tableScrollAreaRef}
                   >
@@ -276,6 +279,15 @@ export function DGTBoard({
           </Table>
         </ScrollArea>
         <ScrollArea ref={listScrollAreaRef} className="@lg:hidden w-full pb-2">
+          <ListMoveCell
+            onClick={() => {}}
+            className={""}
+            scrollPredicate={undoCount === moves.length}
+            undoCount={undoCount}
+            scrollAreaRef={listScrollAreaRef}
+          >
+            {""}
+          </ListMoveCell>
           <div className="flex gap-4 w-full">
             {moveNumbersArray(moves).map((moveSet, index) => (
               <div key={index} className="flex gap-2">
