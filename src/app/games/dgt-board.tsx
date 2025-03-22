@@ -153,7 +153,7 @@ export function DGTBoard({
             <div>{bName}</div>
             <div>{formatSeconds(currentBTimestamp)}</div>
           </div>
-          <div className="flex @lg:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
+          <div className="flex @lg:flex-col-reverse justify-between w-full p-[calc(0.5rem-2px)] bg-white text-black border-2 border-black">
             <div>{wName}</div>
             <div>{formatSeconds(currentWTimestamp)}</div>
           </div>
