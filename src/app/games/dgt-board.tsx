@@ -1,48 +1,28 @@
 "use client"
 
-import {
-  type MouseEventHandler,
-  type ReactNode,
-  type RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { useEffect, useRef, useState } from "react"
 import { Chessboard } from "react-chessboard"
 import { Chess } from "chess.js"
-import { formatSeconds } from "@/lib/formatters"
-import { Button } from "@/components/ui/button"
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons"
+  ChevronFirst,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
 import { useEventListener } from "@/hooks/useEventListener"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { geistMono } from "@/assets/fonts/fonts"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { cn } from "@/lib/utils"
-
-export function convertMovesToPgn(moves: string[]): string {
-  let pgn = ""
-  for (let i = 0; i < moves.length; i++) {
-    const move = moves[i]
-    if (i % 2 === 0) {
-      pgn += `${Math.floor(i / 2) + 1}. ${move} `
-    } else {
-      pgn += `${move} `
-    }
-  }
-  return pgn.trim()
-}
+import { formatSeconds } from "@/lib/formatters"
+import { cn, convertMovesToPgn, getMoveNumberArrays } from "@/lib/utils"
+import { geistMono } from "@/assets/fonts/fonts"
+import { MoveCell } from "./_components/move-cell"
 
 export function DGTBoard({
   moves,
@@ -94,6 +74,10 @@ export function DGTBoard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    setRightClickedSquares({})
+  }, [undoCount])
+
   const currentWTimestamp = wTimestamps.at(
     -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
   )
@@ -132,16 +116,6 @@ export function DGTBoard({
     setUndoCount((prevCount) => prevCount - 1)
   }
 
-  function moveNumbersArray(arr: string[]): [string, string][] {
-    if (arr.length === 0) {
-      return []
-    }
-
-    const chunk: [string, string] = [arr[0] || "", arr[1] || ""]
-
-    return [chunk, ...moveNumbersArray(arr.slice(2))]
-  }
-
   return (
     <div className="@container">
       <div
@@ -150,11 +124,11 @@ export function DGTBoard({
         onMouseLeave={() => (mouseOverBoard.current = false)}
       >
         <div className="flex flex-col justify-center font-bold text-right @lg:w-[20ch] break-words">
-          <div className="flex @lg:flex-col justify-between w-full p-2 bg-black text-white">
+          <div className="flex @lg:flex-col justify-between w-full p-2 bg-black text-white border-2 border-black">
             <div>{bName}</div>
             <div>{formatSeconds(currentBTimestamp)}</div>
           </div>
-          <div className="flex @lg:flex-col-reverse justify-between w-full p-[calc(0.5rem-2px)] bg-white text-black border-2 border-black">
+          <div className="flex @lg:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
             <div>{wName}</div>
             <div>{formatSeconds(currentWTimestamp)}</div>
           </div>
@@ -188,21 +162,21 @@ export function DGTBoard({
               onClick={reset}
               disabled={undoCount === moves.length}
             >
-              <DoubleArrowLeftIcon />
+              <ChevronFirst />
             </Button>
             <Button
               className="w-full"
               onClick={undoMove}
               disabled={undoCount === moves.length}
             >
-              <ChevronLeftIcon />
+              <ChevronLeft />
             </Button>
             <Button
               className="w-full"
               onClick={redoMove}
               disabled={undoCount === 0}
             >
-              <ChevronRightIcon />
+              <ChevronRight />
             </Button>
             <Button
               className="w-full"
@@ -212,7 +186,7 @@ export function DGTBoard({
               }}
               disabled={undoCount === 0}
             >
-              <DoubleArrowRightIcon />
+              <ChevronLast />
             </Button>
           </div>
         </div>
@@ -222,49 +196,48 @@ export function DGTBoard({
         >
           <Table className={geistMono.className}>
             <TableHeader>
-              <TableRow>
-                <TableHead>No.</TableHead>
-                <TableHead>White</TableHead>
-                <TableHead>Black</TableHead>
+              <TableRow className="text-muted-foreground">
+                <MoveCell
+                  active={undoCount === moves.length}
+                  undoCount={undoCount}
+                  scrollAreaRef={tableScrollAreaRef}
+                  isTableCell
+                  noStyles
+                >
+                  No.
+                </MoveCell>
+                <TableCell>White</TableCell>
+                <TableCell>Black</TableCell>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {moveNumbersArray(moves).map((moveSet, index) => (
+              {getMoveNumberArrays(moves).map((moveSet, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}.</TableCell>
-                  <TableMoveCell
+                  <MoveCell
                     onClick={() => {
                       loadPgn(moves.slice(0, index * 2 + 1))
                       setUndoCount(moves.length - index * 2 - 1)
                     }}
-                    className={cn(
-                      "cursor-pointer",
-                      undoCount === moves.length - index * 2 - 1 && "font-bold"
-                    )}
-                    scrollPredicate={
-                      undoCount === moves.length - index * 2 - 1 ||
-                      (undoCount === moves.length && index === 0)
-                    }
+                    active={undoCount === moves.length - index * 2 - 1}
                     undoCount={undoCount}
                     scrollAreaRef={tableScrollAreaRef}
+                    isTableCell
                   >
                     {moveSet[0]}
-                  </TableMoveCell>
-                  <TableMoveCell
+                  </MoveCell>
+                  <MoveCell
                     onClick={() => {
                       loadPgn(moves.slice(0, index * 2 + 2))
                       setUndoCount(moves.length - index * 2 - 2)
                     }}
-                    className={cn(
-                      "cursor-pointer",
-                      undoCount === moves.length - index * 2 - 2 && "font-bold"
-                    )}
-                    scrollPredicate={undoCount === moves.length - index * 2 - 2}
+                    active={undoCount === moves.length - index * 2 - 2}
                     undoCount={undoCount}
                     scrollAreaRef={tableScrollAreaRef}
+                    isTableCell
                   >
                     {moveSet[1]}
-                  </TableMoveCell>
+                  </MoveCell>
                 </TableRow>
               ))}
               <TableRow>
@@ -280,49 +253,38 @@ export function DGTBoard({
           </Table>
         </ScrollArea>
         <ScrollArea ref={listScrollAreaRef} className="@lg:hidden w-full pb-2">
-          <ListMoveCell
-            onClick={() => {}}
-            className={""}
-            scrollPredicate={undoCount === moves.length}
+          <MoveCell
+            active={undoCount === moves.length}
             undoCount={undoCount}
             scrollAreaRef={listScrollAreaRef}
-          >
-            {""}
-          </ListMoveCell>
-          <div className="flex gap-4 w-full">
-            {moveNumbersArray(moves).map((moveSet, index) => (
+            noStyles
+          />
+          <div className={cn("flex gap-4 w-full", geistMono.className)}>
+            {getMoveNumberArrays(moves).map((moveSet, index) => (
               <div key={index} className="flex gap-2">
                 <div>{index + 1}.</div>
-                <ListMoveCell
+                <MoveCell
                   onClick={() => {
                     loadPgn(moves.slice(0, index * 2 + 1))
                     setUndoCount(moves.length - index * 2 - 1)
                   }}
-                  className={cn(
-                    "cursor-pointer",
-                    undoCount === moves.length - index * 2 - 1 && "font-bold"
-                  )}
-                  scrollPredicate={undoCount === moves.length - index * 2 - 1}
+                  active={undoCount === moves.length - index * 2 - 1}
                   undoCount={undoCount}
                   scrollAreaRef={listScrollAreaRef}
                 >
                   {moveSet[0]}
-                </ListMoveCell>
-                <ListMoveCell
+                </MoveCell>
+                <MoveCell
                   onClick={() => {
                     loadPgn(moves.slice(0, index * 2 + 2))
                     setUndoCount(moves.length - index * 2 - 2)
                   }}
-                  className={cn(
-                    "cursor-pointer",
-                    undoCount === moves.length - index * 2 - 2 && "font-bold"
-                  )}
-                  scrollPredicate={undoCount === moves.length - index * 2 - 2}
+                  active={undoCount === moves.length - index * 2 - 2}
                   undoCount={undoCount}
                   scrollAreaRef={listScrollAreaRef}
                 >
                   {moveSet[1]}
-                </ListMoveCell>
+                </MoveCell>
               </div>
             ))}
             <div className="font-bold whitespace-nowrap">
@@ -332,92 +294,6 @@ export function DGTBoard({
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
-    </div>
-  )
-}
-
-function TableMoveCell({
-  className,
-  scrollPredicate,
-  onClick,
-  undoCount,
-  scrollAreaRef,
-  children,
-}: {
-  className: string
-  scrollPredicate: boolean
-  scrollAreaRef: RefObject<HTMLDivElement>
-  onClick: MouseEventHandler<HTMLTableCellElement>
-  undoCount: number
-  children: ReactNode
-}) {
-  const ref = useRef<HTMLTableCellElement>(null)
-
-  useEffect(() => {
-    if (!scrollPredicate || !scrollAreaRef.current || !ref.current) return
-    const viewport = scrollAreaRef.current.querySelector(
-      "[data-radix-scroll-area-viewport]"
-    )
-    if (!viewport) return
-    const itemTop = ref.current.offsetTop
-    const itemBottom = itemTop + ref.current.offsetHeight
-    const viewportTop = viewport.scrollTop
-    const viewportBottom = viewportTop + viewport.clientHeight
-
-    if (itemTop >= viewportTop && itemBottom <= viewportBottom) return
-    viewport.scrollTo({
-      top: itemTop,
-      behavior: "smooth",
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [undoCount])
-
-  return (
-    <TableCell ref={ref} onClick={onClick} className={className}>
-      {children}
-    </TableCell>
-  )
-}
-
-function ListMoveCell({
-  className,
-  scrollPredicate,
-  onClick,
-  undoCount,
-  scrollAreaRef,
-  children,
-}: {
-  className: string
-  scrollPredicate: boolean
-  scrollAreaRef: RefObject<HTMLDivElement>
-  onClick: MouseEventHandler<HTMLTableCellElement>
-  undoCount: number
-  children: ReactNode
-}) {
-  const ref = useRef<HTMLTableCellElement>(null)
-
-  useEffect(() => {
-    if (!scrollPredicate || !scrollAreaRef.current || !ref.current) return
-    const viewport = scrollAreaRef.current.querySelector(
-      "[data-radix-scroll-area-viewport]"
-    )
-    if (!viewport) return
-    const itemLeft = ref.current.offsetLeft
-    const itemRight = itemLeft + ref.current.offsetWidth
-    const viewportLeft = viewport.scrollLeft
-    const viewportRight = viewportLeft + viewport.clientWidth
-
-    if (itemLeft >= viewportLeft && itemRight <= viewportRight) return
-    viewport.scrollTo({
-      left: itemLeft,
-      behavior: "smooth",
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [undoCount])
-
-  return (
-    <div ref={ref} onClick={onClick} className={className}>
-      {children}
     </div>
   )
 }
