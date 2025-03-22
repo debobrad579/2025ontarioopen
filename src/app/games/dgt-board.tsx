@@ -85,6 +85,7 @@ export function DGTBoard({
     if (e.key === "ArrowDown") {
       e.preventDefault()
       loadPgn()
+      setUndoCount(0)
     }
   })
 
