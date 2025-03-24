@@ -9,15 +9,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      keyframes: {
-        "chess-pulse": {
-          "0%": { backgroundColor: "#f1d9b7" },
-          "100%": { backgroundColor: "#b68866" },
-        },
-      },
-      animation: {
-        "chess-pulse": "chess-pulse 1500ms ease-in-out infinite alternate",
-      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

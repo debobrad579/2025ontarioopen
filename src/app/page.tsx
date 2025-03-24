@@ -15,8 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 export default function Home() {
   return (
     <>
-      <div className="flex gap-4 flex-col lg:flex-row">
-        <div className="flex-1 space-y-4">
+      <div className="flex gap-4 flex-col lg:flex-row leading-[1.4]">
+        <div className="flex-1 space-y-2">
           <div className="flex flex-wrap gap-1 items-end">
             <h2 className="font-bold text-xl">Contact:</h2>
             <a
@@ -55,7 +55,9 @@ export default function Home() {
           </div>
           <div>
             <h2 className="font-bold text-xl">Tournament Directors:</h2>
-            <p>Anabelle Kovatcheva and Lee Hendon</p>
+            <p>
+              Brian Clarke, Lee Hendon, Anabelle Kovatcheva, Zheng "Cindy" Ren
+            </p>
           </div>
           <Dialog>
             <DialogTrigger asChild>
@@ -123,7 +125,7 @@ export default function Home() {
             </DialogContent>
           </Dialog>
         </div>
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-2">
           <div>
             <h2 className="font-bold text-xl">Sections:</h2>
             <ul className="list-disc pl-4">

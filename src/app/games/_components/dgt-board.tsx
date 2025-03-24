@@ -128,9 +128,7 @@ export function DGTBoard({
           </div>
         </div>
         <div className="flex-1 min-w-64 space-y-2">
-          <div className="aspect-square bg-[#f1d9b7] animate-chess-pulse">
-            <Chessboard fen={game.fen()} />
-          </div>
+          <Chessboard fen={game.fen()} />
           <div className="flex gap-2">
             <Button
               className="w-full"
