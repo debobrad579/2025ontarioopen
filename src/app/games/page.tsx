@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { DGTBoard } from "./dgt-board"
+import { DGTBoard } from "./_components/dgt-board"
 import type { GameJson, IndexJson, Round, TournamentJson } from "./types"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { RoundTabsList } from "./_components/round-tabs-list"

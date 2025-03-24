@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Chessboard } from "react-chessboard"
 import { Chess } from "chess.js"
 import {
   ChevronFirst,
@@ -15,6 +14,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
@@ -22,7 +22,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { formatSeconds } from "@/lib/formatters"
 import { cn, convertMovesToPgn, getMoveNumberArrays } from "@/lib/utils"
 import { geistMono } from "@/assets/fonts/fonts"
-import { MoveCell } from "./_components/move-cell"
+import { MoveCell } from "./move-cell"
+import { Chessboard } from "./chessboard"
 
 export function DGTBoard({
   moves,
@@ -41,9 +42,6 @@ export function DGTBoard({
 }) {
   const [game, setGame] = useState(new Chess())
   const [undoCount, setUndoCount] = useState(0)
-  const [rightClickedSquares, setRightClickedSquares] = useState<{
-    [squareId: string]: { backgroundColor: string } | undefined
-  }>({})
   const mouseOverBoard = useRef(false)
   const tableScrollAreaRef = useRef<HTMLDivElement>(null)
   const listScrollAreaRef = useRef<HTMLDivElement>(null)
@@ -73,10 +71,6 @@ export function DGTBoard({
     loadPgn()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    setRightClickedSquares({})
-  }, [undoCount])
 
   const currentWTimestamp = wTimestamps.at(
     -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
@@ -135,26 +129,7 @@ export function DGTBoard({
         </div>
         <div className="flex-1 min-w-64 space-y-2">
           <div className="aspect-square bg-[#f1d9b7] animate-chess-pulse">
-            <Chessboard
-              position={game.fen()}
-              animationDuration={0}
-              arePiecesDraggable={false}
-              onSquareRightClick={(square) => {
-                setRightClickedSquares({
-                  ...rightClickedSquares,
-                  [square]:
-                    rightClickedSquares[square] &&
-                    rightClickedSquares[square].backgroundColor ===
-                      "rgba(255, 0, 0, 0.4)"
-                      ? undefined
-                      : { backgroundColor: "rgba(255, 0, 0, 0.4)" },
-                })
-              }}
-              onSquareClick={() => setRightClickedSquares({})}
-              customSquareStyles={{
-                ...rightClickedSquares,
-              }}
-            />
+            <Chessboard fen={game.fen()} />
           </div>
           <div className="flex gap-2">
             <Button
@@ -240,6 +215,8 @@ export function DGTBoard({
                   </MoveCell>
                 </TableRow>
               ))}
+            </TableBody>
+            <TableFooter>
               <TableRow>
                 <TableCell className="font-bold text-right">
                   {result.split("-")[0]}
@@ -249,7 +226,7 @@ export function DGTBoard({
                   {result.split("-")[1]}
                 </TableCell>
               </TableRow>
-            </TableBody>
+            </TableFooter>
           </Table>
         </ScrollArea>
         <ScrollArea ref={listScrollAreaRef} className="@lg:hidden w-full pb-2">
