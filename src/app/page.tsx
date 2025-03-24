@@ -56,7 +56,8 @@ export default function Home() {
           <div>
             <h2 className="font-bold text-xl">Tournament Directors:</h2>
             <p>
-              Brian Clarke, Lee Hendon, Anabelle Kovatcheva, Zheng "Cindy" Ren
+              Brian Clarke, Lee Hendon, Anabelle Kovatcheva, Zheng
+              &ldquo;Cindy&rdquo; Ren
             </p>
           </div>
           <Dialog>
