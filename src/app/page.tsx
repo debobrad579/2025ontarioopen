@@ -2,21 +2,21 @@ import {
   AutoplayCarousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-import { FeaturedPlayerCard } from "@/components/page/featured-player-card";
-import { SponsorCard } from "@/components/page/sponsor-card";
-import preotu from "@/assets/img/preotu.jpg";
-import poltkin from "@/assets/img/plotkin.jpg";
-import { GhentLogo } from "./ghent-logo";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from "@/components/ui/carousel"
+import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
+import { SponsorCard } from "@/components/page/sponsor-card"
+import preotu from "@/assets/img/preotu.jpg"
+import poltkin from "@/assets/img/plotkin.jpg"
+import { GhentLogo } from "./ghent-logo"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function Home() {
   return (
-    <div className="px-5 py-4 sm:px-10 md:px-20 lg:px-[10vw] space-y-4">
-      <div className="flex gap-4 flex-col lg:flex-row">
-        <div className="flex-1 space-y-4">
+    <>
+      <div className="flex gap-4 flex-col lg:flex-row leading-[1.4]">
+        <div className="flex-1 space-y-2">
           <div className="flex flex-wrap gap-1 items-end">
             <h2 className="font-bold text-xl">Contact:</h2>
             <a
@@ -55,7 +55,10 @@ export default function Home() {
           </div>
           <div>
             <h2 className="font-bold text-xl">Tournament Directors:</h2>
-            <p>Anabelle Kovatcheva and Lee Hendon</p>
+            <p>
+              Brian Clarke, Lee Hendon, Anabelle Kovatcheva, Zheng
+              &ldquo;Cindy&rdquo; Ren
+            </p>
           </div>
           <Dialog>
             <DialogTrigger asChild>
@@ -123,7 +126,7 @@ export default function Home() {
             </DialogContent>
           </Dialog>
         </div>
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-2">
           <div>
             <h2 className="font-bold text-xl">Sections:</h2>
             <ul className="list-disc pl-4">
@@ -187,7 +190,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex gap-4 flex-col lg:flex-row">
+      <div className="flex gap-4 flex-col lg:flex-row py-4">
         <div className="flex-1 space-y-4">
           <h2 className="text-center font-bold text-xl">Featured Players</h2>
           <AutoplayCarousel
@@ -248,6 +251,6 @@ export default function Home() {
           </AutoplayCarousel>
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }

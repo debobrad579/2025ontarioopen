@@ -21,7 +21,7 @@ export default async function Checkout({
   if (getsFreeEntry(player)) return notFound()
   if (player.hasPaid)
     return (
-      <h1 className="text-lg text-center py-4">
+      <h1 className="text-lg text-center">
         CFC id <b>&ldquo;{player.CFCId}&rdquo;</b> is already registered.
       </h1>
     )
@@ -38,11 +38,6 @@ export default async function Checkout({
   }
 
   return (
-    <div className="py-4 px-5 sm:px-10 md:px-20 lg:px-[10vw]">
-      <CheckoutForm
-        player={player}
-        clientSecret={paymentIntent.client_secret}
-      />
-    </div>
+    <CheckoutForm player={player} clientSecret={paymentIntent.client_secret} />
   )
 }

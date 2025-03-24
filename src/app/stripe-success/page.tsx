@@ -26,7 +26,7 @@ export default async function StripeSuccess({
   if (!player) return notFound()
 
   return (
-    <div className="py-4 px-5 sm:px-10 md:px-20 lg:px-[10vw]">
+    <>
       {paymentIntent.status === "succeeded" ? (
         <h1 className="text-4xl font-bold">Success!</h1>
       ) : (
@@ -64,6 +64,6 @@ export default async function StripeSuccess({
           {player.isFemale ? <CheckIcon /> : <Cross2Icon />}
         </div>
       </div>
-    </div>
+    </>
   )
 }
