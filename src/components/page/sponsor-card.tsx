@@ -16,8 +16,8 @@ export function SponsorCard({
     <Dialog>
       <DialogTrigger className="w-full focus-visible:outline-none focus-visible:border focus-visible:border-ring rounded-xl">
         <Card>
-          <CardContent className="p-[calc(2rem+0.92ch)] flex justify-center items-center">
-            <Logo className="aspect-[4/1] scale-150" />
+          <CardContent className="p-[calc(2rem+0.92ch)]">
+            <Logo className="aspect-[4/1] scale-[1.75]" />
           </CardContent>
         </Card>
       </DialogTrigger>

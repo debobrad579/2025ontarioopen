@@ -15,7 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 export default function Home() {
   return (
     <>
-      <div className="flex gap-4 flex-col lg:flex-row leading-[1.4]">
+      <div className="flex gap-4 flex-col lg:flex-row leading-[1.35]">
         <div className="flex-1 space-y-2">
           <div className="flex flex-wrap gap-1 items-end">
             <h2 className="font-bold text-xl">Contact:</h2>
@@ -54,11 +54,51 @@ export default function Home() {
             <p>Maximum two half point byes in rounds 1 &ndash; 4 only</p>
           </div>
           <div>
-            <h2 className="font-bold text-xl">Tournament Directors:</h2>
-            <p>
-              Brian Clarke, Lee Hendon, Anabelle Kovatcheva, Zheng
-              &ldquo;Cindy&rdquo; Ren
-            </p>
+            <div className="flex flex-wrap gap-1 items-center">
+              <h3 className="font-bold text-lg">Tournament Director:</h3>
+              <p>Lee Hendon</p>
+            </div>
+            <div className="flex flex-wrap gap-1 items-center">
+              <h3 className="font-bold text-lg">Chief Arbiter:</h3>
+              <p>FA Anabelle Kovatcheva</p>
+            </div>
+            <div className="flex flex-wrap gap-1 items-center">
+              <h3 className="font-bold text-lg">Deputy Arbiter:</h3>
+              <p>Lee Hendon</p>
+            </div>
+            <div className="flex flex-wrap gap-1 items-center">
+              <h3 className="font-bold text-lg">Arbiters:</h3>
+              <p>Brian Clarke, Zheng Ren</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 space-y-2">
+          <div>
+            <h2 className="font-bold text-xl">Sections:</h2>
+            <ul className="list-disc pl-4">
+              <li>2000 and Above (FIDE and CFC rated)</li>
+              <li>1600 &ndash; 1999 (FIDE and CFC rated)</li>
+              <li>1200 &ndash; 1599 (CFC rated only)</li>
+              <li>U1200 and Unrated (CFC rated only)</li>
+            </ul>
+            <b>
+              Sections are based on the most current rating before the
+              tournament (Higher of FIDE, CFC / USCF)
+            </b>
+          </div>
+          <div>
+            <h2 className="font-bold text-xl">Projected Prize Fund:</h2>
+            <p>$15,000 based on 250 paid entries</p>
+            <p>$10,000 based on 200 paid entries</p>
+            <p>$7,000 based on 150 paid entries</p>
+            <h3 className="font-bold text-lg">Percentage / Section:</h3>
+            <p>2000 and Above: 40%</p>
+            <p>1600 &ndash; 1999: 30%</p>
+            <p>1200 &ndash; 1599: 20%</p>
+            <p>U1200 and Unrated: 10%</p>
+            <h3 className="font-bold text-lg">
+              $1,500 Guaranteed First Place Prize
+            </h3>
           </div>
           <Dialog>
             <DialogTrigger asChild>
@@ -125,35 +165,6 @@ export default function Home() {
               </ScrollArea>
             </DialogContent>
           </Dialog>
-        </div>
-        <div className="flex-1 space-y-2">
-          <div>
-            <h2 className="font-bold text-xl">Sections:</h2>
-            <ul className="list-disc pl-4">
-              <li>2000 and Above (FIDE and CFC rated)</li>
-              <li>1600 &ndash; 1999 (FIDE and CFC rated)</li>
-              <li>1200 &ndash; 1599 (CFC rated only)</li>
-              <li>U1200 and Unrated (CFC rated only)</li>
-            </ul>
-            <b>
-              Sections are based on the most current rating before the
-              tournament (Higher of FIDE, CFC / USCF)
-            </b>
-          </div>
-          <div>
-            <h2 className="font-bold text-xl">Projected Prize Fund:</h2>
-            <p>$15,000 based on 250 paid entries</p>
-            <p>$10,000 based on 200 paid entries</p>
-            <p>$7,000 based on 150 paid entries</p>
-            <h3 className="font-bold text-lg">Percentage / Section:</h3>
-            <p>2000 and Above: 40%</p>
-            <p>1600 &ndash; 1999: 30%</p>
-            <p>1200 &ndash; 1599: 20%</p>
-            <p>U1200 and Unrated: 10%</p>
-            <h3 className="font-bold text-lg">
-              $1,500 Guaranteed First Place Prize
-            </h3>
-          </div>
         </div>
         <div className="flex-1 space-y-4">
           <div>
