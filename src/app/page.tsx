@@ -241,7 +241,7 @@ export default function Home() {
               </CarouselItem>
               <CarouselItem>
                 <FeaturedPlayerCard
-                  name="Nickolas Vettese"
+                  name="Nicholas Vettese"
                   title="International Master"
                   image={vettese}
                   description="
