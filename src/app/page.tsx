@@ -5,12 +5,13 @@ import {
 } from "@/components/ui/carousel"
 import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
 import { SponsorCard } from "@/components/page/sponsor-card"
-import preotu from "@/assets/img/preotu.jpg"
-import poltkin from "@/assets/img/plotkin.jpg"
 import { GhentLogo } from "./ghent-logo"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import preotu from "@/assets/img/preotu.jpg"
+import poltkin from "@/assets/img/plotkin.jpg"
+import vettese from "@/assets/img/vettese.jpg"
 
 export default function Home() {
   return (
@@ -201,8 +202,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex gap-4 flex-col lg:flex-row py-4">
-        <div className="flex-1 space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
+        <div className="space-y-4">
           <h2 className="text-center font-bold text-xl">Featured Players</h2>
           <AutoplayCarousel
             className="w-full"
@@ -238,10 +239,23 @@ export default function Home() {
                 Mark has produced several Canadian Champions and FIDE titleholders."
                 />
               </CarouselItem>
+              <CarouselItem>
+                <FeaturedPlayerCard
+                  name="Nickolas Vettese"
+                  title="International Master"
+                  image={vettese}
+                  description="
+                Nicholas Vettese is a current student at the University of Toronto who began playing chess in Grade 1 at an elementary school lunchtime program 
+                offered by the Chess and Math Association.  At the age of 10, he became the youngest-ever Canadian National Master. In 2016 he won the 
+                North American Youth Chess Championship and earned his FM title. In 2021, he won the North American Youth Chess Championship U18 category, 
+                subsequently achieving his International Master title. He has also been a member of the U16 Olympiad team. 
+                He has played for the Hart House Chess Club’s Pan-American Intercollegiate and Canadian University Championship teams."
+                />
+              </CarouselItem>
             </CarouselContent>
           </AutoplayCarousel>
         </div>
-        <div className="flex-1 space-y-4">
+        <div className="space-y-4">
           <h2 className="text-center font-bold text-xl">
             Sponsors & Donations
           </h2>
