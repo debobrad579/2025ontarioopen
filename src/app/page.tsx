@@ -12,6 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import preotu from "@/assets/img/preotu.jpg"
 import poltkin from "@/assets/img/plotkin.jpg"
 import vettese from "@/assets/img/vettese.jpg"
+import { HealthSpotLogo } from "./health-spot-logo"
 
 export default function Home() {
   return (
@@ -271,6 +272,9 @@ export default function Home() {
                   description="Thank you for donating $5,000!"
                   href="https://ghentautomation.com/"
                 />
+              </CarouselItem>
+              <CarouselItem>
+                <SponsorCard Logo={HealthSpotLogo} description="" href="" />
               </CarouselItem>
             </CarouselContent>
           </AutoplayCarousel>
