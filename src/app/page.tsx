@@ -90,16 +90,16 @@ export default function Home() {
           </div>
           <div>
             <h2 className="font-bold text-xl">Projected Prize Fund:</h2>
-            <p>$15,000 based on 250 paid entries</p>
-            <p>$10,000 based on 200 paid entries</p>
-            <p>$7,000 based on 150 paid entries</p>
+            <p>$13,000 based on 150 paid entries</p>
+            <p>$11,500 based on 125 paid entries</p>
+            <p>$9,500 based on 100 paid entries</p>
             <h3 className="font-bold text-lg">Percentage / Section:</h3>
-            <p>2000 and Above: 40%</p>
-            <p>1600 &ndash; 1999: 30%</p>
-            <p>1200 &ndash; 1599: 20%</p>
-            <p>U1200 and Unrated: 10%</p>
+            <p>2000 and Above: 45%</p>
+            <p>1600 &ndash; 1999: 35%</p>
+            <p>1200 &ndash; 1599: 12.5%</p>
+            <p>U1200 and Unrated: 7.5%</p>
             <h3 className="font-bold text-lg">
-              $1,500 Guaranteed First Place Prize
+              $1,500 Guaranteed First Place Prize in the Top Section
             </h3>
           </div>
           <Dialog>
@@ -177,7 +177,9 @@ export default function Home() {
               (no additional discounts)
             </p>
             <p className="line-through">Early: $100 before January 1, 2025</p>
-            <p className="line-through">Regular: $110 January 1 &ndash; April 20, 2025</p>
+            <p className="line-through">
+              Regular: $110 January 1 &ndash; April 20, 2025
+            </p>
             <p>Late: $120 April 21 &ndash; May 15, 2025</p>
             <p>
               Onsite: $130 After May 15, 2025; cash only (may receive a round
