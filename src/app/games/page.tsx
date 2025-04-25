@@ -20,7 +20,7 @@ export default async function Games() {
       <RoundTabsList />
       {[0, 1, 2, 3, 4, 5].map((i) => (
         <TabsContent key={i} value={`round-${i + 1}`}>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 items-end">
             <Suspense
               fallback={[0, 1, 2, 3, 4, 5].map((i) => (
                 <DGTBoard

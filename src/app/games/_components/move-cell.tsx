@@ -48,7 +48,7 @@ export function MoveCell({
 
     viewport.scrollTo({
       [positionAxis.toLowerCase()]: itemStart,
-      behavior: "smooth",
+      behavior: "instant",
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [undoCount])
