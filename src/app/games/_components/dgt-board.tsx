@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { formatSeconds } from "@/lib/formatters"
-import { cn, convertMovesToPgn, getMoveNumberArrays } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { geistMono } from "@/assets/fonts/fonts"
 import { MoveCell } from "./move-cell"
 import { Chessboard } from "./chessboard"
@@ -31,6 +31,8 @@ export function DGTBoard({
   bTimestamps,
   wName,
   bName,
+  wTitle,
+  bTitle,
   result,
 }: {
   moves: string[]
@@ -38,6 +40,8 @@ export function DGTBoard({
   bTimestamps: number[]
   wName: string
   bName: string
+  wTitle: string
+  bTitle: string
   result: string
 }) {
   const [game, setGame] = useState(new Chess())
@@ -110,6 +114,8 @@ export function DGTBoard({
     setUndoCount((prevCount) => prevCount - 1)
   }
 
+  const previousMove = game.history({ verbose: true }).at(-1)
+
   return (
     <div className="@container">
       <div
@@ -119,16 +125,30 @@ export function DGTBoard({
       >
         <div className="flex flex-col justify-center font-bold text-right @lg:w-[20ch] break-words">
           <div className="flex @lg:flex-col justify-between w-full p-2 bg-black text-white border-2 border-black">
-            <div>{bName}</div>
+            <div>
+              {bTitle && `${bTitle} `}
+              {bName}
+            </div>
             <div>{formatSeconds(currentBTimestamp)}</div>
           </div>
           <div className="flex @lg:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
-            <div>{wName}</div>
+            <div>
+              {wTitle && `${wTitle} `}
+              {wName}
+            </div>
             <div>{formatSeconds(currentWTimestamp)}</div>
           </div>
         </div>
         <div className="flex-1 min-w-64 space-y-2">
-          <Chessboard fen={game.fen()} />
+          <Chessboard
+            fen={game.fen()}
+            previousMove={
+              previousMove
+                ? { from: previousMove.from, to: previousMove.to }
+                : undefined
+            }
+            check={game.in_check() ? game.turn() : undefined}
+          />
           <div className="flex gap-2">
             <Button
               className="w-full"
@@ -271,4 +291,27 @@ export function DGTBoard({
       </div>
     </div>
   )
+}
+
+function convertMovesToPgn(moves: string[]): string {
+  let pgn = ""
+  for (let i = 0; i < moves.length; i++) {
+    const move = moves[i]
+    if (i % 2 === 0) {
+      pgn += `${Math.floor(i / 2) + 1}. ${move} `
+    } else {
+      pgn += `${move} `
+    }
+  }
+  return pgn.trim()
+}
+
+function getMoveNumberArrays(arr: string[]): [string, string][] {
+  if (arr.length === 0) {
+    return []
+  }
+
+  const moveSet: [string, string] = [arr[0] || "", arr[1] || ""]
+
+  return [moveSet, ...getMoveNumberArrays(arr.slice(2))]
 }
