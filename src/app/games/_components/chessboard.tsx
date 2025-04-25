@@ -1,12 +1,20 @@
 "use client"
 
 import { useEventListener } from "@/hooks/useEventListener"
-import { parseFEN } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 import { Arrow } from "./arrow"
 import { Square } from "./square"
+import { parseFEN } from "@/lib/parsers"
 
-export function Chessboard({ fen }: { fen: string }) {
+export function Chessboard({
+  fen,
+  previousMove,
+  check,
+}: {
+  fen: string
+  previousMove?: { from: string; to: string }
+  check?: "w" | "b"
+}) {
   const [highlightedSquares, setHighlightedSquares] = useState<
     { index: number; fen: string }[]
   >([])
@@ -91,6 +99,16 @@ export function Chessboard({ fen }: { fen: string }) {
             .filter((highlightedSquare) => highlightedSquare.fen === fen)
             .map((highlightedSquare) => highlightedSquare.index)
             .includes(i)}
+          isYellow={
+            previousMove != null &&
+            [
+              squareToInt(previousMove.from),
+              squareToInt(previousMove.to),
+            ].includes(i)
+          }
+          check={
+            (check === "w" && piece === "K") || (check === "b" && piece === "k")
+          }
           onRightClick={() => setStartArrowIndex(i)}
           onRightRelease={() => {
             if (startArrowIndex === i) addHighlightedSquare(i)
@@ -112,4 +130,10 @@ export function Chessboard({ fen }: { fen: string }) {
       </svg>
     </div>
   )
+}
+
+function squareToInt(square: string): number {
+  const file = square.charCodeAt(0) - "a".charCodeAt(0)
+  const rank = 8 - parseInt(square[1], 10)
+  return rank * 8 + file
 }

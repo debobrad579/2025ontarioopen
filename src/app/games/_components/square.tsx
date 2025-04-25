@@ -34,6 +34,8 @@ export function Square({
   index,
   piece,
   isHighlighted,
+  isYellow,
+  check,
   squareWidth,
   onRightClick,
   onRightRelease,
@@ -41,6 +43,8 @@ export function Square({
   index: number
   piece: string | null
   isHighlighted: boolean
+  isYellow: boolean
+  check: boolean
   squareWidth: number
   onRightClick: () => void
   onRightRelease: () => void
@@ -62,12 +66,18 @@ export function Square({
       }}
       className={cn(
         "w-full aspect-square relative leading-none",
+        check &&
+          "bg-[radial-gradient(ellipse_at_center,_rgb(255,0,0)_0%,_rgb(231,0,0)_25%,_rgba(169,0,0,0)_89%,_rgba(158,0,0,0)_100%)]",
         isLight
           ? isHighlighted
             ? "bg-[#ee7965] text-[#e46956]"
+            : isYellow
+            ? "bg-[#f6eb81] text-[#dcc35a]"
             : "bg-[#eed6b2] text-[#ba8765]"
           : isHighlighted
           ? "bg-[#e46956] text-[#ee7965]"
+          : isYellow
+          ? "bg-[#dcc35a] text-[#f6eb81]"
           : "bg-[#ba8765] text-[hsl(36,64%,82%)]"
       )}
     >

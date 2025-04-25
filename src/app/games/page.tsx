@@ -1,68 +1,77 @@
 import { Metadata } from "next"
 import { DGTBoard } from "./_components/dgt-board"
-import type { GameJson, IndexJson, Round, TournamentJson } from "./types"
+import type { Game, TournamentData } from "./types"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { RoundTabsList } from "./_components/round-tabs-list"
+import { Suspense } from "react"
+import { parseRoundPGN } from "@/lib/parsers"
 
 export const metadata: Metadata = {
   title: "Games",
 }
 
 export default async function Games() {
-  const rounds: Round[] = []
-
-  const tournamentData: TournamentJson = await fetch(
-    "https://1.pool.livechesscloud.com/get/eb1275c0-8a83-4980-925f-3a1286a286a0/tournament.json"
+  const tournamentData: TournamentData = await fetch(
+    "https://lichess.org/api/broadcast/fPr26dbV"
   ).then((res) => res.json())
 
-  for (let i = 0; i < tournamentData.rounds.length; i++) {
-    const indexData: IndexJson = await fetch(
-      `https://1.pool.livechesscloud.com/get/eb1275c0-8a83-4980-925f-3a1286a286a0/round-${
-        i + 1
-      }/index.json`
-    ).then((res) => res.json())
-
-    const round: Round = { index: i, games: [] }
-
-    for (let j = 0; j < tournamentData.rounds[i].count; j++) {
-      const gameData: GameJson = await fetch(
-        `https://1.pool.livechesscloud.com/get/eb1275c0-8a83-4980-925f-3a1286a286a0/round-${
-          i + 1
-        }/game-${j + 1}.json`
-      ).then((res) => res.json())
-
-      const pairing = indexData.pairings[j]
-
-      round.games.push({
-        index: j,
-        moves: gameData.moves.map((move) => move.split(" ")[0]),
-        wTimestamps: gameData.moves
-          .filter((_, index) => index % 2 === 0)
-          .map((move) => Number(move.split(" ")[1].split("+")[0])),
-        bTimestamps: gameData.moves
-          .filter((_, index) => index % 2 !== 0)
-          .map((move) => Number(move.split(" ")[1].split("+")[0])),
-        wName: `${pairing.white.fname} ${pairing.white.lname ?? ""}`.trim(),
-        bName: `${pairing.black.fname} ${pairing.black.lname ?? ""}`.trim(),
-        result: pairing.result,
-      })
-    }
-
-    rounds.push(round)
-  }
-
   return (
-    <Tabs defaultValue="0" className="pb-4">
-      <RoundTabsList roundIndices={rounds.map((round) => round.index)} />
-      {rounds.map((round) => (
-        <TabsContent key={round.index} value={round.index.toString()}>
+    <Tabs defaultValue="round-1" className="pb-4">
+      <RoundTabsList />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <TabsContent key={i} value={`round-${i + 1}`}>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {round.games.map((game) => (
-              <DGTBoard key={game.index} {...game} />
-            ))}
+            <Suspense
+              fallback={[0, 1, 2, 3, 4, 5].map((i) => (
+                <DGTBoard
+                  key={i}
+                  moves={[]}
+                  wTimestamps={[]}
+                  bTimestamps={[]}
+                  wTitle=""
+                  bTitle=""
+                  wName=""
+                  bName=""
+                  result=""
+                />
+              ))}
+            >
+              <RoundsContent roundIndex={i} tournamentData={tournamentData} />
+            </Suspense>
           </div>
         </TabsContent>
       ))}
     </Tabs>
   )
+}
+
+async function RoundsContent({
+  roundIndex,
+  tournamentData,
+}: {
+  roundIndex: number
+  tournamentData: TournamentData
+}) {
+  let games: Game[] = []
+
+  for (let i = 0; i < 6; i++) {
+    const roundPgn = await fetch(
+      `https://lichess.org/api/broadcast/round/${tournamentData.rounds[roundIndex].id}.pgn`
+    ).then((res) => res.text())
+    games = parseRoundPGN(roundPgn)
+  }
+
+  return games.map((game) => (
+    <DGTBoard
+      key={game.wName + game.bName}
+      moves={game.moves}
+      wTimestamps={game.wTimestamps}
+      bTimestamps={game.bTimestamps}
+      wName={game.wName}
+      bName={game.bName}
+      wTitle={game.wTitle}
+      bTitle={game.bTitle}
+      result={game.result}
+    />
+  ))
 }
