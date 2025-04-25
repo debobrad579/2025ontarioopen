@@ -119,27 +119,27 @@ export function DGTBoard({
   return (
     <div className="@container">
       <div
-        className="flex flex-col @lg:flex-row gap-2"
+        className="flex flex-col @xl:flex-row gap-2"
         onMouseEnter={() => (mouseOverBoard.current = true)}
         onMouseLeave={() => (mouseOverBoard.current = false)}
       >
-        <div className="flex flex-col justify-center font-bold text-right @lg:w-[20ch] break-words">
-          <div className="flex @lg:flex-col justify-between w-full p-2 bg-black text-white border-2 border-black">
-            <div>
-              {bTitle && `${bTitle} `}
-              {bName}
+        <div className="flex flex-col justify-center font-bold @xl:text-right @xl:max-w-[14ch] @xl:min-w-[14ch] break-words">
+          <div className="flex @xl:flex-col justify-between w-full p-2 bg-black text-white border-2 border-black">
+            <div>{bName}</div>
+            <div className="flex gap-1 justify-between">
+              <div>{bTitle && `(${bTitle})`}</div>
+              <div>{formatSeconds(currentBTimestamp)}</div>
             </div>
-            <div>{formatSeconds(currentBTimestamp)}</div>
           </div>
-          <div className="flex @lg:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
-            <div>
-              {wTitle && `${wTitle} `}
-              {wName}
+          <div className="flex @xl:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
+            <div>{wName}</div>
+            <div className="flex gap-1 justify-between">
+              <div>{wTitle && `(${wTitle})`}</div>
+              <div>{formatSeconds(currentWTimestamp)}</div>
             </div>
-            <div>{formatSeconds(currentWTimestamp)}</div>
           </div>
         </div>
-        <div className="flex-1 min-w-64 space-y-2">
+        <div className="flex-1 space-y-2">
           <Chessboard
             fen={game.fen()}
             previousMove={
@@ -185,7 +185,7 @@ export function DGTBoard({
         </div>
         <ScrollArea
           ref={tableScrollAreaRef}
-          className="min-w-[10.5rem] max-w-[10.5rem] pr-1 aspect-video hidden @lg:block"
+          className="min-w-[10.5rem] max-w-[10.5rem] pr-1 aspect-video hidden @xl:block"
         >
           <Table className={geistMono.className}>
             <TableHeader>
@@ -247,7 +247,10 @@ export function DGTBoard({
             </TableFooter>
           </Table>
         </ScrollArea>
-        <ScrollArea ref={listScrollAreaRef} className="@lg:hidden w-full pb-2">
+        <ScrollArea
+          ref={listScrollAreaRef}
+          className="@xl:hidden w-full pb-2 text-nowrap"
+        >
           <MoveCell
             active={undoCount === moves.length}
             undoCount={undoCount}
