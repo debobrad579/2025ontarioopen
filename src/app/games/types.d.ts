@@ -6,6 +6,8 @@ export type Game = {
   bName: string
   wTitle: string
   bTitle: string
+  wElo: string
+  bElo: string
   result: string
   thinkTime?: number
 }

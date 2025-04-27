@@ -33,6 +33,8 @@ export function DGTBoard({
   bName,
   wTitle,
   bTitle,
+  wElo,
+  bElo,
   result,
   thinkTime,
 }: {
@@ -43,6 +45,8 @@ export function DGTBoard({
   bName: string
   wTitle: string
   bTitle: string
+  wElo: string
+  bElo: string
   result: string
   thinkTime?: number
 }) {
@@ -145,18 +149,20 @@ export function DGTBoard({
   return (
     <div className="@container">
       <div
-        className="flex flex-col @xl:flex-row gap-2"
+        className="flex flex-col @lg:flex-row gap-2"
         onMouseEnter={() => (mouseOverBoard.current = true)}
         onMouseLeave={() => (mouseOverBoard.current = false)}
       >
-        <div className="flex flex-col justify-center font-bold @xl:text-right @xl:max-w-[14ch] @xl:min-w-[14ch] break-words">
-          <div className="flex @xl:flex-col justify-between w-full p-2 bg-black text-white border-2 border-black">
-            <div>{bName}</div>
-            <div className="flex gap-1 justify-between">
-              <div>{bTitle && `(${bTitle})`}</div>
+        <div className="flex-1 space-y-2">
+          <div>
+            <div className="flex justify-between w-full p-2 bg-gray-800 text-white font-bold leading-none">
+              <div>
+                {bTitle && `${bTitle} `}
+                {bName} <span className="font-normal pl-1">{bElo}</span>
+              </div>
               <div
                 className={
-                  result === "*" && game.turn() === "b"
+                  result === "*" && game.turn() === "b" && undoCount === 0
                     ? "text-orange-500"
                     : undefined
                 }
@@ -164,14 +170,23 @@ export function DGTBoard({
                 {formatSeconds(currentBTimestamp)}
               </div>
             </div>
-          </div>
-          <div className="flex @xl:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
-            <div>{wName}</div>
-            <div className="flex gap-1 justify-between">
-              <div>{wTitle && `(${wTitle})`}</div>
+            <Chessboard
+              fen={game.fen()}
+              previousMove={
+                previousMove
+                  ? { from: previousMove.from, to: previousMove.to }
+                  : undefined
+              }
+              check={game.in_check() ? game.turn() : undefined}
+            />
+            <div className="flex justify-between w-full p-2 bg-gray-200 text-black font-bold leading-none">
+              <div>
+                {wTitle && `${wTitle} `}
+                {wName} <span className="font-normal pl-1">{wElo}</span>
+              </div>
               <div
                 className={
-                  result === "*" && game.turn() === "w"
+                  result === "*" && game.turn() === "w" && undoCount === 0
                     ? "text-orange-500"
                     : undefined
                 }
@@ -180,17 +195,6 @@ export function DGTBoard({
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex-1 space-y-2">
-          <Chessboard
-            fen={game.fen()}
-            previousMove={
-              previousMove
-                ? { from: previousMove.from, to: previousMove.to }
-                : undefined
-            }
-            check={game.in_check() ? game.turn() : undefined}
-          />
           <div className="flex gap-2">
             <Button
               className="w-full"
@@ -227,7 +231,7 @@ export function DGTBoard({
         </div>
         <ScrollArea
           ref={tableScrollAreaRef}
-          className="min-w-[10.5rem] max-w-[10.5rem] pr-1 aspect-video hidden @xl:block"
+          className="min-w-[10.5rem] max-w-[10.5rem] pr-1 aspect-video hidden @lg:block"
         >
           <Table className={geistMono.className}>
             <TableHeader>
@@ -291,7 +295,7 @@ export function DGTBoard({
         </ScrollArea>
         <ScrollArea
           ref={listScrollAreaRef}
-          className="@xl:hidden w-full pb-2 text-nowrap"
+          className="@lg:hidden w-full pb-2 text-nowrap"
         >
           <MoveCell
             active={undoCount === moves.length}

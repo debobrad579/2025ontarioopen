@@ -2,20 +2,36 @@
 
 import { useEffect, useState } from "react"
 import { parsePGN } from "@/lib/parsers"
-import { Game } from "../types"
+import type { Game, RoundData } from "../types"
 import { DGTBoard } from "./dgt-board"
 
-export function OngoingRoundContent({
-  roundId,
-  defaultGames = [],
-}: {
-  roundId: string
-  defaultGames?: Game[]
-}) {
-  const [games, setGames] = useState<Game[]>(defaultGames)
+export function OngoingRoundContent({ roundId }: { roundId: string }) {
+  const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
     const controller = new AbortController()
+
+    async function fetchInitialPGN() {
+      const initialPGN = await fetch(
+        `https://lichess.org/api/broadcast/round/${roundId}.pgn`
+      ).then((res) => res.text())
+
+      const initialGames = initialPGN
+        .split("\n\n\n")
+        .filter((gamePGN) => gamePGN !== "")
+        .map((gamePGN) => parsePGN(gamePGN))
+
+      const roundData: RoundData = await fetch(
+        `https://lichess.org/api/broadcast/-/-/${roundId}`
+      ).then((res) => res.json())
+
+      setGames(
+        initialGames.map((game, i) => ({
+          ...game,
+          thinkTime: roundData.games[i].thinkTime,
+        }))
+      )
+    }
 
     async function streamPGN() {
       try {
@@ -60,24 +76,43 @@ export function OngoingRoundContent({
       }
     }
 
+    fetchInitialPGN()
     streamPGN()
 
     return () => controller.abort()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundId])
 
-  return games.map((game) => (
-    <DGTBoard
-      key={game.wName + game.bName}
-      moves={game.moves}
-      wTimestamps={game.wTimestamps}
-      bTimestamps={game.bTimestamps}
-      wName={game.wName}
-      bName={game.bName}
-      wTitle={game.wTitle}
-      bTitle={game.bTitle}
-      result={game.result}
-      thinkTime={game.thinkTime}
-    />
-  ))
+  return games.length === 0
+    ? [0, 1, 2, 3, 4, 5].map((i) => (
+        <DGTBoard
+          key={i}
+          moves={[]}
+          wTimestamps={[]}
+          bTimestamps={[]}
+          wName=""
+          bName=""
+          wTitle=""
+          bTitle=""
+          wElo=""
+          bElo=""
+          result=""
+        />
+      ))
+    : games.map((game) => (
+        <DGTBoard
+          key={game.wName + game.bName}
+          moves={game.moves}
+          wTimestamps={game.wTimestamps}
+          bTimestamps={game.bTimestamps}
+          wName={game.wName}
+          bName={game.bName}
+          wTitle={game.wTitle}
+          bTitle={game.bTitle}
+          wElo={game.wElo}
+          bElo={game.bElo}
+          result={game.result}
+          thinkTime={game.thinkTime}
+        />
+      ))
 }

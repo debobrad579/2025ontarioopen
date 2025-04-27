@@ -2,20 +2,19 @@
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
+import type { Round } from "../types"
 
-export function RoundTabsList() {
+export function RoundTabsList({ rounds }: { rounds: Round[] }) {
   const lg = useMediaQuery("(min-width: 550px)")
 
   return (
     <TabsList className="mb-4 w-full">
-      {["round-1", "round-2", "round-3", "round-4", "round-5", "round-6"].map(
-        (i) => (
-          <TabsTrigger key={i} value={i}>
-            {lg && "Round "}
-            {i.replace("round-", "")}
-          </TabsTrigger>
-        )
-      )}
+      {rounds.map((round) => (
+        <TabsTrigger key={round.id} value={round.slug}>
+          {lg && "Round "}
+          {round.slug.replace("round-", "")}
+        </TabsTrigger>
+      ))}
     </TabsList>
   )
 }
