@@ -35,9 +35,12 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
 
     async function streamPGN() {
       try {
-        const res = await fetch(`http://localhost:5000/${roundId}`, {
-          signal: controller.signal,
-        })
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API}/${roundId}`,
+          {
+            signal: controller.signal,
+          }
+        )
 
         const reader = res.body?.getReader()
         const decoder = new TextDecoder()
