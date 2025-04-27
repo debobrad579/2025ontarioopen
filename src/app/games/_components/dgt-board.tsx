@@ -90,7 +90,7 @@ export function DGTBoard({
     setUndoCount(0)
     setOptimisticThinkTime(thinkTime ?? 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moves])
+  }, [moves.length])
 
   let currentWTimestamp =
     wTimestamps.at(
