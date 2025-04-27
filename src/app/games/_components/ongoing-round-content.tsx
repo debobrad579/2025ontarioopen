@@ -19,12 +19,9 @@ export function OngoingRoundContent({
 
     async function streamPGN() {
       try {
-        const res = await fetch(
-          `https://lichess-stream-production.up.railway.app/${roundId}`,
-          {
-            signal: controller.signal,
-          }
-        )
+        const res = await fetch(`http://localhost:5000/${roundId}`, {
+          signal: controller.signal,
+        })
 
         const reader = res.body?.getReader()
         const decoder = new TextDecoder()
@@ -41,23 +38,15 @@ export function OngoingRoundContent({
 
           for (const gamePGN of gamePGNs) {
             const newGame = parsePGN(gamePGN)
-            const thinkTime = await getThinkTime(newGame)
             setGames((prevGames) => {
-              return prevGames
-                .map((game) =>
-                  game.wName === newGame.wName && game.bName === newGame.bName
-                    ? { ...newGame, thinkTime: thinkTime }
-                    : game
-                )
-                .concat(
-                  !prevGames.some(
-                    (game) =>
-                      game.wName === newGame.wName &&
-                      game.bName === newGame.bName
-                  )
-                    ? [{ ...newGame, thinkTime: thinkTime }]
-                    : []
-                )
+              return prevGames.map((game) =>
+                game.wName === newGame.wName && game.bName === newGame.bName
+                  ? {
+                      ...newGame,
+                      thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
+                    }
+                  : game
+              )
             })
           }
         }
@@ -73,36 +62,9 @@ export function OngoingRoundContent({
 
     streamPGN()
 
-    async function updateThinkTime() {
-      for (const newGame of games) {
-        const thinkTime = await getThinkTime(newGame)
-
-        setGames((prevGames) => {
-          return prevGames.map((game) =>
-            game.wName === newGame.wName && game.bName === newGame.bName
-              ? { ...newGame, thinkTime: thinkTime }
-              : game
-          )
-        })
-      }
-    }
-
-    updateThinkTime()
-
     return () => controller.abort()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundId])
-
-  async function getThinkTime(game: Game) {
-    if (game.result !== "*") return
-    const roundData: RoundData = await fetch(
-      `https://lichess.org/api/broadcast/-/-/${roundId}`
-    ).then((res) => res.json())
-
-    return roundData.games.filter(
-      (g) => g.name === `${game.wName} - ${game.bName}`
-    )[0].thinkTime
-  }
 
   return games.map((game) => (
     <DGTBoard
