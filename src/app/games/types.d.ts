@@ -7,12 +7,30 @@ export type Game = {
   wTitle: string
   bTitle: string
   result: string
+  thinkTime?: number
 }
 
 export type TournamentData = {
   tour: Tour
   rounds: Round[]
   defaultRoundId: string
+}
+
+export type RoundData = {
+  tour: Tour
+  round: Round
+  study: unknown
+  games: TGame[]
+}
+
+type TGame = {
+  id: string
+  name: string
+  fen: string
+  players: unknown
+  lastMove: string
+  thinkTime?: number
+  status: string
 }
 
 type Tour = {

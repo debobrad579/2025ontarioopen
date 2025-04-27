@@ -1,18 +1,20 @@
 import { Metadata } from "next"
 import { DGTBoard } from "./_components/dgt-board"
-import type { Game, TournamentData } from "./types"
+import type { TournamentData } from "./types"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { RoundTabsList } from "./_components/round-tabs-list"
 import { Suspense } from "react"
-import { parseRoundPGN } from "@/lib/parsers"
+import { RoundContent } from "./_components/round-content"
 
 export const metadata: Metadata = {
   title: "Games",
 }
 
+export const revalidate = 0
+
 export default async function Games() {
   const tournamentData: TournamentData = await fetch(
-    "https://lichess.org/api/broadcast/fPr26dbV"
+    `https://lichess.org/api/broadcast/${process.env.LICHESS_BROADCAST_ID}`
   ).then((res) => res.json())
 
   return (
@@ -36,42 +38,14 @@ export default async function Games() {
                 />
               ))}
             >
-              <RoundsContent roundIndex={i} tournamentData={tournamentData} />
+              <RoundContent
+                roundId={tournamentData.rounds[i].id}
+                ongoing={tournamentData.rounds[i].ongoing}
+              />
             </Suspense>
           </div>
         </TabsContent>
       ))}
     </Tabs>
   )
-}
-
-async function RoundsContent({
-  roundIndex,
-  tournamentData,
-}: {
-  roundIndex: number
-  tournamentData: TournamentData
-}) {
-  let games: Game[] = []
-
-  for (let i = 0; i < 6; i++) {
-    const roundPgn = await fetch(
-      `https://lichess.org/api/broadcast/round/${tournamentData.rounds[roundIndex].id}.pgn`
-    ).then((res) => res.text())
-    games = parseRoundPGN(roundPgn)
-  }
-
-  return games.map((game) => (
-    <DGTBoard
-      key={game.wName + game.bName}
-      moves={game.moves}
-      wTimestamps={game.wTimestamps}
-      bTimestamps={game.bTimestamps}
-      wName={game.wName}
-      bName={game.bName}
-      wTitle={game.wTitle}
-      bTitle={game.bTitle}
-      result={game.result}
-    />
-  ))
 }
