@@ -25,6 +25,8 @@ export function parsePGN(gamePGN: string): Game {
     bTimestamps: [],
     wTitle: "",
     bTitle: "",
+    wElo: "",
+    bElo: "",
     result: "",
     moves: [],
   }
@@ -34,6 +36,10 @@ export function parsePGN(gamePGN: string): Game {
       game.wName = line.split('"')[1]
     } else if (line.startsWith('[Black "')) {
       game.bName = line.split('"')[1]
+    } else if (line.startsWith('[WhiteElo "')) {
+      game.wElo = line.split('"')[1]
+    } else if (line.startsWith('[BlackElo "')) {
+      game.bElo = line.split('"')[1]
     } else if (line.startsWith('[Result "')) {
       game.result = line.split('"')[1]
     } else if (line.startsWith('[WhiteTitle "')) {
