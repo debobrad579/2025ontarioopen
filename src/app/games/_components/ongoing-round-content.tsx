@@ -9,7 +9,9 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
-    const controller = new AbortController()
+    let controller: AbortController | null = null
+    let reconnectTimeout: NodeJS.Timeout | null = null
+    let stopped = false
 
     async function fetchInitialPGN() {
       const initialPGN = await fetch(
@@ -34,6 +36,8 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
     }
 
     async function streamPGN() {
+      controller = new AbortController()
+
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API}/${roundId}`,
@@ -46,9 +50,9 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
         const decoder = new TextDecoder()
         let buffer = ""
 
-        while (true) {
+        while (!stopped) {
           const { value, done } = await reader!.read()
-          if (done) break
+          if (done) throw new Error("Stream closed")
 
           buffer += decoder.decode(value, { stream: true })
 
@@ -57,8 +61,8 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
 
           for (const gamePGN of gamePGNs) {
             const newGame = parsePGN(gamePGN)
-            setGames((prevGames) => {
-              return prevGames.map((game) =>
+            setGames((prevGames) =>
+              prevGames.map((game) =>
                 game.wName === newGame.wName && game.bName === newGame.bName
                   ? {
                       ...newGame,
@@ -66,15 +70,21 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
                     }
                   : game
               )
-            })
+            )
           }
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         if (err.name === "AbortError") {
           console.log("PGN stream aborted (cleanup)")
         } else {
-          console.error("Stream error:", err)
+          console.error("Stream error, reconnecting in 3s:", err)
+
+          if (!stopped) {
+            reconnectTimeout = setTimeout(() => {
+              console.log("Reconnecting to PGN stream...")
+              streamPGN() // try again
+            }, 3000)
+          }
         }
       }
     }
@@ -82,8 +92,12 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
     fetchInitialPGN()
     streamPGN()
 
-    return () => controller.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      console.log("Cleaning up PGN stream...")
+      stopped = true
+      controller?.abort()
+      if (reconnectTimeout) clearTimeout(reconnectTimeout)
+    }
   }, [roundId])
 
   return games.length === 0
