@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { parsePGN } from "@/lib/parsers"
-import { Game, RoundData } from "../types"
+import { Game } from "../types"
 import { DGTBoard } from "./dgt-board"
 
 export function OngoingRoundContent({
