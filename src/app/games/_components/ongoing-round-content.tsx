@@ -20,7 +20,7 @@ export function OngoingRoundContent({
     async function streamPGN() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}/api/lichess-stream?broadcastRoundId=${roundId}`,
+          `https://lichess-stream-production.up.railway.app/${roundId}`,
           {
             signal: controller.signal,
           }
