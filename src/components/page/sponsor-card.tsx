@@ -7,7 +7,7 @@ export function SponsorCard({
   description,
   href,
 }: {
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Logo: ({}: any) => JSX.Element
   description: string
   href?: string

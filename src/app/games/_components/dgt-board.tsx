@@ -34,6 +34,7 @@ export function DGTBoard({
   wTitle,
   bTitle,
   result,
+  thinkTime,
 }: {
   moves: string[]
   wTimestamps: number[]
@@ -43,12 +44,25 @@ export function DGTBoard({
   wTitle: string
   bTitle: string
   result: string
+  thinkTime?: number
 }) {
   const [game, setGame] = useState(new Chess())
   const [undoCount, setUndoCount] = useState(0)
   const mouseOverBoard = useRef(false)
   const tableScrollAreaRef = useRef<HTMLDivElement>(null)
   const listScrollAreaRef = useRef<HTMLDivElement>(null)
+  const [optimisticThinkTime, setOptimisticThinkTime] = useState(thinkTime ?? 0)
+
+  useEffect(() => {
+    if (thinkTime == null) return
+
+    const interval = setInterval(() => {
+      setOptimisticThinkTime((prev) => prev + 1)
+    }, 1000)
+
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [thinkTime])
 
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (!mouseOverBoard.current) return
@@ -73,15 +87,27 @@ export function DGTBoard({
 
   useEffect(() => {
     loadPgn()
+    setUndoCount(0)
+    setOptimisticThinkTime(thinkTime ?? 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [moves])
 
-  const currentWTimestamp = wTimestamps.at(
-    -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
-  )
-  const currentBTimestamp = bTimestamps.at(
-    -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
-  )
+  let currentWTimestamp =
+    wTimestamps.at(
+      -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
+    ) ?? 5400
+  let currentBTimestamp =
+    bTimestamps.at(
+      -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
+    ) ?? 5400
+
+  if (undoCount === 0) {
+    if (game.turn() === "w") {
+      currentWTimestamp -= optimisticThinkTime
+    } else {
+      currentBTimestamp -= optimisticThinkTime
+    }
+  }
 
   function reset() {
     const gameCopy = { ...game }
@@ -128,14 +154,30 @@ export function DGTBoard({
             <div>{bName}</div>
             <div className="flex gap-1 justify-between">
               <div>{bTitle && `(${bTitle})`}</div>
-              <div>{formatSeconds(currentBTimestamp)}</div>
+              <div
+                className={
+                  result === "*" && game.turn() === "b"
+                    ? "text-orange-500"
+                    : undefined
+                }
+              >
+                {formatSeconds(currentBTimestamp)}
+              </div>
             </div>
           </div>
           <div className="flex @xl:flex-col-reverse justify-between w-full p-2 bg-white text-black border-2 border-black">
             <div>{wName}</div>
             <div className="flex gap-1 justify-between">
               <div>{wTitle && `(${wTitle})`}</div>
-              <div>{formatSeconds(currentWTimestamp)}</div>
+              <div
+                className={
+                  result === "*" && game.turn() === "w"
+                    ? "text-orange-500"
+                    : undefined
+                }
+              >
+                {formatSeconds(currentWTimestamp)}
+              </div>
             </div>
           </div>
         </div>
