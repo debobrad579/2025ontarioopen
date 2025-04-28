@@ -73,6 +73,7 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
             )
           }
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         if (err.name === "AbortError") {
           console.log("PGN stream aborted (cleanup)")
@@ -82,7 +83,7 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
           if (!stopped) {
             reconnectTimeout = setTimeout(() => {
               console.log("Reconnecting to PGN stream...")
-              streamPGN() // try again
+              streamPGN()
             }, 3000)
           }
         }
