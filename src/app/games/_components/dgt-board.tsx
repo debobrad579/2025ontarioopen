@@ -58,7 +58,7 @@ export function DGTBoard({
   const [optimisticThinkTime, setOptimisticThinkTime] = useState(thinkTime ?? 0)
 
   useEffect(() => {
-    if (thinkTime == null) return
+    if (thinkTime == null || result !== "*") return
 
     const interval = setInterval(() => {
       setOptimisticThinkTime((prev) => prev + 1)
@@ -66,7 +66,7 @@ export function DGTBoard({
 
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thinkTime])
+  }, [thinkTime, result])
 
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (!mouseOverBoard.current) return

@@ -9,9 +9,9 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
-    let controller: AbortController | null = null
+    let socket: WebSocket | null = null
     let reconnectTimeout: NodeJS.Timeout | null = null
-    let stopped = false
+    let manuallyClosed = false
 
     async function fetchInitialPGN() {
       const initialPGN = await fetch(
@@ -30,74 +30,62 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
       setGames(
         initialGames.map((game, i) => ({
           ...game,
-          thinkTime: roundData.games[i].thinkTime,
+          thinkTime: roundData.games[i]?.thinkTime || 0,
         }))
       )
     }
 
-    async function streamPGN() {
-      controller = new AbortController()
+    function connectWebSocket() {
+      socket = new WebSocket(
+        `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API_WS}/${roundId}`
+      )
 
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API}/${roundId}`,
-          {
-            signal: controller.signal,
-          }
-        )
+      socket.addEventListener("open", () => {
+        console.log("WebSocket connected")
+      })
 
-        const reader = res.body?.getReader()
-        const decoder = new TextDecoder()
-        let buffer = ""
-
-        while (!stopped) {
-          const { value, done } = await reader!.read()
-          if (done) throw new Error("Stream closed")
-
-          buffer += decoder.decode(value, { stream: true })
-
-          const gamePGNs = buffer.split("\n\n\n")
-          buffer = gamePGNs.pop() || ""
-
-          for (const gamePGN of gamePGNs) {
-            const newGame = parsePGN(gamePGN)
-            setGames((prevGames) =>
-              prevGames.map((game) =>
-                game.wName === newGame.wName && game.bName === newGame.bName
-                  ? {
-                      ...newGame,
-                      thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
-                    }
-                  : game
-              )
+      socket.addEventListener("message", (event) => {
+        const gamePGNs = event.data
+          .split("\n\n\n")
+          .filter((pgn: string) => pgn !== "")
+        for (const gamePGN of gamePGNs) {
+          const newGame = parsePGN(gamePGN)
+          setGames((prevGames) => {
+            return prevGames.map((game) =>
+              game.wName === newGame.wName && game.bName === newGame.bName
+                ? {
+                    ...newGame,
+                    thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
+                  }
+                : game
             )
-          }
+          })
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err.name === "AbortError") {
-          console.log("PGN stream aborted (cleanup)")
-        } else {
-          console.error("Stream error, reconnecting in 3s:", err)
+      })
 
-          if (!stopped) {
-            reconnectTimeout = setTimeout(() => {
-              console.log("Reconnecting to PGN stream...")
-              streamPGN()
-            }, 3000)
-          }
+      socket.addEventListener("close", () => {
+        console.log("WebSocket closed")
+        if (!manuallyClosed) {
+          console.log("Reconnecting in 3 seconds...")
+          reconnectTimeout = setTimeout(() => {
+            connectWebSocket()
+          }, 3000)
         }
-      }
+      })
+
+      socket.addEventListener("error", (err) => {
+        console.error("WebSocket error", err)
+        socket?.close()
+      })
     }
 
     fetchInitialPGN()
-    streamPGN()
+    connectWebSocket()
 
     return () => {
-      console.log("Cleaning up PGN stream...")
-      stopped = true
-      controller?.abort()
+      manuallyClosed = true
       if (reconnectTimeout) clearTimeout(reconnectTimeout)
+      socket?.close()
     }
   }, [roundId])
 
