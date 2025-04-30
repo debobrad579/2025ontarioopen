@@ -19,33 +19,27 @@ export function parseFEN(fen: string) {
 export function parsePGN(gamePGN: string): Game {
   const lines = gamePGN.split("\n")
   const game: Game = {
-    wName: "",
-    bName: "",
-    wTimestamps: [],
-    bTimestamps: [],
-    wTitle: "",
-    bTitle: "",
-    wElo: "",
-    bElo: "",
+    white: { name: "", elo: "", timestamps: [] },
+    black: { name: "", elo: "", timestamps: [] },
     result: "",
     moves: [],
   }
 
   for (const line of lines) {
     if (line.startsWith('[White "')) {
-      game.wName = line.split('"')[1]
+      game.white.name = line.split('"')[1]
     } else if (line.startsWith('[Black "')) {
-      game.bName = line.split('"')[1]
+      game.black.name = line.split('"')[1]
     } else if (line.startsWith('[WhiteElo "')) {
-      game.wElo = line.split('"')[1]
+      game.white.elo = line.split('"')[1]
     } else if (line.startsWith('[BlackElo "')) {
-      game.bElo = line.split('"')[1]
+      game.black.elo = line.split('"')[1]
     } else if (line.startsWith('[Result "')) {
       game.result = line.split('"')[1]
     } else if (line.startsWith('[WhiteTitle "')) {
-      game.wTitle = line.split('"')[1]
+      game.white.title = line.split('"')[1]
     } else if (line.startsWith('[BlackTitle "')) {
-      game.bTitle = line.split('"')[1]
+      game.black.title = line.split('"')[1]
     } else if (line.startsWith("1.")) {
       const moves: string[] = []
 
@@ -74,8 +68,8 @@ export function parsePGN(gamePGN: string): Game {
           bTimestamps.push(timestamp)
         }
       }
-      game.wTimestamps = wTimestamps
-      game.bTimestamps = bTimestamps
+      game.white.timestamps = wTimestamps
+      game.black.timestamps = bTimestamps
     }
   }
 

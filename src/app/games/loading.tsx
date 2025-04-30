@@ -1,32 +1,27 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DGTBoard } from "./_components/dgt-board"
+import { SkeletonDGTBoard } from "./_components/skeleton-dgt-board"
 
 export default function Loading() {
   return (
-    <Tabs defaultValue={"1"} className="pb-4">
+    <Tabs defaultValue="0" className="pb-4">
       <TabsList className="mb-4 w-full">
-        {["1", "2", "3", "4", "5", "6"].map((i) => (
-          <TabsTrigger key={i} value={i} disabled>
-            {i}
+        {Array.from({ length: 6 }).map((_, i) => (
+          <TabsTrigger
+            key={i}
+            value={i.toString()}
+            className="sm:before:content-['Round'] flex gap-[1ch]"
+            disabled
+          >
+            {i + 1}
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value="1">
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <DGTBoard
-            key={i}
-            moves={[]}
-            wTimestamps={[]}
-            bTimestamps={[]}
-            wName=""
-            bName=""
-            wTitle=""
-            bTitle=""
-            wElo=""
-            bElo=""
-            result=""
-          />
-        ))}
+      <TabsContent value="0">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 items-end">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonDGTBoard key={i} />
+          ))}
+        </div>
       </TabsContent>
     </Tabs>
   )

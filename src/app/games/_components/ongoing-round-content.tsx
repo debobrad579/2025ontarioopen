@@ -1,12 +1,15 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { parsePGN } from "@/lib/parsers"
 import type { Game, RoundData } from "../types"
 import { DGTBoard } from "./dgt-board"
+import { SkeletonDGTBoard } from "./skeleton-dgt-board"
 
 export function OngoingRoundContent({ roundId }: { roundId: string }) {
   const [games, setGames] = useState<Game[]>([])
+  const moveSoundRef = useRef<HTMLAudioElement>(null)
+  const captureSoundRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     let socket: WebSocket | null = null
@@ -50,9 +53,19 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
           .filter((pgn: string) => pgn !== "")
         for (const gamePGN of gamePGNs) {
           const newGame = parsePGN(gamePGN)
+
+          if (newGame.moves.at(-1)?.includes("x") && captureSoundRef.current) {
+            captureSoundRef.current.currentTime = 0
+            captureSoundRef.current.play()
+          } else if (moveSoundRef.current) {
+            moveSoundRef.current.currentTime = 0
+            moveSoundRef.current.play()
+          }
+
           setGames((prevGames) => {
             return prevGames.map((game) =>
-              game.wName === newGame.wName && game.bName === newGame.bName
+              game.white.name === newGame.white.name &&
+              game.black.name === newGame.black.name
                 ? {
                     ...newGame,
                     thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
@@ -66,15 +79,15 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
       socket.addEventListener("close", () => {
         console.log("WebSocket closed")
         if (!manuallyClosed) {
-          console.log("Reconnecting in 3 seconds...")
+          console.log("Reconnecting in 5 seconds...")
           reconnectTimeout = setTimeout(() => {
+            fetchInitialPGN()
             connectWebSocket()
-          }, 3000)
+          }, 5000)
         }
       })
 
-      socket.addEventListener("error", (err) => {
-        console.error("WebSocket error", err)
+      socket.addEventListener("error", () => {
         socket?.close()
       })
     }
@@ -89,36 +102,15 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
     }
   }, [roundId])
 
-  return games.length === 0
-    ? [0, 1, 2, 3, 4, 5].map((i) => (
-        <DGTBoard
-          key={i}
-          moves={[]}
-          wTimestamps={[]}
-          bTimestamps={[]}
-          wName=""
-          bName=""
-          wTitle=""
-          bTitle=""
-          wElo=""
-          bElo=""
-          result=""
-        />
-      ))
-    : games.map((game) => (
-        <DGTBoard
-          key={game.wName + game.bName}
-          moves={game.moves}
-          wTimestamps={game.wTimestamps}
-          bTimestamps={game.bTimestamps}
-          wName={game.wName}
-          bName={game.bName}
-          wTitle={game.wTitle}
-          bTitle={game.bTitle}
-          wElo={game.wElo}
-          bElo={game.bElo}
-          result={game.result}
-          thinkTime={game.thinkTime}
-        />
-      ))
+  return games.length === 0 ? (
+    Array.from({ length: 6 }).map((_, i) => <SkeletonDGTBoard key={i} />)
+  ) : (
+    <>
+      <audio ref={moveSoundRef} src={"/move.mp3"} preload="auto" />
+      <audio ref={captureSoundRef} src={"/capture.mp3"} preload="auto" />
+      {games.map((game) => (
+        <DGTBoard key={game.white.name + game.black.name} gameData={game} />
+      ))}
+    </>
+  )
 }

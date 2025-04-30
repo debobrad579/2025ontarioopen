@@ -1,15 +1,9 @@
 export type Game = {
   moves: string[]
-  wTimestamps: number[]
-  bTimestamps: number[]
-  wName: string
-  bName: string
-  wTitle: string
-  bTitle: string
-  wElo: string
-  bElo: string
   result: string
   thinkTime?: number
+  white: { name: string; elo: string; timestamps: number[]; title?: string }
+  black: { name: string; elo: string; timestamps: number[]; title?: string }
 }
 
 export type TournamentData = {
