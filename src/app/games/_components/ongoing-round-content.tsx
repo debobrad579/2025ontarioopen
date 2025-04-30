@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react"
 import { parsePGN } from "@/lib/parsers"
 import type { Game, RoundData } from "../types"
-import { DGTBoard } from "./dgt-board"
+import { DGTBoard } from "./dgt-board/dgt-board"
+import { SkeletonDGTBoard } from "./dgt-board/skeleton-dgt-board"
 
 export function OngoingRoundContent({ roundId }: { roundId: string }) {
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
-    const controller = new AbortController()
+    let socket: WebSocket | null = null
+    let reconnectTimeout: NodeJS.Timeout | null = null
+    let manuallyClosed = false
 
     async function fetchInitialPGN() {
       const initialPGN = await fetch(
@@ -28,94 +31,74 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
       setGames(
         initialGames.map((game, i) => ({
           ...game,
-          thinkTime: roundData.games[i].thinkTime,
+          thinkTime: roundData.games[i]?.thinkTime || 0,
         }))
       )
     }
 
-    async function streamPGN() {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API}/${roundId}`,
-          {
-            signal: controller.signal,
-          }
-        )
+    function connectWebSocket() {
+      socket = new WebSocket(
+        `${process.env.NEXT_PUBLIC_LICHESS_STREAM_API_WS}/${roundId}`
+      )
 
-        const reader = res.body?.getReader()
-        const decoder = new TextDecoder()
-        let buffer = ""
+      socket.addEventListener("open", () => {
+        console.log("WebSocket connected")
+      })
 
-        while (true) {
-          const { value, done } = await reader!.read()
-          if (done) break
+      socket.addEventListener("message", (event) => {
+        const gamePGNs = event.data
+          .split("\n\n\n")
+          .filter((pgn: string) => pgn !== "")
+        for (const gamePGN of gamePGNs) {
+          const newGame = parsePGN(gamePGN)
 
-          buffer += decoder.decode(value, { stream: true })
-
-          const gamePGNs = buffer.split("\n\n\n")
-          buffer = gamePGNs.pop() || ""
-
-          for (const gamePGN of gamePGNs) {
-            const newGame = parsePGN(gamePGN)
-            setGames((prevGames) => {
-              return prevGames.map((game) =>
-                game.wName === newGame.wName && game.bName === newGame.bName
-                  ? {
-                      ...newGame,
-                      thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
-                    }
-                  : game
-              )
-            })
-          }
+          setGames((prevGames) => {
+            return prevGames.map((game) =>
+              game.white.name === newGame.white.name &&
+              game.black.name === newGame.black.name
+                ? {
+                    ...newGame,
+                    thinkTime: game.thinkTime !== 0 ? 0 : game.thinkTime,
+                  }
+                : game
+            )
+          })
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err.name === "AbortError") {
-          console.log("PGN stream aborted (cleanup)")
-        } else {
-          console.error("Stream error:", err)
+      })
+
+      socket.addEventListener("close", () => {
+        console.log("WebSocket closed")
+        if (!manuallyClosed) {
+          console.log("Reconnecting in 5 seconds...")
+          reconnectTimeout = setTimeout(() => {
+            fetchInitialPGN()
+            connectWebSocket()
+          }, 5000)
         }
-      }
+      })
+
+      socket.addEventListener("error", () => {
+        socket?.close()
+      })
     }
 
     fetchInitialPGN()
-    streamPGN()
+    connectWebSocket()
 
-    return () => controller.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      manuallyClosed = true
+      if (reconnectTimeout) clearTimeout(reconnectTimeout)
+      socket?.close()
+    }
   }, [roundId])
 
-  return games.length === 0
-    ? [0, 1, 2, 3, 4, 5].map((i) => (
-        <DGTBoard
-          key={i}
-          moves={[]}
-          wTimestamps={[]}
-          bTimestamps={[]}
-          wName=""
-          bName=""
-          wTitle=""
-          bTitle=""
-          wElo=""
-          bElo=""
-          result=""
-        />
-      ))
-    : games.map((game) => (
-        <DGTBoard
-          key={game.wName + game.bName}
-          moves={game.moves}
-          wTimestamps={game.wTimestamps}
-          bTimestamps={game.bTimestamps}
-          wName={game.wName}
-          bName={game.bName}
-          wTitle={game.wTitle}
-          bTitle={game.bTitle}
-          wElo={game.wElo}
-          bElo={game.bElo}
-          result={game.result}
-          thinkTime={game.thinkTime}
-        />
-      ))
+  return games.length === 0 ? (
+    Array.from({ length: 6 }).map((_, i) => <SkeletonDGTBoard key={i} />)
+  ) : (
+    <>
+      {games.map((game) => (
+        <DGTBoard key={game.white.name + game.black.name} gameData={game} />
+      ))}
+    </>
+  )
 }

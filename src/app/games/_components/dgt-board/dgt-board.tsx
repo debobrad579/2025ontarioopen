@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Chess } from "chess.js"
 import {
   ChevronFirst,
@@ -19,57 +19,46 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { formatSeconds } from "@/lib/formatters"
 import { cn } from "@/lib/utils"
 import { geistMono } from "@/assets/fonts/fonts"
 import { MoveCell } from "./move-cell"
-import { Chessboard } from "./chessboard"
+import { Chessboard } from "./chessboard/chessboard"
+import { Game } from "../../types"
+import { Clock } from "./clock"
 
 export function DGTBoard({
-  moves,
-  wTimestamps,
-  bTimestamps,
-  wName,
-  bName,
-  wTitle,
-  bTitle,
-  wElo,
-  bElo,
-  result,
-  thinkTime,
+  gameData: { white, black, moves, result, thinkTime },
 }: {
-  moves: string[]
-  wTimestamps: number[]
-  bTimestamps: number[]
-  wName: string
-  bName: string
-  wTitle: string
-  bTitle: string
-  wElo: string
-  bElo: string
-  result: string
-  thinkTime?: number
+  gameData: Game
 }) {
   const [game, setGame] = useState(new Chess())
   const [undoCount, setUndoCount] = useState(0)
+  const [tick, setTick] = useState(0)
+  const [firstLoad, setFirstLoad] = useState(true)
   const mouseOverBoard = useRef(false)
   const tableScrollAreaRef = useRef<HTMLDivElement>(null)
   const listScrollAreaRef = useRef<HTMLDivElement>(null)
-  const [optimisticThinkTime, setOptimisticThinkTime] = useState(thinkTime ?? 0)
+  const moveSoundRef = useRef<HTMLAudioElement>(null)
+  const captureSoundRef = useRef<HTMLAudioElement>(null)
+  const gameLength = useMemo(() => game.history().length, [game])
 
   useEffect(() => {
-    if (thinkTime == null) return
+    if (thinkTime == null || result !== "*") return
+
+    const start = Date.now()
 
     const interval = setInterval(() => {
-      setOptimisticThinkTime((prev) => prev + 1)
+      const elapsed = Math.floor((Date.now() - start) / 1000)
+      setTick(elapsed)
     }, 1000)
 
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thinkTime])
+  }, [thinkTime, result, moves.length])
 
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (!mouseOverBoard.current) return
+
     if (e.key === "ArrowLeft") {
       e.preventDefault()
       undoMove()
@@ -92,26 +81,32 @@ export function DGTBoard({
   useEffect(() => {
     loadPgn()
     setUndoCount(0)
-    setOptimisticThinkTime(thinkTime ?? 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moves.length])
 
-  let currentWTimestamp =
-    wTimestamps.at(
-      -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
-    ) ?? 5400
-  let currentBTimestamp =
-    bTimestamps.at(
-      -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
-    ) ?? 5400
+  useEffect(() => {
+    const move = game.history().at(-1)
 
-  if (undoCount === 0) {
-    if (game.turn() === "w") {
-      currentWTimestamp -= optimisticThinkTime
+    if (
+      !navigator.userActivation.hasBeenActive ||
+      !move ||
+      !gameLength ||
+      !moveSoundRef.current ||
+      !captureSoundRef.current
+    )
+      return
+
+    if (firstLoad) return setFirstLoad(false)
+
+    if (move.includes("x")) {
+      captureSoundRef.current.currentTime = 0
+      captureSoundRef.current.play()
     } else {
-      currentBTimestamp -= optimisticThinkTime
+      moveSoundRef.current.currentTime = 0
+      moveSoundRef.current.play()
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameLength, moves.length])
 
   function reset() {
     const gameCopy = { ...game }
@@ -128,6 +123,7 @@ export function DGTBoard({
 
   function undoMove() {
     if (undoCount === moves.length) return
+
     const gameCopy = { ...game }
     gameCopy.undo()
     setGame(gameCopy)
@@ -138,6 +134,7 @@ export function DGTBoard({
     if (undoCount === 0) return
     const move = moves.at(-undoCount)
     if (!move) return
+
     const gameCopy = { ...game }
     gameCopy.move(move)
     setGame(gameCopy)
@@ -148,6 +145,8 @@ export function DGTBoard({
 
   return (
     <div className="@container">
+      <audio ref={moveSoundRef} src={"/move.mp3"} />
+      <audio ref={captureSoundRef} src={"/capture.mp3"} />
       <div
         className="flex flex-col @lg:flex-row gap-2"
         onMouseEnter={() => (mouseOverBoard.current = true)}
@@ -155,21 +154,18 @@ export function DGTBoard({
       >
         <div className="flex-1 space-y-2">
           <div>
-            <div className="flex justify-between w-full p-2 bg-gray-800 text-white font-bold leading-none">
-              <div>
-                {bTitle && `${bTitle} `}
-                {bName} <span className="font-normal pl-1">{bElo}</span>
-              </div>
-              <div
-                className={
-                  result === "*" && game.turn() === "b" && undoCount === 0
-                    ? "text-orange-500"
-                    : undefined
-                }
-              >
-                {formatSeconds(currentBTimestamp)}
-              </div>
-            </div>
+            <Clock
+              className="bg-gray-800 text-white"
+              undoCount={undoCount}
+              turn={game.turn() === "b"}
+              result={
+                { "0-1": "win", "1-0": "loss", "1/2-1/2": "draw", "*": "*" }[
+                  result
+                ] as "win" | "loss" | "draw" | "*"
+              }
+              thinkTime={(thinkTime ?? 0) + tick}
+              player={black}
+            />
             <Chessboard
               fen={game.fen()}
               previousMove={
@@ -179,21 +175,18 @@ export function DGTBoard({
               }
               check={game.in_check() ? game.turn() : undefined}
             />
-            <div className="flex justify-between w-full p-2 bg-gray-200 text-black font-bold leading-none">
-              <div>
-                {wTitle && `${wTitle} `}
-                {wName} <span className="font-normal pl-1">{wElo}</span>
-              </div>
-              <div
-                className={
-                  result === "*" && game.turn() === "w" && undoCount === 0
-                    ? "text-orange-500"
-                    : undefined
-                }
-              >
-                {formatSeconds(currentWTimestamp)}
-              </div>
-            </div>
+            <Clock
+              className="bg-gray-200 text-black"
+              undoCount={undoCount}
+              turn={game.turn() === "w"}
+              result={
+                { "1-0": "win", "0-1": "loss", "1/2-1/2": "draw", "*": "*" }[
+                  result
+                ] as "win" | "loss" | "draw" | "*"
+              }
+              thinkTime={(thinkTime ?? 0) + tick}
+              player={white}
+            />
           </div>
           <div className="flex gap-2">
             <Button
@@ -231,7 +224,7 @@ export function DGTBoard({
         </div>
         <ScrollArea
           ref={tableScrollAreaRef}
-          className="min-w-[10.5rem] max-w-[10.5rem] pr-1 aspect-video hidden @lg:block"
+          className="w-[10.5rem] pr-1 aspect-video hidden @lg:block"
         >
           <Table className={geistMono.className}>
             <TableHeader>

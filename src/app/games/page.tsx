@@ -1,7 +1,6 @@
 import { Metadata } from "next"
 import type { TournamentData } from "./types"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { RoundTabsList } from "./_components/round-tabs-list"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RoundContent } from "./_components/round-content"
 
 export const metadata: Metadata = {
@@ -11,11 +10,11 @@ export const metadata: Metadata = {
 export const revalidate = 0
 
 export default async function Games() {
-  const tournamentData: TournamentData = await fetch(
+  const { rounds }: TournamentData = await fetch(
     `https://lichess.org/api/broadcast/${process.env.LICHESS_BROADCAST_ID}`
   ).then((res) => res.json())
 
-  const ongoingRounds = tournamentData.rounds.filter((round) => round.ongoing)
+  const ongoingRounds = rounds.filter((round) => round.ongoing)
 
   return (
     <Tabs
@@ -24,10 +23,21 @@ export default async function Games() {
       }
       className="pb-4"
     >
-      <RoundTabsList rounds={tournamentData.rounds} />
-      {tournamentData.rounds.map((round) => (
+      <TabsList className="mb-4 w-full">
+        {rounds.map((round) => (
+          <TabsTrigger
+            key={round.id}
+            value={round.slug}
+            className="sm:before:content-['Round'] flex gap-[1ch]"
+            disabled={round.startsAt > Date.now()}
+          >
+            {round.slug.at(-1)}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {rounds.map((round) => (
         <TabsContent key={round.id} value={round.slug}>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 items-end">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <RoundContent roundId={round.id} ongoing={round.ongoing} />
           </div>
         </TabsContent>

@@ -1,6 +1,6 @@
 import { parsePGN } from "@/lib/parsers"
 import { OngoingRoundContent } from "./ongoing-round-content"
-import { DGTBoard } from "./dgt-board"
+import { DGTBoard } from "./dgt-board/dgt-board"
 
 export async function RoundContent({
   roundId,
@@ -20,19 +20,7 @@ export async function RoundContent({
       .map((gamePGN) => parsePGN(gamePGN))
 
     return games.map((game) => (
-      <DGTBoard
-        key={game.wName + game.bName}
-        moves={game.moves}
-        wTimestamps={game.wTimestamps}
-        bTimestamps={game.bTimestamps}
-        wName={game.wName}
-        bName={game.bName}
-        wTitle={game.wTitle}
-        bTitle={game.bTitle}
-        wElo={game.wElo}
-        bElo={game.bElo}
-        result={game.result}
-      />
+      <DGTBoard key={game.white.name + game.black.name} gameData={game} />
     ))
   }
 
