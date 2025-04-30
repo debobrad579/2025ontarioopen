@@ -1,15 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { parsePGN } from "@/lib/parsers"
 import type { Game, RoundData } from "../types"
-import { DGTBoard } from "./dgt-board"
-import { SkeletonDGTBoard } from "./skeleton-dgt-board"
+import { DGTBoard } from "./dgt-board/dgt-board"
+import { SkeletonDGTBoard } from "./dgt-board/skeleton-dgt-board"
 
 export function OngoingRoundContent({ roundId }: { roundId: string }) {
   const [games, setGames] = useState<Game[]>([])
-  const moveSoundRef = useRef<HTMLAudioElement>(null)
-  const captureSoundRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     let socket: WebSocket | null = null
@@ -53,14 +51,6 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
           .filter((pgn: string) => pgn !== "")
         for (const gamePGN of gamePGNs) {
           const newGame = parsePGN(gamePGN)
-
-          if (newGame.moves.at(-1)?.includes("x") && captureSoundRef.current) {
-            captureSoundRef.current.currentTime = 0
-            captureSoundRef.current.play()
-          } else if (moveSoundRef.current) {
-            moveSoundRef.current.currentTime = 0
-            moveSoundRef.current.play()
-          }
 
           setGames((prevGames) => {
             return prevGames.map((game) =>
@@ -106,8 +96,6 @@ export function OngoingRoundContent({ roundId }: { roundId: string }) {
     Array.from({ length: 6 }).map((_, i) => <SkeletonDGTBoard key={i} />)
   ) : (
     <>
-      <audio ref={moveSoundRef} src={"/move.mp3"} preload="auto" />
-      <audio ref={captureSoundRef} src={"/capture.mp3"} preload="auto" />
       {games.map((game) => (
         <DGTBoard key={game.white.name + game.black.name} gameData={game} />
       ))}

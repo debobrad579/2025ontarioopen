@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SkeletonDGTBoard } from "./_components/skeleton-dgt-board"
+import { SkeletonDGTBoard } from "./_components/dgt-board/skeleton-dgt-board"
 
 export default function Loading() {
   return (

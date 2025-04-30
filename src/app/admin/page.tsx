@@ -41,7 +41,7 @@ export default async function Admin() {
   ])
 
   return (
-    <>
+    <div className="space-y-4 pb-4">
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="font-bold text-2xl text-center">
@@ -203,10 +203,16 @@ export default async function Admin() {
                 <TableBody>
                   <TableRow>
                     <TableCell className="text-center">Est. Future</TableCell>
-                    <TableCell className="text-center">{formatCurrency(availableFunds / 100)}</TableCell>
+                    <TableCell className="text-center">
+                      {formatCurrency(availableFunds / 100)}
+                    </TableCell>
                   </TableRow>
                   {payouts
-                    .filter((payout) => payout.status === "paid" || payout.status === "in_transit")
+                    .filter(
+                      (payout) =>
+                        payout.status === "paid" ||
+                        payout.status === "in_transit"
+                    )
                     .map((payout) => (
                       <TableRow key={payout.id}>
                         <TableCell className="text-center">
@@ -221,10 +227,9 @@ export default async function Admin() {
               </Table>
             </ScrollArea>
           </CardContent>
-          <Separator />
         </Card>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -284,5 +289,8 @@ async function fetchAllPayouts() {
 
 async function fetchAvailableFunds() {
   const balance = await stripe.balance.retrieve()
-  return balance.pending.map(i => i.amount).reduce((a, b) => a + b) + balance.available.map(i => i.amount).reduce((a, b) => a + b)
+  return (
+    balance.pending.map((i) => i.amount).reduce((a, b) => a + b) +
+    balance.available.map((i) => i.amount).reduce((a, b) => a + b)
+  )
 }

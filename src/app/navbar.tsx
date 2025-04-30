@@ -35,9 +35,6 @@ export function Navbar() {
               <Link href="/players">Players</Link>
             </Button>
             <Button variant="ghost" asChild>
-              <Link href="/games">Games</Link>
-            </Button>
-            <Button variant="ghost" asChild>
               <a
                 href="https://drive.google.com/file/d/1zatF7bkLtenGF9hOAY6cstqbWCnbxUKP"
                 target="_blank"

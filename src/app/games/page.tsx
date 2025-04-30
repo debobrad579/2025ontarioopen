@@ -37,7 +37,7 @@ export default async function Games() {
       </TabsList>
       {rounds.map((round) => (
         <TabsContent key={round.id} value={round.slug}>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 items-end">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <RoundContent roundId={round.id} ongoing={round.ongoing} />
           </div>
         </TabsContent>

@@ -1,6 +1,6 @@
 import { parsePGN } from "@/lib/parsers"
 import { OngoingRoundContent } from "./ongoing-round-content"
-import { DGTBoard } from "./dgt-board"
+import { DGTBoard } from "./dgt-board/dgt-board"
 
 export async function RoundContent({
   roundId,

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Chess } from "chess.js"
 import {
   ChevronFirst,
@@ -23,8 +23,9 @@ import { formatSeconds } from "@/lib/formatters"
 import { cn } from "@/lib/utils"
 import { geistMono } from "@/assets/fonts/fonts"
 import { MoveCell } from "./move-cell"
-import { Chessboard } from "./chessboard"
-import { Game } from "../types"
+import { Chessboard } from "./chessboard/chessboard"
+import { Game } from "../../types"
+import { Clock } from "./clock"
 
 export function DGTBoard({
   gameData: { white, black, moves, result, thinkTime },
@@ -34,31 +35,13 @@ export function DGTBoard({
   const [game, setGame] = useState(new Chess())
   const [undoCount, setUndoCount] = useState(0)
   const [tick, setTick] = useState(0)
+  const [firstLoad, setFirstLoad] = useState(true)
   const mouseOverBoard = useRef(false)
   const tableScrollAreaRef = useRef<HTMLDivElement>(null)
   const listScrollAreaRef = useRef<HTMLDivElement>(null)
   const moveSoundRef = useRef<HTMLAudioElement>(null)
   const captureSoundRef = useRef<HTMLAudioElement>(null)
-  const checkSoundRef = useRef<HTMLAudioElement>(null)
-  const castleSoundRef = useRef<HTMLAudioElement>(null)
-  const promoteSoundRef = useRef<HTMLAudioElement>(null)
-  const userInteracted = useRef(false)
-
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      userInteracted.current = true
-      window.removeEventListener("click", handleUserInteraction)
-      window.removeEventListener("keydown", handleUserInteraction)
-    }
-
-    window.addEventListener("click", handleUserInteraction)
-    window.addEventListener("keydown", handleUserInteraction)
-
-    return () => {
-      window.removeEventListener("click", handleUserInteraction)
-      window.removeEventListener("keydown", handleUserInteraction)
-    }
-  }, [])
+  const gameLength = useMemo(() => game.history().length, [game])
 
   useEffect(() => {
     if (thinkTime == null || result !== "*") return
@@ -76,6 +59,7 @@ export function DGTBoard({
 
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (!mouseOverBoard.current) return
+
     if (e.key === "ArrowLeft") {
       e.preventDefault()
       undoMove()
@@ -104,36 +88,26 @@ export function DGTBoard({
   useEffect(() => {
     const move = game.history().at(-1)
 
-    console.log(move)
-
     if (
-      !userInteracted.current ||
+      !navigator.userActivation.hasBeenActive ||
       !move ||
+      !gameLength ||
       !moveSoundRef.current ||
-      !captureSoundRef.current ||
-      !checkSoundRef.current ||
-      !castleSoundRef.current ||
-      !promoteSoundRef.current
+      !captureSoundRef.current
     )
       return
+
+    if (firstLoad) return setFirstLoad(false)
 
     if (move.includes("x")) {
       captureSoundRef.current.currentTime = 0
       captureSoundRef.current.play()
-    } else if (move.includes("+") || move.includes("#")) {
-      checkSoundRef.current.currentTime = 0
-      checkSoundRef.current.play()
-    } else if (move.includes("-")) {
-      castleSoundRef.current.currentTime = 0
-      castleSoundRef.current.play()
-    } else if (move.includes("=")) {
-      promoteSoundRef.current.currentTime = 0
-      promoteSoundRef.current.play()
     } else {
       moveSoundRef.current.currentTime = 0
       moveSoundRef.current.play()
     }
-  }, [game.history().length])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameLength, moves.length])
 
   let currentWTimestamp =
     white.timestamps.at(
@@ -192,9 +166,6 @@ export function DGTBoard({
     <div className="@container">
       <audio ref={moveSoundRef} src={"/move.mp3"} />
       <audio ref={captureSoundRef} src={"/capture.mp3"} />
-      <audio ref={checkSoundRef} src={"/check.mp3"} />
-      <audio ref={castleSoundRef} src={"/castle.mp3"} />
-      <audio ref={promoteSoundRef} src={"/promote.mp3"} />
       <div
         className="flex flex-col @lg:flex-row gap-2"
         onMouseEnter={() => (mouseOverBoard.current = true)}
@@ -202,34 +173,18 @@ export function DGTBoard({
       >
         <div className="flex-1 space-y-2">
           <div>
-            <div className="flex justify-between w-full p-2 bg-gray-800 text-white font-bold leading-none">
-              <div>
-                {black.title && `${black.title} `}
-                {black.name}
-                <span className="font-normal pl-1">{black.elo}</span>
-              </div>
-              <div
-                className={
-                  undoCount !== 0
-                    ? undefined
-                    : result === "0-1"
-                    ? "text-green-500"
-                    : result === "1-0"
-                    ? "text-red-500"
-                    : result === "*" && game.turn() === "b"
-                    ? "text-orange-500"
-                    : undefined
-                }
-              >
-                {undoCount !== 0 || result === "*"
-                  ? formatSeconds(currentBTimestamp)
-                  : result === "0-1"
-                  ? 1
-                  : result === "1-0"
-                  ? 0
-                  : "1/2"}
-              </div>
-            </div>
+            <Clock
+              className="bg-gray-800 text-white"
+              undoCount={undoCount}
+              turn={game.turn() === "b"}
+              result={
+                { "0-1": "win", "1-0": "loss", "1/2-1/2": "draw", "*": "*" }[
+                  result
+                ] as "win" | "loss" | "draw" | "*"
+              }
+              thinkTime={(thinkTime ?? 0) + tick}
+              player={black}
+            />
             <Chessboard
               fen={game.fen()}
               previousMove={
@@ -239,34 +194,18 @@ export function DGTBoard({
               }
               check={game.in_check() ? game.turn() : undefined}
             />
-            <div className="flex justify-between w-full p-2 bg-gray-200 text-black font-bold leading-none">
-              <div>
-                {white.title && `${white.title} `}
-                {white.name}{" "}
-                <span className="font-normal pl-1">{white.elo}</span>
-              </div>
-              <div
-                className={
-                  undoCount !== 0
-                    ? undefined
-                    : result === "1-0"
-                    ? "text-green-500"
-                    : result === "0-1"
-                    ? "text-red-500"
-                    : result === "*" && game.turn() === "w"
-                    ? "text-orange-500"
-                    : undefined
-                }
-              >
-                {undoCount !== 0 || result === "*"
-                  ? formatSeconds(currentWTimestamp)
-                  : result === "1-0"
-                  ? 1
-                  : result === "0-1"
-                  ? 0
-                  : "1/2"}
-              </div>
-            </div>
+            <Clock
+              className="bg-gray-200 text-black"
+              undoCount={undoCount}
+              turn={game.turn() === "w"}
+              result={
+                { "1-0": "win", "0-1": "loss", "1/2-1/2": "draw", "*": "*" }[
+                  result
+                ] as "win" | "loss" | "draw" | "*"
+              }
+              thinkTime={(thinkTime ?? 0) + tick}
+              player={white}
+            />
           </div>
           <div className="flex gap-2">
             <Button
