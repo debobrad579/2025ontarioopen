@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { formatSeconds } from "@/lib/formatters"
 import { cn } from "@/lib/utils"
 import { geistMono } from "@/assets/fonts/fonts"
 import { MoveCell } from "./move-cell"
@@ -108,24 +107,6 @@ export function DGTBoard({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameLength, moves.length])
-
-  let currentWTimestamp =
-    white.timestamps.at(
-      -Math.ceil((undoCount + 1 + Number(game.turn() === "w")) / 2)
-    ) ?? 5400
-  let currentBTimestamp =
-    black.timestamps.at(
-      -Math.ceil((undoCount + 1 + Number(game.turn() === "b")) / 2)
-    ) ?? 5400
-
-  if (undoCount === 0 && result === "*") {
-    const optimisticThinkTime = Math.max(0, (thinkTime ?? 0) + tick)
-    if (game.turn() === "w") {
-      currentWTimestamp -= optimisticThinkTime
-    } else {
-      currentBTimestamp -= optimisticThinkTime
-    }
-  }
 
   function reset() {
     const gameCopy = { ...game }
