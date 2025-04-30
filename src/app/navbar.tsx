@@ -42,6 +42,14 @@ export function Navbar() {
                 Flyer
               </a>
             </Button>
+            <Button variant="ghost" asChild>
+              <a
+                href="https://docs.google.com/document/d/1FBm3iEVuJkZsIf6exNB5hqvEc_8yrLTW"
+                target="_blank"
+              >
+                Regulations
+              </a>
+            </Button>
           </>
         )}
       </div>
