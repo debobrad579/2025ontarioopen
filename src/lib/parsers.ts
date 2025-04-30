@@ -21,7 +21,7 @@ export function parsePGN(gamePGN: string): Game {
   const game: Game = {
     white: { name: "", elo: "", timestamps: [] },
     black: { name: "", elo: "", timestamps: [] },
-    result: "",
+    result: "*",
     moves: [],
   }
 
@@ -35,7 +35,7 @@ export function parsePGN(gamePGN: string): Game {
     } else if (line.startsWith('[BlackElo "')) {
       game.black.elo = line.split('"')[1]
     } else if (line.startsWith('[Result "')) {
-      game.result = line.split('"')[1]
+      game.result = line.split('"')[1] as "*" | "1-0" | "0-1" | "1/2-1/2"
     } else if (line.startsWith('[WhiteTitle "')) {
       game.white.title = line.split('"')[1]
     } else if (line.startsWith('[BlackTitle "')) {
