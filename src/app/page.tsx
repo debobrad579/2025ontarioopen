@@ -5,17 +5,14 @@ import {
 } from "@/components/ui/carousel"
 import { FeaturedPlayerCard } from "@/components/page/featured-player-card"
 import { SponsorCard } from "@/components/page/sponsor-card"
+import { GhentLogo } from "./ghent-logo"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { HealthSpotLogo } from "./health-spot-logo"
-import { GhentLogo } from "./ghent-logo"
 import preotu from "@/assets/img/preotu.jpg"
 import poltkin from "@/assets/img/plotkin.jpg"
 import vettese from "@/assets/img/vettese.jpg"
-import atanasov from "@/assets/img/atanasov.jpg"
-import thavandiran from "@/assets/img/thavandiran.jpg"
-import liang from "@/assets/img/liang.jpg"
+import { HealthSpotLogo } from "./health-spot-logo"
 
 export default function Home() {
   return (
@@ -253,44 +250,6 @@ export default function Home() {
                 North American Youth Chess Championship and earned his FM title. In 2021, he won the North American Youth Chess Championship U18 category, 
                 subsequently achieving his International Master title. He has also been a member of the U16 Olympiad team. 
                 He has played for the Hart House Chess Club’s Pan-American Intercollegiate and Canadian University Championship teams."
-                />
-              </CarouselItem>
-              <CarouselItem>
-                <FeaturedPlayerCard
-                  name="Shiyam Thavandiran"
-                  title="International Master"
-                  image={thavandiran}
-                  description="
-                Shiyam started playing chess at the age of 7.  He placed 4th in the World U10 Championships and became the youngest Canadian junior champion,
-                in Brantford, at the age of 12.  This was his first success in Brantford and he returned in 2015 to play in our hosting of the Ontario Open.
-                There he split first prize with GM Maxim Dlugy.  We'll see if third time is a charm this year.
-                In January 2012, he won the Canadian University Championship, which helped his University of Western Ontario team.
-                He won the Canadian Chess Championship in April 2024, during which he went undefeated winning against GM Shawn Rodrigue-Lemieux,
-                IM Raja Panjwani, IM Nikolay Noritsyn, and GM Bator Sambuev. In September 2024, he represented the country at the 45th Chess Olympiad,
-                where he defeated GM Štěpán Žilka and GM Trần Tuấn Minh."
-                />
-              </CarouselItem>
-              <CarouselItem>
-                <FeaturedPlayerCard
-                  name="Jason Liang" 
-                  title="International Master"
-                  image={liang}
-                  description="
-                Jason Liang is an IM from upstate New York.  Born in 2007, he has held the titles of National Master since 2018,
-                FIDE Master since 2019, and International Master since 2021. In 2022, he received the Arthur Award for Chess Excellence from the Eade
-                Foundation. In May 2023, he was selected to receive a Samford Fellowship by the U.S. Chess Trust. He was ranked World #33 junior chess
-                player by FIDE on April 1, 2023."
-                />
-              </CarouselItem>
-              <CarouselItem>
-                <FeaturedPlayerCard
-                  name="Anthony Atanasov"
-                  title="International Master"
-                  image={atanasov}
-                  description="
-                Born in 2008, Anthony Atanasov has been playing competitive chess in Canada since 2013!  His rise has been steady.
-                In three years, his rating climbed over 1600.  By 2018, his rating first passed 2000 (he was barely 10 by this time!!).
-                He has been incredibly active in the 2020's. Anthony gained the IM title in February 2024."
                 />
               </CarouselItem>
             </CarouselContent>
