@@ -25,7 +25,7 @@ export function UpdateRatingsButton() {
           await revalidateAdminAction()
         })
       }
-      disabled={isPending}
+      disabled={process.env.NODE_ENV !== "development" || isPending}
     >
       {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
       {isPending ? "Updating Ratings" : "Update Ratings"}
