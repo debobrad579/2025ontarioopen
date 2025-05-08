@@ -250,6 +250,10 @@ async function fetchNetAmount(
 }
 
 async function fetchAllCharges() {
+  return (await stripe.charges.list({
+    limit: 100,
+  })).data
+
   const charges: Stripe.Charge[] = []
   let hasMore = true
   let startingAfter: string | undefined
@@ -270,6 +274,10 @@ async function fetchAllCharges() {
 }
 
 async function fetchAllPayouts() {
+  return (await stripe.payouts.list({
+    limit: 100,
+  })).data
+
   const payouts: Stripe.Payout[] = []
   let hasMore = true
   let startingAfter: string | undefined
