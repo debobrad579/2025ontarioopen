@@ -93,14 +93,14 @@ export default function Home() {
           </div>
           <div>
             <h2 className="font-bold text-xl">Projected Prize Fund:</h2>
-            <p>$15,000 based on 250 paid entries</p>
-            <p>$10,000 based on 200 paid entries</p>
-            <p>$7,000 based on 150 paid entries</p>
+            <p>$17,000 based on 200 paid entries</p>
+            <p>$13,000 based on 150 paid entries</p>
+            <p>$11,500 based on 125 paid entries</p>
             <h3 className="font-bold text-lg">Percentage / Section:</h3>
-            <p>2000 and Above: 40%</p>
-            <p>1600 &ndash; 1999: 30%</p>
-            <p>1200 &ndash; 1599: 20%</p>
-            <p>U1200 and Unrated: 10%</p>
+            <p>2000 and Above: 45%</p>
+            <p>1600 &ndash; 1999: 35%</p>
+            <p>1200 &ndash; 1599: 12.5%</p>
+            <p>U1200 and Unrated: 7.5%</p>
             <h3 className="font-bold text-lg">
               $1,500 Guaranteed First Place Prize
             </h3>
