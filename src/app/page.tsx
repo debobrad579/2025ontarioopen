@@ -176,8 +176,7 @@ export default function Home() {
             <h2 className="font-bold text-xl">Fees:</h2>
             <p>GM / WGM: Free entry</p>
             <p>
-              IM / WIM / FIDE 2400+: Free entry before April 21, 2025; $60 after
-              (no additional discounts)
+              IM / WIM / FIDE 2400+: $60 (no additional discounts)
             </p>
             <p className="line-through">Early: $100 before January 1, 2025</p>
             <p className="line-through">Regular: $110 January 1 &ndash; April 20, 2025</p>
