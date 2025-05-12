@@ -113,22 +113,7 @@ export default function Home() {
             </DialogTrigger>
             <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-4xl rounded-xl bg-card">
               <ScrollArea className="max-h-[calc(100vh-4rem)] p-8">
-                <div>
-                  <h2 className="font-bold text-xl">Best Western:</h2>
-                  <p>
-                    The rate is $139 + tax per night + HST. You must book by
-                    phone (
-                    <a
-                      href="tel:+15197538651"
-                      className="text-blue-500 hover:underline"
-                    >
-                      519-753-8651
-                    </a>
-                    ) as the rooms are blocked off and online will show no
-                    availability. Be sure to mention the blocked off rooms for
-                    the Brantford Chess Club tournament starting May 17th.
-                  </p>
-                </div>
+                <h2 className="font-bold text-xl">All the hotel rooms at the Best Western are currently booked.</h2>
                 <div>
                   <h2 className="font-bold text-xl">
                     Laurier University Apartments (Grand River Hall):
@@ -155,7 +140,7 @@ export default function Home() {
                     >
                       Market Centre Parkade
                     </a>
-                    . To book, email{" "}
+                    . To reserve an apartment/room, please email{" "}
                     <a
                       href="mailto:conferences@wlu.ca"
                       className="text-blue-500 hover:underline"
@@ -164,7 +149,7 @@ export default function Home() {
                     </a>{" "}
                     with your name, address, phone number, email,
                     arrival/departure dates, and names of anyone you wish to
-                    share the apartment with. Payment is not required until May.
+                    share the apartment with.
                   </p>
                 </div>
               </ScrollArea>
