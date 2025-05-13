@@ -29,14 +29,14 @@ export async function getSectionPlayers(bottomBound: number, topBound: number) {
             GREATEST("rating", "FIDERating") BETWEEN ${bottomBound} AND ${topBound}
             AND NOT (
               GREATEST("rating", "FIDERating") BETWEEN ${
-                topBound - 99
+                topBound - 399
               } AND ${topBound}
               AND "isPlayingUp" = TRUE
             )
           )
           OR (
             GREATEST("rating", "FIDERating") BETWEEN ${
-              bottomBound - 100
+              bottomBound - 400
             } AND ${bottomBound}
             AND "isPlayingUp" = TRUE
           )
@@ -77,4 +77,13 @@ export async function getSectionStandings(
       ORDER BY "totalScore" DESC, "rating" DESC, "lastName" DESC;
     `
   ).rows
+}
+
+export async function getPlayersCount() {
+  const result = await sql<{ count: number }>`
+    SELECT COUNT(*) AS count
+    FROM "OntarioOpenPlayer"
+    WHERE "hasPaid" = true;
+  `;
+  return result.rows[0].count;
 }

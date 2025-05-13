@@ -32,7 +32,7 @@ import { formatFIDETitle } from "@/lib/formatters"
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
 import Link from "next/link"
 
-export function RegisterForm() {
+export function RegisterForm({ playerCount }: { playerCount: number }) {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,6 +42,7 @@ export function RegisterForm() {
       isFemale: false,
       isPlayingUp: false,
     },
+    disabled: playerCount >= 180,
   })
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -222,7 +223,7 @@ export function RegisterForm() {
         <Button
           type="submit"
           className="w-full flex gap-2 items-center"
-          disabled={isPending}
+          disabled={isPending || playerCount >= 180}
         >
           {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
           <div>{isPending ? "Registering" : "Register"}</div>

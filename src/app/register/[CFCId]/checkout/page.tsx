@@ -1,4 +1,4 @@
-import { getPlayer } from "@/db/select"
+import { getPlayer, getPlayersCount } from "@/db/select"
 import { notFound } from "next/navigation"
 import Stripe from "stripe"
 import { CheckoutForm } from "./checkout-form"
@@ -16,9 +16,13 @@ export default async function Checkout({
   const number = Number(CFCId)
   if (Number.isNaN(number)) return notFound()
 
+  const playerCount = await getPlayersCount()
+  if (playerCount >= 180) return notFound()
+
   const player = await getPlayer(number)
   if (!player) return notFound()
   if (getsFreeEntry(player)) return notFound()
+
   if (player.hasPaid)
     return (
       <h1 className="text-lg text-center">
