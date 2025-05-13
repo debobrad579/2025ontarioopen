@@ -89,7 +89,7 @@ export default async function StripePage() {
           </ScrollArea>
         </CardContent>
       </Card>
-      <Card className="w-full lg:w-96 shrink-0">
+      <Card className="flex flex-col h-full w-full lg:w-96">
         <CardHeader>
           <CardTitle className="font-bold text-2xl text-center">
             Payouts
