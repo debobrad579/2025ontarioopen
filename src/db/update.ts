@@ -12,6 +12,7 @@ export async function updateHasPaid(CFCId: number, hasPaid: boolean) {
     `
   ).rows[0]
   revalidatePath("/players")
+  revalidatePath("/register")
   return player
 }
 

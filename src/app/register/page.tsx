@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   title: "Register",
 }
 
-export const revalidate = 0
-
 export default async function Register() {
   const playerCount = await getPlayersCount()
 
