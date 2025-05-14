@@ -163,10 +163,6 @@ export default function Home() {
             <p className="line-through">Early: $100 before January 1, 2025</p>
             <p className="line-through">Regular: $110 January 1 &ndash; April 20, 2025</p>
             <p>Late: $120 April 21 &ndash; May 15, 2025</p>
-            <p>
-              Onsite: $130 After May 15, 2025; cash only (may receive a round
-              one bye)
-            </p>
             <h3 className="font-bold text-lg">Play Up Fee:</h3>
             <p>$20 (must be within 100 points of next section up)</p>
             <div className="flex gap-1 items-center">
