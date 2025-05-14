@@ -155,26 +155,26 @@ export default function Home() {
         </div>
         <div className="flex-1 space-y-4">
           <div>
-            <h2 className="font-bold text-xl">Unfortunately, there are no more entries available.</h2>
-            <h2 className="font-bold text-xl">Fees:</h2>
-            <p>GM / WGM: Free entry</p>
-            <p>
+            <h2 className="font-bold text-2xl">Unfortunately, there are no more entries available.</h2>
+            <h2 className="font-bold text-xl line-through">Fees:</h2>
+            <p className="line-through">GM / WGM: Free entry</p>
+            <p className="line-through">
               IM / WIM / FIDE 2400+: $60 (no additional discounts)
             </p>
             <p className="line-through">Early: $100 before January 1, 2025</p>
             <p className="line-through">Regular: $110 January 1 &ndash; April 20, 2025</p>
-            <p>Late: $120 April 21 &ndash; May 15, 2025</p>
-            <h3 className="font-bold text-lg">Play Up Fee:</h3>
-            <p>$20 (must be within 100 points of next section up)</p>
+            <p className="line-through">Late: $120 April 21 &ndash; May 15, 2025</p>
+            <h3 className="font-bold text-lg line-through">Play Up Fee:</h3>
+            <p className="line-through">$20 (must be within 100 points of next section up)</p>
             <div className="flex gap-1 items-center">
-              <h3 className="font-bold text-lg">$10 Discounts:</h3>
-              <p className="text-muted-foreground text-sm">(Maximum $20)</p>
+              <h3 className="font-bold text-lg line-through">$10 Discounts:</h3>
+              <p className="text-muted-foreground text-sm line-through">(Maximum $20)</p>
             </div>
             <ul className="list-disc pl-4">
-              <li>Junior: Born in or after 2005</li>
-              <li>Senior: Born in or before 1960</li>
-              <li>Female</li>
-              <li>FIDE Master</li>
+              <li className="line-through">Junior: Born in or after 2005</li>
+              <li className="line-through">Senior: Born in or before 1960</li>
+              <li className="line-through">Female</li>
+              <li className="line-through">FIDE Master</li>
             </ul>
             <h3 className="font-bold text-lg">Refunds:</h3>
             <ul className="list-disc pl-4">
