@@ -33,14 +33,6 @@ export function Navbar() {
             </Button>
             <Button variant="ghost" asChild>
               <a
-                href="https://drive.google.com/file/d/1zatF7bkLtenGF9hOAY6cstqbWCnbxUKP"
-                target="_blank"
-              >
-                Flyer
-              </a>
-            </Button>
-            <Button variant="ghost" asChild>
-              <a
                 href="https://docs.google.com/document/d/1FBm3iEVuJkZsIf6exNB5hqvEc_8yrLTW"
                 target="_blank"
               >
@@ -62,14 +54,6 @@ export function Navbar() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <Link href="/players">Players</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <a
-                  href="https://drive.google.com/file/d/1zatF7bkLtenGF9hOAY6cstqbWCnbxUKP"
-                  target="_blank"
-                >
-                  Flyer
-                </a>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <a
