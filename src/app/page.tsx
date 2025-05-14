@@ -92,7 +92,7 @@ export default function Home() {
             </b>
           </div>
           <div>
-            <h2 className="font-bold text-xl">Projected Prize Fund: $13,000 based on 180 entries</h2>
+            <h2 className="font-bold text-xl">Projected Prize Fund: $13,000 based on 180 entries (max capacity)</h2>
             <h3 className="font-bold text-lg">Percentage / Section:</h3>
             <p>2000 and Above: 45%</p>
             <p>1600 &ndash; 1999: 35%</p>
