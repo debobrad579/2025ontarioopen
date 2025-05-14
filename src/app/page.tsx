@@ -155,6 +155,7 @@ export default function Home() {
         </div>
         <div className="flex-1 space-y-4">
           <div>
+            <h2 className="font-bold text-xl">Unfortunately, there are no more entries available.</h2>
             <h2 className="font-bold text-xl">Fees:</h2>
             <p>GM / WGM: Free entry</p>
             <p>
