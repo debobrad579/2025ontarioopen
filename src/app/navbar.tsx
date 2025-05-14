@@ -29,9 +29,6 @@ export function Navbar() {
         {isDesktop && (
           <>
             <Button variant="ghost" asChild>
-              <Link href="/register">Register</Link>
-            </Button>
-            <Button variant="ghost" asChild>
               <Link href="/players">Players</Link>
             </Button>
             <Button variant="ghost" asChild>
