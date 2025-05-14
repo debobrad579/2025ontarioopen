@@ -61,9 +61,6 @@ export function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Link href="/register">Register</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <Link href="/players">Players</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
