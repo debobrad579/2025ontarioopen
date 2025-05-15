@@ -16,6 +16,7 @@ import vettese from "@/assets/img/vettese.jpg"
 import atanasov from "@/assets/img/atanasov.jpg"
 import thavandiran from "@/assets/img/thavandiran.jpg"
 import liang from "@/assets/img/liang.jpg"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 export default function Home() {
   return (
@@ -86,72 +87,70 @@ export default function Home() {
               <li>1200 &ndash; 1599 (CFC rated only)</li>
               <li>U1200 and Unrated (CFC rated only)</li>
             </ul>
-            <b>
-              Sections are based on the most current rating before the
-              tournament (Higher of FIDE, CFC / USCF)
-            </b>
           </div>
           <div>
-            <h2 className="font-bold text-xl">Projected Prize Fund: $13,000 based on 180 entries (max capacity)</h2>
-            <h3 className="font-bold text-lg">Percentage / Section:</h3>
-            <p>2000 and Above: 45%</p>
-            <p>1600 &ndash; 1999: 35%</p>
-            <p>1200 &ndash; 1599: 12.5%</p>
-            <p>U1200 and Unrated: 7.5%</p>
-            <h3 className="font-bold text-lg">
-              $1,500 Guaranteed First Place Prize
-            </h3>
+            <h2 className="font-bold text-xl">Prizes:</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[3ch]"></TableHead>
+                  <TableHead className="w-[12ch]">Open</TableHead>
+                  <TableHead className="w-[12ch]">U2000</TableHead>
+                  <TableHead className="w-[12ch]">U1600</TableHead>
+                  <TableHead className="w-[12ch]">U1200/Unr.</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">1st</TableCell>
+                  <TableCell>$2,500</TableCell>
+                  <TableCell>$1,800</TableCell>
+                  <TableCell>$900</TableCell>
+                  <TableCell>$450</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">2nd</TableCell>
+                  <TableCell>$1,250</TableCell>
+                  <TableCell>$900</TableCell>
+                  <TableCell>$450</TableCell>
+                  <TableCell>$200</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">3rd</TableCell>
+                  <TableCell>$850</TableCell>
+                  <TableCell>$500</TableCell>
+                  <TableCell>$250</TableCell>
+                  <TableCell>$150</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">4th</TableCell>
+                  <TableCell>$500</TableCell>
+                  <TableCell>$300</TableCell>
+                  <TableCell>$120</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">5th</TableCell>
+                  <TableCell>$300</TableCell>
+                  <TableCell>$200</TableCell>
+                  <TableCell>$80</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">1st</TableCell>
+                  <TableCell>$400 (U2200)</TableCell>
+                  <TableCell>$200 (U1800)</TableCell>
+                  <TableCell>$120 (U1400)</TableCell>
+                  <TableCell>$100 (U1000)</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="text-muted-foreground">2nd</TableCell>
+                  <TableCell>$200 (U2200)</TableCell>
+                  <TableCell>$100 (U1800)</TableCell>
+                  <TableCell>$80 (U1400)</TableCell>
+                  <TableCell>$100 (1st Unr.)</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="secondary" className="w-full">
-                Accommodation Information
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="p-0 w-[calc(100%-4rem)] max-h-[calc(100%-4rem)] max-w-4xl rounded-xl bg-card">
-              <ScrollArea className="max-h-[calc(100vh-4rem)] p-8">
-                <h2 className="font-bold text-xl">All the hotel rooms at the Best Western are currently booked.</h2>
-                <div>
-                  <h2 className="font-bold text-xl">
-                    Laurier University Apartments (Grand River Hall):
-                  </h2>
-                  <p>
-                    We have a block of 3-bedroom apartments at Laurier
-                    University&apos;s Grand River Hall (
-                    <a
-                      href="https://www.google.com/maps/place/171+Colborne+St,+Brantford,+ON+N3T+6C9/@43.1382359,-80.2664068,17z/data=!3m1!4b1!4m6!3m5!1s0x882c660fa407b2a5:0x7afeaf605e7b66dc!8m2!3d43.138232!4d-80.2638319!16s%2Fg%2F11rg67sv9p?entry=ttu&g_ep=EgoyMDI1MDMxNi4wIKXMDSoJLDEwMjExNDU1SAFQAw%3D%3D"
-                      target="_blank"
-                      className="text-blue-500 hover:underline"
-                    >
-                      171 Colborne Street
-                    </a>
-                    ) available during the duration of the tournament for $180
-                    per apartment per night (or $60 per bedroom) + HST. Each
-                    apartment has 3 single bedrooms, 2 washrooms, a kitchen
-                    (fridge and stove only), and a living room. Parking is
-                    available at the{" "}
-                    <a
-                      href="https://www.brantford.ca/en/transportation/downtown-municipal-parking-lots.aspx"
-                      target="_blank"
-                      className="text-blue-500 hover:underline"
-                    >
-                      Market Centre Parkade
-                    </a>
-                    . To reserve an apartment/room, please email{" "}
-                    <a
-                      href="mailto:conferences@wlu.ca"
-                      className="text-blue-500 hover:underline"
-                    >
-                      conferences@wlu.ca
-                    </a>{" "}
-                    with your name, address, phone number, email,
-                    arrival/departure dates, and names of anyone you wish to
-                    share the apartment with.
-                  </p>
-                </div>
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
         </div>
         <div className="flex-1 space-y-4">
           <div>
