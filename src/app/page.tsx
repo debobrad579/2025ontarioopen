@@ -71,7 +71,7 @@ export default function Home() {
             </div>
             <div className="flex flex-wrap gap-1 items-center">
               <h3 className="font-bold text-lg">Arbiters:</h3>
-              <p>Brian Clarke, Zheng Ren</p>
+              <p>Brian Clarke, Zheng &ldquo;Cindy&rdquo; Ren</p>
             </div>
           </div>
         </div>
