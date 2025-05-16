@@ -232,21 +232,6 @@ export default function Home() {
               </CarouselItem>
               <CarouselItem>
                 <FeaturedPlayerCard
-                  name="Shiyam Thavandiran"
-                  title="International Master"
-                  image={thavandiran}
-                  description="
-                Shiyam started playing chess at the age of 7.  He placed 4th in the World U10 Championships and became the youngest Canadian junior champion,
-                in Brantford, at the age of 12.  This was his first success in Brantford and he returned in 2015 to play in our hosting of the Ontario Open.
-                There he split first prize with GM Maxim Dlugy.  We'll see if third time is a charm this year.
-                In January 2012, he won the Canadian University Championship, which helped his University of Western Ontario team.
-                He won the Canadian Chess Championship in April 2024, during which he went undefeated winning against GM Shawn Rodrigue-Lemieux,
-                IM Raja Panjwani, IM Nikolay Noritsyn, and GM Bator Sambuev. In September 2024, he represented the country at the 45th Chess Olympiad,
-                where he defeated GM Štěpán Žilka and GM Trần Tuấn Minh."
-                />
-              </CarouselItem>
-              <CarouselItem>
-                <FeaturedPlayerCard
                   name="Jason Liang" 
                   title="International Master"
                   image={liang}

@@ -1,11 +1,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPairings } from "@/db/select";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pairings",
+}
 
 export default async function Pairings() {
   const [open, u2000, u1600, u1200] = await Promise.all([getPairings("pOpen"), getPairings("pU2000"), getPairings("pU1600"), getPairings("pU1200")])
-
-  console.log(open.title)
 
   return (
     <Tabs defaultValue="open">

@@ -32,6 +32,9 @@ export function Navbar() {
               <Link href="/players">Players</Link>
             </Button>
             <Button variant="ghost" asChild>
+              <Link href="/pairings">Pairings</Link>
+            </Button>
+            <Button variant="ghost" asChild>
               <a
                 href="https://docs.google.com/document/d/1FBm3iEVuJkZsIf6exNB5hqvEc_8yrLTW"
                 target="_blank"
@@ -54,6 +57,9 @@ export function Navbar() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <Link href="/players">Players</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/pairings">Pairings</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <a
