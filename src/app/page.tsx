@@ -11,7 +11,6 @@ import preotu from "@/assets/img/preotu.jpg"
 import poltkin from "@/assets/img/plotkin.jpg"
 import vettese from "@/assets/img/vettese.jpg"
 import atanasov from "@/assets/img/atanasov.jpg"
-import thavandiran from "@/assets/img/thavandiran.jpg"
 import liang from "@/assets/img/liang.jpg"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
