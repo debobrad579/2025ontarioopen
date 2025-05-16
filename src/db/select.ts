@@ -46,39 +46,6 @@ export async function getSectionPlayers(bottomBound: number, topBound: number) {
   ).rows
 }
 
-export async function getSectionStandings(
-  bottomBound: number,
-  topBound: number
-) {
-  return (
-    await sql<Player & { totalScore: number }>`
-      SELECT *, (
-        CASE "result1" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END +
-        CASE "result2" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END +
-        CASE "result3" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END +
-        CASE "result4" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END +
-        CASE "result5" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END +
-        CASE "result6" WHEN 'WIN' THEN 1 WHEN 'DRAW' THEN 0.5 ELSE 0 END
-      ) AS "totalScore" FROM "OntarioOpenPlayer"
-      WHERE "hasPaid" = TRUE
-        AND (
-          (
-            "rating" BETWEEN ${bottomBound} AND ${topBound}
-            AND NOT (
-              "rating" BETWEEN ${topBound - 99} AND ${topBound}
-              AND "isPlayingUp" = TRUE
-            )
-          )
-          OR (
-            "rating" BETWEEN ${bottomBound - 100}
-            AND ${bottomBound} AND "isPlayingUp" = TRUE
-          )
-        )
-      ORDER BY "totalScore" DESC, "rating" DESC, "lastName" DESC;
-    `
-  ).rows
-}
-
 export async function getPlayersCount() {
   const result = await sql<{ count: number }>`
     SELECT COUNT(*) AS count
@@ -86,4 +53,13 @@ export async function getPlayersCount() {
     WHERE "hasPaid" = true;
   `;
   return result.rows[0].count;
+}
+
+export async function getPairings(section: string) {
+  return (
+    await sql<{ section: string, title: string, pairings: { [key: string]: string }[] }>`
+      SELECT * FROM "OntarioOpenPairing"
+      WHERE "section" = ${section};
+    `
+  ).rows[0]
 }

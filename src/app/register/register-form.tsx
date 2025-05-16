@@ -42,7 +42,7 @@ export function RegisterForm({ playerCount }: { playerCount: number }) {
       isFemale: false,
       isPlayingUp: false,
     },
-    disabled: playerCount >= 180,
+    disabled: playerCount >= 210,
   })
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -223,7 +223,7 @@ export function RegisterForm({ playerCount }: { playerCount: number }) {
         <Button
           type="submit"
           className="w-full flex gap-2 items-center"
-          disabled={isPending || playerCount >= 180}
+          disabled={isPending || playerCount >= 210}
         >
           {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
           <div>{isPending ? "Registering" : "Register"}</div>

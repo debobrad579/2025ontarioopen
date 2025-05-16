@@ -37,3 +37,27 @@ export async function updateFIDERating(CFCId: number, rating: number | null) {
     `
   ).rows[0]
 }
+
+export async function updatePairing(section: string, title: string, rows: Array<{ [key: string]: string }>) {
+  const jsonBlob = JSON.stringify(rows);
+
+  const result = await sql`
+    UPDATE "OntarioOpenPairing"
+    SET "pairings" = ${jsonBlob}::jsonb, "title" = ${title}
+    WHERE "section" = ${section}
+    RETURNING *;
+  `;
+
+  return result.rows[0];
+}
+
+export async function resetPairings() {
+  const result = await sql`
+    UPDATE "OntarioOpenPairing"
+    SET "pairings" = '[]'::jsonb, "title" = ''
+    RETURNING *;
+  `;
+
+  return result.rows[0];
+}
+

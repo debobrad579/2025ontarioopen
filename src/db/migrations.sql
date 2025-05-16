@@ -11,12 +11,17 @@ CREATE TABLE "OntarioOpenPlayer" (
     "isFemale" BOOLEAN NOT NULL,
     "isPlayingUp" BOOLEAN NOT NULL,
     "hasPaid" BOOLEAN DEFAULT FALSE,
-    "FIDERating" INT
-    "FIDETitle" VARCHAR(255)
+    "FIDERating" INT,
+    "FIDETitle" VARCHAR(255),
     "result1" RESULT DEFAULT 'NOT_PLAYED',
     "result2" RESULT DEFAULT 'NOT_PLAYED',
     "result3" RESULT DEFAULT 'NOT_PLAYED',
     "result4" RESULT DEFAULT 'NOT_PLAYED',
     "result5" RESULT DEFAULT 'NOT_PLAYED',
     "result6" RESULT DEFAULT 'NOT_PLAYED'
+);
+
+CREATE TABLE "OntarioOpenStanding" (
+    section VARCHAR(20) PRIMARY KEY,
+    pairings JSONB DEFAULT '[]'
 );
