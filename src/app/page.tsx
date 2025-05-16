@@ -172,10 +172,10 @@ export default function Home() {
               <li className="line-through">Female</li>
               <li className="line-through">FIDE Master</li>
             </ul>
-            <h3 className="font-bold text-lg">Refunds:</h3>
+            <h3 className="font-bold text-lg line-through">Refunds:</h3>
             <ul className="list-disc pl-4">
-              <li>Must be requested on or before Thursday, May 15, 2025</li>
-              <li>Will include a non-refundable service charge of 3.2%</li>
+              <li className="line-through">Must be requested on or before Thursday, May 15, 2025</li>
+              <li className="line-through">Will include a non-refundable service charge of 3.2%</li>
             </ul>
           </div>
         </div>
