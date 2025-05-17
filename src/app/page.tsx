@@ -30,9 +30,9 @@ export default function Home() {
           </div>
           <div>
             <h2 className="font-bold text-xl">Date and Location:</h2>
-            <p>
-              Saturday, May 17 &ndash; Monday, May 19, 2025, 10 am &ndash; 4 pm
-            </p>
+            <p>Saturday, May 17: 10 am, 4 pm</p>
+            <p>Sunday, May 18: 10 am, 4 pm</p>
+            <p>Monday, May 19: 10 am, 3 pm</p>
             <a
               className="text-blue-500 hover:underline"
               target="_blank"
@@ -45,7 +45,6 @@ export default function Home() {
             <h2 className="font-bold text-xl">Format and Time Controls:</h2>
             <p>6 Round Swiss</p>
             <p>90 minutes + 30 second bonus</p>
-            <b>Active CFC membership required</b>
           </div>
           <div>
             <h2 className="font-bold text-xl">Byes:</h2>
