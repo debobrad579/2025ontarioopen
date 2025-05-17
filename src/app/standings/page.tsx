@@ -16,7 +16,7 @@ export default async function Standings() {
         <TabsTrigger value="open">Open</TabsTrigger>
         <TabsTrigger value="u2000">U2000</TabsTrigger>
         <TabsTrigger value="u1600">U1600</TabsTrigger>
-        <TabsTrigger value="u1200">U1200</TabsTrigger>
+        <TabsTrigger value="u1200">U1200/Unr.</TabsTrigger>
       </TabsList>
       <TabsContent value="open">
         <PairingsTable standings={open.pairings} title={open.title} />

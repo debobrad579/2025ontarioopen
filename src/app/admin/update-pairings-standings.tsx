@@ -71,7 +71,7 @@ export function UpdatePairingsStandings() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" disabled={isResetPending} onClick={() => {
+          <Button variant="destructive" className="w-full" disabled={isResetPending} onClick={() => {
             startResetTransition(async () => {
               await resetPairingsAction()
             })
