@@ -14,7 +14,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 export function Navbar() {
-  const isDesktop = useMediaQuery("(min-width: 680px)")
+  const isDesktop = useMediaQuery("(min-width: 800px)")
 
   return (
     <div className="flex justify-between items-center gap-4 px-5 py-3 sm:px-10 md:px-20 lg:px-[10vw] bg-card">
@@ -36,6 +36,9 @@ export function Navbar() {
             </Button>
             <Button variant="ghost" asChild>
               <Link href="/standings">Standings</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/games">Games</Link>
             </Button>
             <Button variant="ghost" asChild>
               <a
@@ -66,6 +69,9 @@ export function Navbar() {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/standings">Standings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/games">Games</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <a

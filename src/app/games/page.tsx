@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 export const revalidate = 0
 
 export default async function Games() {
+  if (!process.env.LICHESS_BROADCAST_ID) return <h1 className="font-bold text-xl text-center">Games Not Posted Yet</h1>
+
   const { rounds }: TournamentData = await fetch(
     `https://lichess.org/api/broadcast/${process.env.LICHESS_BROADCAST_ID}`
   ).then((res) => res.json())
