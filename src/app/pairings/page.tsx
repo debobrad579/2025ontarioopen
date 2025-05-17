@@ -43,10 +43,12 @@ function PairingsTable({ pairings, title }: { pairings: { [key: string]: string 
       <Table className="mb-4">
         <TableHeader>
           <TableRow>
-            <TableHead>Board #</TableHead>
-            <TableHead>Result</TableHead>
+            <TableHead>Bd</TableHead>
+            <TableHead>#</TableHead>
+            <TableHead>Res</TableHead>
             <TableHead>White</TableHead>
-            <TableHead>Result</TableHead>
+            <TableHead>#</TableHead>
+            <TableHead>Res</TableHead>
             <TableHead>Black</TableHead>
           </TableRow>
         </TableHeader>
@@ -54,8 +56,10 @@ function PairingsTable({ pairings, title }: { pairings: { [key: string]: string 
           {pairings.map(pairing => (
             <TableRow key={pairing.bd}>
               <TableCell>{pairing.bd}</TableCell>
+              <TableCell>{pairing.n}</TableCell>
               <TableCell>{pairing.res}</TableCell>
               <TableCell>{pairing.white}</TableCell>
+              <TableCell>{pairing.n1}</TableCell>
               <TableCell>{pairing.res1}</TableCell>
               <TableCell>{pairing.black}</TableCell>
             </TableRow>

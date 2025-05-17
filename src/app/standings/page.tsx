@@ -36,6 +36,7 @@ export default async function Standings() {
 
 function PairingsTable({ standings, title }: { standings: { [key: string]: string }[], title: string }) {
   if (standings.length === 0) return <h1 className="font-bold text-xl text-center">Standings Not Posted Yet</h1>
+  standings.sort((a, b) => Number(b.total) - Number(a.total))
 
   return (
     <div className="space-y-4">
@@ -46,17 +47,17 @@ function PairingsTable({ standings, title }: { standings: { [key: string]: strin
             <TableHead>Place</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Rating</TableHead>
-            <TableHead>Round 1</TableHead>
-            <TableHead>Round 2</TableHead>
-            <TableHead>Round 3</TableHead>
-            <TableHead>Round 4</TableHead>
-            <TableHead>Round 5</TableHead>
-            <TableHead>Round 6</TableHead>
+            <TableHead>Rd 1</TableHead>
+            <TableHead>Rd 2</TableHead>
+            <TableHead>Rd 3</TableHead>
+            <TableHead>Rd 4</TableHead>
+            <TableHead>Rd 5</TableHead>
+            <TableHead>Rd 6</TableHead>
             <TableHead>Total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {standings.toSorted((a, b) => Number(a) - Number(b)).map(standing => (
+          {standings.map(standing => (
             <TableRow key={standing.n}>
               <TableCell>{standing.place}</TableCell>
               <TableCell>{standing.name}</TableCell>
