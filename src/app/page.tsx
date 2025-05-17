@@ -11,7 +11,6 @@ import preotu from "@/assets/img/preotu.jpg"
 import poltkin from "@/assets/img/plotkin.jpg"
 import vettese from "@/assets/img/vettese.jpg"
 import atanasov from "@/assets/img/atanasov.jpg"
-import thavandiran from "@/assets/img/thavandiran.jpg"
 import liang from "@/assets/img/liang.jpg"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
@@ -228,21 +227,6 @@ export default function Home() {
                 North American Youth Chess Championship and earned his FM title. In 2021, he won the North American Youth Chess Championship U18 category, 
                 subsequently achieving his International Master title. He has also been a member of the U16 Olympiad team. 
                 He has played for the Hart House Chess Club’s Pan-American Intercollegiate and Canadian University Championship teams."
-                />
-              </CarouselItem>
-              <CarouselItem>
-                <FeaturedPlayerCard
-                  name="Shiyam Thavandiran"
-                  title="International Master"
-                  image={thavandiran}
-                  description="
-                Shiyam started playing chess at the age of 7.  He placed 4th in the World U10 Championships and became the youngest Canadian junior champion,
-                in Brantford, at the age of 12.  This was his first success in Brantford and he returned in 2015 to play in our hosting of the Ontario Open.
-                There he split first prize with GM Maxim Dlugy.  We'll see if third time is a charm this year.
-                In January 2012, he won the Canadian University Championship, which helped his University of Western Ontario team.
-                He won the Canadian Chess Championship in April 2024, during which he went undefeated winning against GM Shawn Rodrigue-Lemieux,
-                IM Raja Panjwani, IM Nikolay Noritsyn, and GM Bator Sambuev. In September 2024, he represented the country at the 45th Chess Olympiad,
-                where he defeated GM Štěpán Žilka and GM Trần Tuấn Minh."
                 />
               </CarouselItem>
               <CarouselItem>

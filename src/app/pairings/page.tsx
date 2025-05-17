@@ -1,11 +1,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPairings } from "@/db/select";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pairings",
+}
 
 export default async function Pairings() {
   const [open, u2000, u1600, u1200] = await Promise.all([getPairings("pOpen"), getPairings("pU2000"), getPairings("pU1600"), getPairings("pU1200")])
-
-  console.log(open.title)
 
   return (
     <Tabs defaultValue="open">
@@ -40,10 +43,12 @@ function PairingsTable({ pairings, title }: { pairings: { [key: string]: string 
       <Table className="mb-4">
         <TableHeader>
           <TableRow>
-            <TableHead>Board #</TableHead>
-            <TableHead>Result</TableHead>
+            <TableHead>Bd</TableHead>
+            <TableHead>#</TableHead>
+            <TableHead>Res</TableHead>
             <TableHead>White</TableHead>
-            <TableHead>Result</TableHead>
+            <TableHead>#</TableHead>
+            <TableHead>Res</TableHead>
             <TableHead>Black</TableHead>
           </TableRow>
         </TableHeader>
@@ -51,8 +56,10 @@ function PairingsTable({ pairings, title }: { pairings: { [key: string]: string 
           {pairings.map(pairing => (
             <TableRow key={pairing.bd}>
               <TableCell>{pairing.bd}</TableCell>
+              <TableCell>{pairing.n}</TableCell>
               <TableCell>{pairing.res}</TableCell>
               <TableCell>{pairing.white}</TableCell>
+              <TableCell>{pairing.n1}</TableCell>
               <TableCell>{pairing.res1}</TableCell>
               <TableCell>{pairing.black}</TableCell>
             </TableRow>

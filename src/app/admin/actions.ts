@@ -50,8 +50,8 @@ function parseTable(table: string[]) {
     if (trimmedHeading) {
       headingCount[trimmedHeading] = (headingCount[trimmedHeading] || 0) + 1
       const uniqueHeading = headingCount[trimmedHeading] > 1
-        ? `${trimmedHeading.toLowerCase()}${headingCount[trimmedHeading] - 1}`
-        : trimmedHeading.toLowerCase()
+        ? `${trimmedHeading.toLowerCase().replace("#", "n").replace(" ", "")}${headingCount[trimmedHeading] - 1}`
+        : trimmedHeading.toLowerCase().replace("#", "n").replace(" ", "")
       headings.push(uniqueHeading)
     }
   }
