@@ -149,7 +149,6 @@ export default function Home() {
         </div>
         <div className="flex-1 space-y-4">
           <div>
-            <h2 className="font-bold text-2xl">Unfortunately, there are no more entries available.</h2>
             <h2 className="font-bold text-xl line-through">Fees:</h2>
             <p className="line-through">GM / WGM: Free entry</p>
             <p className="line-through">
@@ -158,6 +157,10 @@ export default function Home() {
             <p className="line-through">Early: $100 before January 1, 2025</p>
             <p className="line-through">Regular: $110 January 1 &ndash; April 20, 2025</p>
             <p className="line-through">Late: $120 April 21 &ndash; May 15, 2025</p>
+            <p className="line-through">
+              Onsite: $130 After May 15, 2025; cash only (may receive a round
+              one bye)
+            </p>
             <h3 className="font-bold text-lg line-through">Play Up Fee:</h3>
             <p className="line-through">$20 (must be within 100 points of next section up)</p>
             <div className="flex gap-1 items-center">

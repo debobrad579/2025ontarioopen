@@ -14,7 +14,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 export function Navbar() {
-  const isDesktop = useMediaQuery("(min-width: 800px)")
+  const isDesktop = useMediaQuery("(min-width: 425px)")
 
   return (
     <div className="flex justify-between items-center gap-4 px-5 py-3 sm:px-10 md:px-20 lg:px-[10vw] bg-card">
@@ -28,25 +28,11 @@ export function Navbar() {
         </Link>
         {isDesktop && (
           <>
-            <Button variant="ghost" asChild>
-              <Link href="/players">Players</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/pairings">Pairings</Link>
-            </Button>
-            <Button variant="ghost" asChild>
+           <Button variant="ghost" asChild>
               <Link href="/standings">Standings</Link>
             </Button>
             <Button variant="ghost" asChild>
               <Link href="/games">Games</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <a
-                href="https://docs.google.com/document/d/1FBm3iEVuJkZsIf6exNB5hqvEc_8yrLTW"
-                target="_blank"
-              >
-                Regulations
-              </a>
             </Button>
           </>
         )}
@@ -62,24 +48,10 @@ export function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Link href="/players">Players</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/pairings">Pairings</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <Link href="/standings">Standings</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/games">Games</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <a
-                  href="https://docs.google.com/document/d/1FBm3iEVuJkZsIf6exNB5hqvEc_8yrLTW"
-                  target="_blank"
-                >
-                  Regulations
-                </a>
               </DropdownMenuItem>
               <ModeToggleMobile />
             </DropdownMenuContent>
