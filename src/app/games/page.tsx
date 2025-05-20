@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   title: "Games",
 }
 
-export const revalidate = 0
-
 export default async function Games() {
   if (!process.env.LICHESS_BROADCAST_ID) return <h1 className="font-bold text-xl text-center">Games Have Not Started Yet</h1>
 
@@ -16,15 +14,8 @@ export default async function Games() {
     `https://lichess.org/api/broadcast/${process.env.LICHESS_BROADCAST_ID}`
   ).then((res) => res.json())
 
-  const ongoingRounds = rounds.filter((round) => round.ongoing)
-
   return (
-    <Tabs
-      defaultValue={
-        ongoingRounds.length === 0 ? "round-1" : ongoingRounds[0].slug
-      }
-      className="pb-4"
-    >
+    <Tabs defaultValue="round-1" className="pb-4">
       <TabsList className="mb-4 w-full">
         {rounds.map((round) => (
           <TabsTrigger
@@ -40,7 +31,7 @@ export default async function Games() {
       {rounds.map((round) => (
         <TabsContent key={round.id} value={round.slug}>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <RoundContent roundId={round.id} ongoing={round.ongoing} />
+            <RoundContent roundId={round.id} ongoing={false} />
           </div>
         </TabsContent>
       ))}
