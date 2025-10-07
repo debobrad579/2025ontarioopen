@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 2025 Ontario Open Chess Championship
 
-## Getting Started
+A comprehensive web application for the 2025 Ontario Open Chess Championship, built with Next.js and featuring player registration, payment processing, and live game viewing. The tournament attracted nearly 200 players, making it the largest chess event in Brantford history.
 
-First, run the development server:
+## 🌐 Live Site
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Player Registration System**: Automated registration form with real-time data fetching from CFC API and FIDE website scraping
+- **Secure Payment Processing**: Stripe-integrated checkout system that processed over CA$15,000 in tournament registrations
+- **Live Game Viewing**: Fully responsive and reactive chessboard component for watching tournament games in real-time
+- **Database Management**: PostgreSQL integration with the @vercel/postgres SDK for efficient player data storage and retrieval
+- **Modern UI**: Built with Shadcn components (which is built on top of Radix UI) and Tailwind CSS for a polished, accessible user experience
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 Key Features Implementation
 
-## Learn More
+### Player Registration
+- Automated data fetching from CFC API ([https://server.chess.ca/api/player/v1/{CFCID}](https://server.chess.ca/api/player/v1/177347))
+- Automated retrieval of FIDE ratings/titles by scraping the FIDE website ([https://www.fide.com/](https://www.fide.com/))
+- Form validation using Zod schemas
 
-To learn more about Next.js, take a look at the following resources:
+### Payment System
+- Secure Stripe checkout integration
+- Multiple payment method support
+- Automated reciept emails
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Live Chessboard
+- Real-time updates powered by WebSockets
+- Fully responsive layout for any device
+- Displays all boards, move history (in Standard Algebraic Notation), and player clocks
+- Includes navigation controls to review previous moves
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🙏 Acknowledgments
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Brantford Chess Club (BCC)](https://www.brantchess.ca) - Tournament organizers
+- [Ontario Chess Association (OCA)](https://www.ontariochess.com/) - Provincial chess federation
+- [Chess Federation of Canada (CFC)](https://www.chess.ca) - National ratings and API
+- [International Chess Federation (FIDE)](https://www.fide.com/) - International ratings
