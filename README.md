@@ -18,7 +18,7 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 
 ### Player Registration
 - Automated data fetching from CFC API ([https://server.chess.ca/api/player/v1/{CFCID}](https://server.chess.ca/api/player/v1/177347))
-- Automated retrieval of FIDE ratings/titles by scraping the FIDE website ([https://www.fide.com/](https://www.fide.com/))
+- Automated retrieval of FIDE ratings/titles by scraping the FIDE website ([https://ratings.fide.com/profile/{CFCId}](https://ratings.fide.com/profile/2656280))
 - Form validation using Zod schemas
 
 ### Payment System
