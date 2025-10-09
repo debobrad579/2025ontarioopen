@@ -32,6 +32,11 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 - Displays all boards, move history (in Standard Algebraic Notation), and player clocks
 - Includes navigation controls to review previous moves
 
+## 🚀 Deployment
+
+- **Original Deployment**: The site was originally hosted on Vercel for registration, payment processing, and live game viewing.
+- **Archive**: The site has been archived and is currently being hosted on GitHub Pages for reference and historical purposes.
+
 ## 🙏 Acknowledgments
 
 - [Brantford Chess Club (BCC)](https://www.brantchess.ca) - Tournament organizers
