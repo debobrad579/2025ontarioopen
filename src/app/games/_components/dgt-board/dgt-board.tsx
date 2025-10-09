@@ -136,7 +136,12 @@ export function DGTBoard({
     if (!move) return
 
     const gameCopy = { ...game }
-    gameCopy.move(move)
+    if (undoCount === 1) {
+      gameCopy.load_pgn(convertMovesToPgn(moves))
+    } else {
+      gameCopy.load_pgn(convertMovesToPgn(moves.slice(0, length - (undoCount - 1))))
+    }
+
     setGame(gameCopy)
     setUndoCount((prevCount) => prevCount - 1)
   }
@@ -145,8 +150,8 @@ export function DGTBoard({
 
   return (
     <div className="@container">
-      <audio ref={moveSoundRef} src={"/move.mp3"} />
-      <audio ref={captureSoundRef} src={"/capture.mp3"} />
+      <audio ref={moveSoundRef} src={"move.mp3"} />
+      <audio ref={captureSoundRef} src={"capture.mp3"} />
       <div
         className="flex flex-col @lg:flex-row gap-2"
         onMouseEnter={() => (mouseOverBoard.current = true)}
