@@ -34,8 +34,8 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 
 ## 🚀 Deployment
 
-- **Original Deployment**: The site was originally hosted on Vercel for registration, payment processing, and live game viewing.
-- **Archive**: The site has been archived and is currently being hosted on GitHub Pages for reference and historical purposes.
+- **Original Deployment**: Hosted on Vercel for registration, payment processing, and live game viewing.  
+- **Archive**: Now archived and hosted on GitHub Pages for historical purposes.
 
 ## 🙏 Acknowledgments
 
