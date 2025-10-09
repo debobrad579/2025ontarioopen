@@ -4,7 +4,6 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/themes/theme-provider"
 import { Navbar } from "./navbar"
 import { Separator } from "@/components/ui/separator"
-import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +40,6 @@ export default function RootLayout({
             </main>
           </div>
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   )
