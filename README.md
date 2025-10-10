@@ -27,7 +27,7 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 - Automated reciept emails
 
 ### Live Chessboard
-- Real-time updates powered by WebSockets (see [https://github.com/debobrad579/lichess-stream](https://github.com/debobrad579/lichess-stream) for more details)
+- Real-time updates powered by WebSockets (see [https://github.com/debobrad579/lichess-stream](https://github.com/debobrad579/lichess-stream))
 - Displays all boards, move history (in Standard Algebraic Notation), and player clocks
 - Includes navigation controls to review previous moves
 - Fully responsive layout for any device
