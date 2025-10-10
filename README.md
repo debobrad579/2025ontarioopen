@@ -1,4 +1,4 @@
-# 2025 Ontario Open Chess Championship
+# 2025 Ontario Open Chess Championship Website
 
 A comprehensive web application for the 2025 Ontario Open Chess Championship, built with Next.js and featuring player registration, payment processing, and live game viewing. The tournament attracted nearly 200 players, making it the largest chess event in Brantford history.
 
@@ -8,11 +8,11 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 
 ## ✨ Features
 
+- **Modern UI**: Built with Shadcn components (which is built on top of Radix UI) and Tailwind CSS for a polished, accessible user experience
 - **Player Registration System**: Automated registration form with real-time data fetching from CFC API and FIDE website scraping
+- **Database Management**: PostgreSQL integration with the @vercel/postgres SDK for efficient player data storage and retrieval
 - **Secure Payment Processing**: Stripe-integrated checkout system that processed over CA$15,000 in tournament registrations
 - **Live Game Viewing**: Fully responsive and reactive chessboard component for watching tournament games in real-time
-- **Database Management**: PostgreSQL integration with the @vercel/postgres SDK for efficient player data storage and retrieval
-- **Modern UI**: Built with Shadcn components (which is built on top of Radix UI) and Tailwind CSS for a polished, accessible user experience
 
 ## 🎯 Key Features Implementation
 
@@ -27,10 +27,10 @@ Visit [2025ontarioopen.ca](https://www.2025ontarioopen.ca)
 - Automated reciept emails
 
 ### Live Chessboard
-- Real-time updates powered by WebSockets
-- Fully responsive layout for any device
+- Real-time updates powered by WebSockets (see [https://github.com/debobrad579/lichess-stream](https://github.com/debobrad579/lichess-stream) for more details)
 - Displays all boards, move history (in Standard Algebraic Notation), and player clocks
 - Includes navigation controls to review previous moves
+- Fully responsive layout for any device
 
 ## 🚀 Deployment
 
